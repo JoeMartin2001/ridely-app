@@ -31,7 +31,7 @@ export default function RootLayout() {
               options={{ headerShown: false }}
             />
 
-            <Stack.Screen name="menu-search" options={{ headerShown: false }} />
+            {/* <Stack.Screen name="menu-search" options={{ headerShown: false }} /> */}
 
             <Stack.Screen
               name="edit-profile"
