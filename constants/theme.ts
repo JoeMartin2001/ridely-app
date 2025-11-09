@@ -23,7 +23,7 @@ export const Colors = {
     avatarBackground: "rgba(0, 0, 0, 0.2)",
     switchThumb: "#ffffff",
     switchTrack: "#34C759",
-    switchTrackInactive: "#000000",
+    switchTrackInactive: "rgba(0, 0, 0, 0.2)",
   },
   dark: {
     text: "#ECEDEE",
@@ -38,8 +38,8 @@ export const Colors = {
     dividerDark: "rgba(255, 255, 255, 0.2)",
     avatarBackground: "#2c2c2e",
     switchThumb: "#ffffff",
-    switchTrack: "#34C759",
-    switchTrackInactive: "#000000",
+    switchTrack: "#30D158",
+    switchTrackInactive: "rgba(255, 255, 255, 0.25)",
   },
 };
 
