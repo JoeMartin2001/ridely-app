@@ -25,14 +25,19 @@ export default function RootLayout() {
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
+            <Stack.Screen
+              name="menu-item-details"
+              options={{
+                presentation: "modal",
+                title: t("menu_item_details"),
+                headerShown: false,
+              }}
+            />
             <Stack.Screen
               name="switch-language"
               options={{ headerShown: false }}
             />
-
-            {/* <Stack.Screen name="menu-search" options={{ headerShown: false }} /> */}
-
+            <Stack.Screen name="menu-search" options={{ headerShown: false }} />
             <Stack.Screen
               name="edit-profile"
               options={{ headerShown: false }}
