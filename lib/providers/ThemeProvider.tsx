@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Appearance, ColorSchemeName } from "react-native";
 import {
   PropsWithChildren,
   createContext,
@@ -9,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { Appearance, ColorSchemeName } from "react-native";
 
 type ThemeContextValue = {
   colorScheme: ColorSchemeName;
@@ -99,7 +99,9 @@ export function AppThemeProvider({ children }: PropsWithChildren) {
     [colorScheme, handleSetColorScheme, toggleColorScheme, isHydrated]
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
 }
 
 export const useAppTheme = () => {
@@ -111,4 +113,3 @@ export const useAppTheme = () => {
 
   return context;
 };
-
