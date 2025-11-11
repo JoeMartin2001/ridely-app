@@ -1,8 +1,12 @@
 {
-  "menu": "Menu",
+  "search": "Search",
+  "publish": "Publish",
+  "my_trips": "My trips",
+  "chat": "Chat",
   "favourites": "Favourites",
   "wallet": "Wallet",
   "profile": "Profile",
+
   "home_pickup": "Pickup",
   "home_search_accessibility": "Search menu",
   "home_category_best_sellers": "Best sellers",

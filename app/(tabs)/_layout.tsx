@@ -22,29 +22,39 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t("menu"),
+          title: t("search"),
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="fork.knife" color={color} />
+            <IconSymbol size={28} name="magnifyingglass" color={color} />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="favourites"
+        name="publish-trip"
         options={{
-          title: t("favourites"),
+          title: t("publish"),
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="heart.fill" color={color} />
+            <IconSymbol size={28} name="plus.circle.fill" color={color} />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="wallet"
+        name="my-trips"
         options={{
-          title: t("wallet"),
+          title: t("my_trips"),
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="qrcode.viewfinder" color={color} />
+            <IconSymbol size={28} name="car.fill" color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: t("chat"),
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="message.fill" color={color} />
           ),
         }}
       />

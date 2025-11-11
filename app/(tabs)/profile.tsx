@@ -1,11 +1,12 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, Switch, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 
 import { PhoneOTPView } from "@/components/auth/PhoneOTPView";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { AppSwitch } from "@/components/ui/app-switch";
 import { Header } from "@/components/ui/header";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -40,19 +41,25 @@ const primaryMenuItems: MenuItem[] = [
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
-  const { colorScheme, setColorScheme } = useAppTheme();
+
   const cardColor = useThemeColor({}, "card");
   const dividerColor = useThemeColor({}, "dividerDark");
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const avatarBackground = useThemeColor({}, "avatarBackground");
 
-  const switchThumbColor = useThemeColor({}, "switchThumb");
-  const switchTrackColor = useThemeColor({}, "switchTrack");
-  const switchTrackInactiveColor = useThemeColor({}, "switchTrackInactive");
-
   const { user } = useAppSelector((state) => state.user);
-  const isDarkThemeEnabled = (colorScheme ?? "light") === "dark";
+
+  const { colorScheme, setColorScheme } = useAppTheme();
+
+  const isDarkThemeEnabled = colorScheme === "dark";
+
+  const handleChangeTheme = useCallback(
+    (value: boolean) => {
+      setColorScheme(value ? "dark" : "light");
+    },
+    [setColorScheme]
+  );
 
   const initials = useMemo(() => {
     if (!user?.name) return "";
@@ -137,17 +144,9 @@ export default function ProfileScreen() {
             </ThemedText>
 
             <View style={styles.switchWrapper}>
-              <Switch
+              <AppSwitch
                 value={isDarkThemeEnabled}
-                onValueChange={(value) =>
-                  setColorScheme(value ? "dark" : "light")
-                }
-                thumbColor={switchThumbColor}
-                trackColor={{
-                  false: switchTrackInactiveColor,
-                  true: switchTrackColor,
-                }}
-                ios_backgroundColor={switchTrackInactiveColor}
+                onChange={handleChangeTheme}
               />
             </View>
           </View>

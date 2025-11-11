@@ -11,7 +11,7 @@ import { useAppSelector } from "@/lib/store";
 import { Favourite } from "@/lib/types";
 import { useTranslation } from "react-i18next";
 
-export default function FavouritesScreen() {
+export default function ChatScreen() {
   const { t } = useTranslation();
   const backgroundColor = useThemeColor({}, "background");
   const cardColor = useThemeColor({}, "card");
