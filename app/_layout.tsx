@@ -42,6 +42,10 @@ export default function RootLayout() {
               name="edit-profile"
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="passenger-count"
+              options={{ presentation: "fullScreenModal", headerShown: false }}
+            />
           </Stack>
         </SafeAreaProvider>
       </GestureHandlerRootView>

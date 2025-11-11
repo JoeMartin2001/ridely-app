@@ -13,6 +13,7 @@ import { ThemedView } from "@/components/themed-view";
 import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { router } from "expo-router";
 
 type SearchField = {
   key: string;
@@ -57,6 +58,7 @@ export default function HomeScreen() {
       icon: "person",
       label: t("home_field_passengers"),
       value: t("home_field_passengers_value"),
+      onPress: () => router.push("/passenger-count"),
     },
   ];
   const quickRoutes = [
