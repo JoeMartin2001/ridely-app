@@ -1,0 +1,244 @@
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  View,
+  type ListRenderItem,
+} from "react-native";
+
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { Divider } from "@/components/ui/divider";
+import { useThemeColor } from "@/hooks/use-theme-color";
+
+type LocationSuggestion = {
+  id: string;
+  title: string;
+  subtitle: string;
+};
+
+const SUGGESTIONS: LocationSuggestion[] = [
+  {
+    id: "moscow",
+    title: "Москва",
+    subtitle: "Россия",
+  },
+  {
+    id: "moscow-city",
+    title: "Москва Сити",
+    subtitle: "Пресненская набережная, Москва, Россия",
+  },
+  {
+    id: "mostovskoy",
+    title: "Мостовской",
+    subtitle: "Краснодарский край, Россия",
+  },
+  {
+    id: "mosty",
+    title: "Мосты",
+    subtitle: "Беларусь",
+  },
+];
+
+const LocationSearch = () => {
+  const { t } = useTranslation();
+  const [query, setQuery] = useState("");
+  const inputRef = useRef<TextInput>(null);
+
+  const backgroundColor = useThemeColor({}, "background");
+  const cardColor = useThemeColor({}, "card");
+  const textColor = useThemeColor({}, "text");
+  const iconColor = useThemeColor({}, "icon");
+  const dividerColor = useThemeColor({}, "divider");
+  const placeholderColor = useThemeColor({}, "tagline");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const filteredSuggestions = useMemo(() => {
+    if (!normalizedQuery) return SUGGESTIONS;
+
+    return SUGGESTIONS.filter((item) =>
+      `${item.title} ${item.subtitle}`.toLowerCase().includes(normalizedQuery)
+    );
+  }, [normalizedQuery]);
+
+  const handleClear = () => {
+    if (query.length === 0) {
+      router.back();
+      return;
+    }
+
+    setQuery("");
+    inputRef.current?.focus();
+  };
+
+  const renderItem: ListRenderItem<LocationSuggestion> = ({ item }) => {
+    return (
+      <Pressable
+        style={styles.resultRow}
+        android_ripple={{ color: dividerColor }}
+        onPress={() => router.back()}
+      >
+        <View style={styles.resultTextWrapper}>
+          <ThemedText style={styles.resultTitle}>{item.title}</ThemedText>
+          <ThemedText style={styles.resultSubtitle}>{item.subtitle}</ThemedText>
+        </View>
+
+        <MaterialIcons name="chevron-right" size={22} color={iconColor} />
+      </Pressable>
+    );
+  };
+
+  return (
+    <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
+      <View
+        style={[
+          styles.searchBar,
+          { backgroundColor: cardColor, borderColor: dividerColor },
+        ]}
+      >
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.back()}
+          style={styles.iconButton}
+        >
+          <MaterialIcons name="arrow-back" size={22} color={iconColor} />
+        </Pressable>
+
+        <TextInput
+          ref={inputRef}
+          value={query}
+          onChangeText={setQuery}
+          placeholder={t("location_search_placeholder")}
+          placeholderTextColor={placeholderColor}
+          style={[styles.searchInput, { color: textColor }]}
+          autoCorrect={false}
+          autoCapitalize="none"
+          returnKeyType="search"
+          selectionColor={iconColor}
+        />
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={handleClear}
+          style={styles.iconButton}
+        >
+          <MaterialIcons
+            name={query.length > 0 ? "close" : "close"}
+            size={22}
+            color={iconColor}
+          />
+        </Pressable>
+      </View>
+
+      <FlatList
+        data={filteredSuggestions}
+        keyExtractor={(item) => item.id}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={() => (
+          <View style={[styles.separator, { borderColor: dividerColor }]}>
+            <Divider direction="horizontal" />
+          </View>
+        )}
+        renderItem={renderItem}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyState}>
+            <ThemedText style={styles.emptyTitle}>
+              {t("location_search_empty_title")}
+            </ThemedText>
+            <ThemedText style={styles.emptySubtitle}>
+              {t("location_search_empty_subtitle")}
+            </ThemedText>
+          </View>
+        )}
+        style={styles.list}
+      />
+    </ThemedView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  searchBar: {
+    margin: 16,
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    borderWidth: StyleSheet.hairlineWidth,
+    gap: 8,
+    minHeight: 54,
+  },
+  iconButton: {
+    padding: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 17,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+  },
+  separator: {
+    marginVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  resultRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    gap: 16,
+  },
+  resultTextWrapper: {
+    flex: 1,
+    gap: 4,
+  },
+  resultTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  resultSubtitle: {
+    fontSize: 14,
+    opacity: 0.7,
+  },
+  emptyState: {
+    paddingTop: 80,
+    alignItems: "center",
+    gap: 12,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  emptySubtitle: {
+    fontSize: 15,
+    opacity: 0.7,
+    textAlign: "center",
+    paddingHorizontal: 32,
+  },
+});
+
+export default LocationSearch;

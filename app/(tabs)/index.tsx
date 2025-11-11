@@ -41,11 +41,13 @@ export default function HomeScreen() {
       key: "from",
       icon: "radio-button-unchecked",
       label: t("home_field_from"),
+      onPress: () => router.push("/location-search"),
     },
     {
       key: "to",
       icon: "radio-button-unchecked",
       label: t("home_field_to"),
+      onPress: () => router.push("/location-search"),
     },
     {
       key: "date",

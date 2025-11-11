@@ -10,6 +10,9 @@ import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
+const minPassengers = 1;
+const maxPassengers = 8;
+
 export default function PassengerCountScreen() {
   const { t } = useTranslation();
   const [count, setCount] = useState(1);
@@ -22,11 +25,11 @@ export default function PassengerCountScreen() {
   const textReverse = useThemeColor({}, "textReverse");
 
   const handleDecrease = () => {
-    setCount((prev) => (prev > 1 ? prev - 1 : prev));
+    setCount((prev) => (prev > minPassengers ? prev - 1 : prev));
   };
 
   const handleIncrease = () => {
-    setCount((prev) => prev + 1);
+    setCount((prev) => (prev < maxPassengers ? prev + 1 : prev));
   };
 
   const handleConfirm = () => {
@@ -56,20 +59,22 @@ export default function PassengerCountScreen() {
             style={[
               styles.counterButton,
               { borderColor: dividerColor },
-              count === 1 && styles.counterButtonDisabled,
+              count === minPassengers && styles.counterButtonDisabled,
             ]}
             onPress={handleDecrease}
-            disabled={count === 1}
+            disabled={count === minPassengers}
             android_ripple={{ color: dividerColor }}
           >
             <MaterialIcons
               name="remove"
               size={28}
-              color={count === 1 ? dividerColor : textColor}
+              color={count === minPassengers ? dividerColor : textColor}
             />
           </Pressable>
 
-          <ThemedText style={styles.counterValue}>{count}</ThemedText>
+          <ThemedText style={styles.counterValue}>
+            {count.toString().padStart(2, "0")}
+          </ThemedText>
 
           <Pressable
             style={[styles.counterButton, { borderColor: tintColor }]}
