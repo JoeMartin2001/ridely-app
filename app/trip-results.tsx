@@ -119,10 +119,13 @@ const TripResultsScreen = () => {
           <MaterialIcons name="arrow-back" size={22} color={tintColor} />
         </Pressable>
 
-        <View style={styles.routeTextBlock}>
+        <View
+          style={[styles.routeTextBlock, { borderRightColor: routeBorder }]}
+        >
           <ThemedText numberOfLines={1} style={styles.routeTitle}>
             {t("trip_results_route_title")}
           </ThemedText>
+
           <ThemedText style={[styles.routeLabel, { color: muteColor }]}>
             {t("trip_results_route_summary")}
           </ThemedText>
@@ -339,8 +342,8 @@ const styles = StyleSheet.create({
   },
   navBar: {
     marginHorizontal: 16,
-    borderRadius: 24,
-    paddingVertical: 18,
+    borderRadius: 16,
+    paddingVertical: 16,
     paddingHorizontal: 10,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
@@ -354,20 +357,21 @@ const styles = StyleSheet.create({
   routeTextBlock: {
     flex: 1,
     gap: 6,
+    borderRightWidth: StyleSheet.hairlineWidth,
   },
   routeTitle: {
     fontFamily: Fonts.rounded,
-    fontSize: 18,
+    fontSize: 16,
   },
   routeLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: Fonts.rounded,
   },
   filterButton: {
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
-    alignSelf: "flex-start",
+    alignSelf: "center",
   },
   filterButtonText: {
     fontSize: 14,
