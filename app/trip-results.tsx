@@ -119,8 +119,12 @@ const TripResultsScreen = () => {
           <MaterialIcons name="arrow-back" size={22} color={tintColor} />
         </Pressable>
 
-        <View
-          style={[styles.routeTextBlock, { borderRightColor: routeBorder }]}
+        <Pressable
+          style={({ pressed }) => [
+            styles.routeTextBlock,
+            { borderRightColor: routeBorder, opacity: pressed ? 0.5 : 1 },
+          ]}
+          android_ripple={{ color: dividerColor }}
         >
           <ThemedText numberOfLines={1} style={styles.routeTitle}>
             {t("trip_results_route_title")}
@@ -129,7 +133,7 @@ const TripResultsScreen = () => {
           <ThemedText style={[styles.routeLabel, { color: muteColor }]}>
             {t("trip_results_route_summary")}
           </ThemedText>
-        </View>
+        </Pressable>
 
         <Pressable
           style={styles.filterButton}
@@ -344,7 +348,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 16,
     paddingVertical: 16,
-    paddingHorizontal: 10,
+    paddingRight: 10,
+    paddingLeft: 5,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     alignItems: "center",
