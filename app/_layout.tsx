@@ -50,6 +50,10 @@ export default function RootLayout() {
               name="location-search"
               options={{ presentation: "fullScreenModal", headerShown: false }}
             />
+            <Stack.Screen
+              name="trip-results"
+              options={{ headerShown: false }}
+            />
           </Stack>
         </SafeAreaProvider>
       </GestureHandlerRootView>

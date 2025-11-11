@@ -63,11 +63,16 @@ export default function HomeScreen() {
       onPress: () => router.push("/passenger-count"),
     },
   ];
+
   const quickRoutes = [
     "Tashkent → Samarkand",
     "Samarkand → Bukhara",
     "Fergana → Tashkent",
   ];
+
+  const handleSearch = () => {
+    router.push("/trip-results");
+  };
 
   return (
     <ThemedView style={styles.container} applyTopInsets>
@@ -112,6 +117,7 @@ export default function HomeScreen() {
         <View style={[styles.searchCard, { backgroundColor: cardColor }]}>
           {fields.map((field, index) => {
             const isLast = index === fields.length - 1;
+
             return (
               <Pressable
                 key={field.key}
@@ -164,6 +170,7 @@ export default function HomeScreen() {
           <Pressable
             style={[styles.searchButton, { backgroundColor: tintColor }]}
             android_ripple={{ color: "rgba(255,255,255,0.2)" }}
+            onPress={handleSearch}
           >
             <ThemedText
               style={[styles.searchButtonText, { color: textOnTint }]}

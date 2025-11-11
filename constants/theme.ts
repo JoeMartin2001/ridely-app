@@ -6,7 +6,7 @@
 import { Platform } from "react-native";
 
 const tintColorLight = "#0a7ea4";
-const tintColorDark = "#fff";
+const tintColorDark = "#0a7ea4";
 
 export const Colors = {
   light: {
@@ -19,19 +19,25 @@ export const Colors = {
     tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
     card: "#f5f5f5",
+    cardElevated: "#ECEEF1",
+    cardMuted: "#E7EAEE",
     divider: "rgba(0, 0, 0, 0.2)",
     dividerDark: "rgba(0, 0, 0, 0.9)",
     avatarBackground: "rgba(0, 0, 0, 0.2)",
     surfaceMuted: "rgba(0, 0, 0, 0.05)",
     accentSurface: "rgba(10, 126, 164, 0.08)",
     accentSurfaceBorder: "rgba(10, 126, 164, 0.22)",
+    routePill: "#ECEEF1",
+    chipIndicator: tintColorLight,
+    tripLine: "rgba(0, 0, 0, 0.12)",
+    avatarPlaceholder: "rgba(10, 126, 164, 0.12)",
     switchThumb: "#ffffff",
     switchTrack: "#34C759",
     switchTrackInactive: "#000000",
   },
   dark: {
     text: "#ECEDEE",
-    textReverse: "#11181C",
+    textReverse: "#FFFFFF",
     tagline: "rgba(255, 255, 255, 0.72)",
     background: "#151718",
     tint: tintColorDark,
@@ -39,12 +45,18 @@ export const Colors = {
     tabIconDefault: "#9BA1A6",
     tabIconSelected: tintColorDark,
     card: "#2c2c2e",
+    cardElevated: "#1F2432",
+    cardMuted: "#1B1F27",
     divider: "rgba(255, 255, 255, 0.5)",
     dividerDark: "rgba(255, 255, 255, 0.2)",
     avatarBackground: "#2c2c2e",
     surfaceMuted: "rgba(255, 255, 255, 0.12)",
     accentSurface: "rgba(255, 255, 255, 0.08)",
     accentSurfaceBorder: "rgba(255, 255, 255, 0.18)",
+    routePill: "#1F2432",
+    chipIndicator: tintColorDark,
+    tripLine: "rgba(255, 255, 255, 0.18)",
+    avatarPlaceholder: "rgba(255, 255, 255, 0.12)",
     switchThumb: "#ffffff",
     switchTrack: "#34C759",
     switchTrackInactive: "#000000",

@@ -72,16 +72,19 @@ export default function PassengerCountScreen() {
             />
           </Pressable>
 
-          <ThemedText style={styles.counterValue}>
-            {count.toString().padStart(2, "0")}
-          </ThemedText>
+          <ThemedText style={styles.counterValue}>{count}</ThemedText>
 
           <Pressable
             style={[styles.counterButton, { borderColor: tintColor }]}
             onPress={handleIncrease}
             android_ripple={{ color: tintColor }}
+            disabled={count === maxPassengers}
           >
-            <MaterialIcons name="add" size={28} color={tintColor} />
+            <MaterialIcons
+              name="add"
+              size={28}
+              color={count === maxPassengers ? dividerColor : tintColor}
+            />
           </Pressable>
         </View>
       </View>
