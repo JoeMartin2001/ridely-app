@@ -17,14 +17,22 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarLabelStyle: {
+          fontSize: 8,
+          marginTop: 3,
+        },
+        tabBarIconStyle: {
+          width: 28,
+          height: 26,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: t("search"),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="magnifyingglass" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <IconSymbol size={size} name="magnifyingglass" color={color} />
           ),
         }}
       />
@@ -33,8 +41,8 @@ export default function TabLayout() {
         name="publish-trip"
         options={{
           title: t("publish"),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="plus.circle.fill" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <IconSymbol size={size} name="plus.circle.fill" color={color} />
           ),
         }}
       />
@@ -43,8 +51,8 @@ export default function TabLayout() {
         name="my-trips"
         options={{
           title: t("my_trips"),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="car.fill" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <IconSymbol size={size} name="car.fill" color={color} />
           ),
         }}
       />
@@ -53,8 +61,8 @@ export default function TabLayout() {
         name="chat"
         options={{
           title: t("chat"),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="message.fill" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <IconSymbol size={size} name="message.fill" color={color} />
           ),
         }}
       />
@@ -63,8 +71,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: t("profile"),
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="person.fill" color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <IconSymbol size={size} name="person.fill" color={color} />
           ),
         }}
       />
