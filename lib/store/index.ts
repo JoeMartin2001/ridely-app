@@ -9,6 +9,7 @@ import { usersApi } from "@/lib/services/users/usersApi";
 
 import favouritesReducer from "./features/favourites";
 import findTripReducer from "./features/find-trip/findTripSlice";
+import locationSearchReducer from "./features/location-search/locationSearchSlice";
 import menuItemsReducer from "./features/menu-items";
 import userReducer from "./features/user";
 
@@ -23,7 +24,9 @@ export const store = configureStore({
     favourites: favouritesReducer,
     menuItems: menuItemsReducer,
     user: userReducer,
+
     findTrip: findTripReducer,
+    locationSearch: locationSearchReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

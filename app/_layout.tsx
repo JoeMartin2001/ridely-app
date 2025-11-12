@@ -45,7 +45,10 @@ export default function RootLayout() {
 
             <Stack.Screen
               name="location-search"
-              options={{ presentation: "fullScreenModal", headerShown: false }}
+              options={{
+                presentation: "fullScreenModal",
+                headerShown: false,
+              }}
             />
             <Stack.Screen
               name="select-trip-date"

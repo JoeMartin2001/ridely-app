@@ -14,7 +14,8 @@ import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useLocalizedMoment } from "@/hooks/use-localized-moment";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { useAppSelector } from "@/lib/store";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
 import { router } from "expo-router";
 import { useMemo } from "react";
 
@@ -28,6 +29,8 @@ type SearchField = {
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
   const { smartCalendar: formatCalendar } = useLocalizedMoment();
 
   const { from, to, date, passengersCount } = useAppSelector(
@@ -53,15 +56,21 @@ export default function HomeScreen() {
         key: "from",
         icon: "radio-button-unchecked",
         label: t("home_field_from"),
-        value: from ?? undefined,
-        onPress: () => router.push("/location-search"),
+        value: from.name ?? undefined,
+        onPress: () => {
+          dispatch(setSearchQuery(from.name ?? ""));
+          router.push("/location-search?type=from");
+        },
       },
       {
         key: "to",
         icon: "radio-button-unchecked",
         label: t("home_field_to"),
-        value: to ?? undefined,
-        onPress: () => router.push("/location-search"),
+        value: to.name ?? undefined,
+        onPress: () => {
+          dispatch(setSearchQuery(to.name ?? ""));
+          router.push("/location-search?type=to");
+        },
       },
       {
         key: "date",
@@ -78,6 +87,7 @@ export default function HomeScreen() {
         onPress: () => router.push("/passenger-count"),
       },
     ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, date, passengersCount, formatCalendar, t]);
 
   const quickRoutes = [

@@ -30,10 +30,22 @@ export class RegionsService extends BaseService<"regions"> {
    * Get regions by name
    */
   async getRegionsByName(name: string): Promise<Region[]> {
+    const normalized = name.trim().toLowerCase();
+
+    if (!normalized) {
+      return [];
+    }
+
+    const wildcard = `*${normalized}*`;
+
     const { data, error } = await this.supabase
       .from("regions")
       .select("*")
-      .ilike("name_uz, name_ru, name_oz", `%${name}%`);
+      .or(
+        ["name_uz", "name_ru", "name_oz"]
+          .map((column) => `${column}.ilike.${wildcard}`)
+          .join(",")
+      );
 
     if (error) this.handleError(error);
 

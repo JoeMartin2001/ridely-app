@@ -1,5 +1,5 @@
-import { router } from "expo-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -16,6 +16,13 @@ import { Divider } from "@/components/ui/divider";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useGetDistrictsByNameQuery } from "@/lib/services/districts/regionsApi";
+import { useGetRegionsByNameQuery } from "@/lib/services/regions/regionsApi";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import {
+  setFromDistrict,
+  setToDistrict,
+} from "@/lib/store/features/find-trip/findTripSlice";
+import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
 
 type LocationSuggestion = {
   id: string;
@@ -25,14 +32,21 @@ type LocationSuggestion = {
 
 const LocationSearch = () => {
   const { t } = useTranslation();
-  const [query, setQuery] = useState("");
+  const dispatch = useAppDispatch();
+
+  const { type } = useLocalSearchParams();
+
   const inputRef = useRef<TextInput>(null);
 
-  const normalizedQuery = query.trim().toLowerCase();
+  const { searchQuery } = useAppSelector((state) => state.locationSearch);
 
-  const { data: districts = [], isLoading: isLoadingDistricts } =
-    useGetDistrictsByNameQuery(normalizedQuery, {
-      // skip: normalizedQuery.length === 0,
+  const { data: regions = [], isFetching: isFetchingRegions } =
+    useGetRegionsByNameQuery(searchQuery.trim().toLowerCase(), {
+      pollingInterval: 1000,
+    });
+
+  const { data: districts = [], isFetching: isFetchingDistricts } =
+    useGetDistrictsByNameQuery(searchQuery.trim().toLowerCase(), {
       pollingInterval: 1000,
     });
 
@@ -50,31 +64,50 @@ const LocationSearch = () => {
   }, []);
 
   const suggestions = useMemo(() => {
-    return districts.map((item) => ({
-      id: item.id,
-      title: item.name_uz,
-      subtitle: item.region?.name_uz || "",
-    }));
-  }, [districts]);
-
-  const filteredSuggestions = useMemo(() => {
-    return suggestions.filter((item) =>
-      `${item.title} ${item.subtitle}`.toLowerCase().includes(normalizedQuery)
-    );
-  }, [normalizedQuery, suggestions]);
+    return [
+      ...regions.map((item) => ({
+        id: item.id,
+        title: item.name_uz,
+        subtitle: "",
+      })),
+      ...districts.map((item) => ({
+        id: item.id,
+        title: item.name_uz,
+        subtitle: item.region?.name_uz || "",
+      })),
+    ];
+  }, [districts, regions]);
 
   const handleClear = () => {
-    if (query.length === 0) {
+    if (searchQuery.length === 0) {
       router.back();
       return;
     }
 
-    setQuery("");
+    if (type === "from") {
+      dispatch(setFromDistrict({ id: "", name: "" }));
+    } else {
+      dispatch(setToDistrict({ id: "", name: "" }));
+    }
+
+    dispatch(setSearchQuery(""));
     inputRef.current?.focus();
   };
 
   const handleSearchChange = (text: string) => {
-    setQuery(text);
+    dispatch(setSearchQuery(text));
+  };
+
+  const handlePressItem = (item: LocationSuggestion) => {
+    if (type === "from") {
+      dispatch(setFromDistrict({ id: item.id, name: item.title }));
+    } else {
+      dispatch(setToDistrict({ id: item.id, name: item.title }));
+    }
+
+    dispatch(setSearchQuery(""));
+
+    router.back();
   };
 
   const renderItem: ListRenderItem<LocationSuggestion> = ({ item }) => {
@@ -82,11 +115,15 @@ const LocationSearch = () => {
       <Pressable
         style={styles.resultRow}
         android_ripple={{ color: dividerColor }}
-        onPress={() => router.back()}
+        onPress={() => handlePressItem(item)}
       >
         <View style={styles.resultTextWrapper}>
           <ThemedText style={styles.resultTitle}>{item.title}</ThemedText>
-          <ThemedText style={styles.resultSubtitle}>{item.subtitle}</ThemedText>
+          {item.subtitle && (
+            <ThemedText style={styles.resultSubtitle}>
+              {item.subtitle}
+            </ThemedText>
+          )}
         </View>
 
         <IconSymbol name="chevron.right" size={22} color={iconColor} />
@@ -108,7 +145,7 @@ const LocationSearch = () => {
         <View style={[styles.searchInputWrapper]}>
           <TextInput
             ref={inputRef}
-            value={query}
+            value={searchQuery}
             onChangeText={handleSearchChange}
             placeholder={t("location_search_placeholder")}
             placeholderTextColor={placeholderColor}
@@ -119,7 +156,7 @@ const LocationSearch = () => {
           />
         </View>
 
-        {query.length > 0 && (
+        {searchQuery.length > 0 && (
           <Pressable
             accessibilityRole="button"
             onPress={handleClear}
@@ -131,18 +168,14 @@ const LocationSearch = () => {
       </View>
 
       <FlatList
-        refreshing={isLoadingDistricts}
-        data={filteredSuggestions}
+        refreshing={isFetchingDistricts || isFetchingRegions}
+        data={suggestions}
         keyExtractor={(item) => item.id}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         style={[styles.list]}
         contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => (
-          <View style={[styles.separator, { borderColor: dividerColor }]}>
-            <Divider direction="horizontal" />
-          </View>
-        )}
+        ItemSeparatorComponent={() => <Divider direction="horizontal" />}
         renderItem={renderItem}
         ListEmptyComponent={() => (
           <View style={styles.emptyState}>
@@ -207,7 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    paddingVertical: 24,
     gap: 16,
   },
   resultTextWrapper: {
