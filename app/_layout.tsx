@@ -42,14 +42,20 @@ export default function RootLayout() {
               name="edit-profile"
               options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name="passenger-count"
-              options={{ presentation: "fullScreenModal", headerShown: false }}
-            />
+
             <Stack.Screen
               name="location-search"
               options={{ presentation: "fullScreenModal", headerShown: false }}
             />
+            <Stack.Screen
+              name="select-trip-date"
+              options={{ presentation: "fullScreenModal", headerShown: false }}
+            />
+            <Stack.Screen
+              name="passenger-count"
+              options={{ presentation: "fullScreenModal", headerShown: false }}
+            />
+
             <Stack.Screen
               name="trip-results"
               options={{ headerShown: false }}

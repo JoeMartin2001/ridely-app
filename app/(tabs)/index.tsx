@@ -54,6 +54,7 @@ export default function HomeScreen() {
       icon: "calendar-today",
       label: t("home_field_date"),
       value: t("home_field_date_value"),
+      onPress: () => router.push("/select-trip-date"),
     },
     {
       key: "passengers",
