@@ -20,7 +20,6 @@ export default function PassengerCountScreen() {
   const tintColor = useThemeColor({}, "tint");
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
-  const cardColor = useThemeColor({}, "card");
   const dividerColor = useThemeColor({}, "divider");
   const textReverse = useThemeColor({}, "textReverse");
 
@@ -54,28 +53,36 @@ export default function PassengerCountScreen() {
           {t("home_passenger_title")}
         </ThemedText>
 
-        <View style={[styles.counterCard, { backgroundColor: cardColor }]}>
+        <View style={[styles.counterCard]}>
           <Pressable
             style={[
               styles.counterButton,
-              { borderColor: dividerColor },
+              {
+                borderColor: count === minPassengers ? dividerColor : tintColor,
+              },
               count === minPassengers && styles.counterButtonDisabled,
             ]}
             onPress={handleDecrease}
             disabled={count === minPassengers}
-            android_ripple={{ color: dividerColor }}
+            android_ripple={{ color: tintColor }}
           >
             <MaterialIcons
               name="remove"
               size={28}
-              color={count === minPassengers ? dividerColor : textColor}
+              color={count === minPassengers ? dividerColor : tintColor}
             />
           </Pressable>
 
           <ThemedText style={styles.counterValue}>{count}</ThemedText>
 
           <Pressable
-            style={[styles.counterButton, { borderColor: tintColor }]}
+            style={[
+              styles.counterButton,
+              {
+                borderColor: count === maxPassengers ? dividerColor : tintColor,
+              },
+              count === maxPassengers && styles.counterButtonDisabled,
+            ]}
             onPress={handleIncrease}
             android_ripple={{ color: tintColor }}
             disabled={count === maxPassengers}
@@ -93,7 +100,7 @@ export default function PassengerCountScreen() {
         style={[
           styles.confirmButton,
           { backgroundColor: tintColor },
-          Shadows.card,
+          Shadows.xxs,
         ]}
         onPress={handleConfirm}
         android_ripple={{ color: "rgba(255,255,255,0.2)" }}
@@ -138,7 +145,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
   },

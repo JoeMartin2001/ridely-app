@@ -1,4 +1,3 @@
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +13,7 @@ import {
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Divider } from "@/components/ui/divider";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
 type LocationSuggestion = {
@@ -97,7 +97,7 @@ const LocationSearch = () => {
           <ThemedText style={styles.resultSubtitle}>{item.subtitle}</ThemedText>
         </View>
 
-        <MaterialIcons name="chevron-right" size={22} color={iconColor} />
+        <IconSymbol name="chevron.right" size={22} color={iconColor} />
       </Pressable>
     );
   };
@@ -107,41 +107,42 @@ const LocationSearch = () => {
       <View
         style={[
           styles.searchBar,
-          { backgroundColor: cardColor, borderColor: dividerColor },
+          { backgroundColor: cardColor, borderBottomColor: dividerColor },
         ]}
       >
         <Pressable
           accessibilityRole="button"
           onPress={() => router.back()}
-          style={styles.iconButton}
+          style={styles.backButton}
         >
-          <MaterialIcons name="arrow-back" size={22} color={iconColor} />
+          <IconSymbol name="chevron.backward" size={22} color={iconColor} />
         </Pressable>
 
-        <TextInput
-          ref={inputRef}
-          value={query}
-          onChangeText={setQuery}
-          placeholder={t("location_search_placeholder")}
-          placeholderTextColor={placeholderColor}
-          style={[styles.searchInput, { color: textColor }]}
-          autoCorrect={false}
-          autoCapitalize="none"
-          returnKeyType="search"
-          selectionColor={iconColor}
-        />
-
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleClear}
-          style={styles.iconButton}
+        <View
+          style={[styles.searchInputWrapper, { backgroundColor: cardColor }]}
         >
-          <MaterialIcons
-            name={query.length > 0 ? "close" : "close"}
-            size={22}
-            color={iconColor}
+          <TextInput
+            ref={inputRef}
+            value={query}
+            onChangeText={setQuery}
+            placeholder={t("location_search_placeholder")}
+            placeholderTextColor={placeholderColor}
+            style={[styles.searchInput, { color: textColor }]}
+            autoCorrect={false}
+            autoCapitalize="none"
+            returnKeyType="search"
           />
-        </Pressable>
+        </View>
+
+        {query.length > 0 && (
+          <Pressable
+            accessibilityRole="button"
+            onPress={handleClear}
+            style={styles.closeButton}
+          >
+            <IconSymbol name="xmark" size={22} color={iconColor} />
+          </Pressable>
+        )}
       </View>
 
       <FlatList
@@ -177,21 +178,33 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBar: {
-    margin: 16,
-    borderRadius: 20,
+    height: 56,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    borderWidth: StyleSheet.hairlineWidth,
-    gap: 8,
-    minHeight: 54,
+    gap: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  iconButton: {
+  backButton: {
     padding: 8,
+  },
+  searchInputWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    height: 44,
+  },
+  searchIcon: {
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
-    fontSize: 17,
+    fontSize: 16,
+  },
+  closeButton: {
+    padding: 8,
   },
   list: {
     flex: 1,

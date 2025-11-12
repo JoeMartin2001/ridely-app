@@ -175,7 +175,7 @@ const TripResultsScreen = () => {
                           borderColor: isFull ? tripLineColor : "transparent",
                           opacity: isFull ? 0.5 : 1,
                         },
-                        Shadows.card,
+                        Shadows.xxs,
                       ]}
                     >
                       <View style={styles.tripHeader}>

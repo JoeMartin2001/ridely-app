@@ -114,7 +114,13 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        <View style={[styles.searchCard, { backgroundColor: cardColor }]}>
+        <View
+          style={[
+            styles.searchCard,
+            Shadows.xxxs,
+            { backgroundColor: cardColor, borderColor: dividerColor },
+          ]}
+        >
           {fields.map((field, index) => {
             const isLast = index === fields.length - 1;
 
@@ -237,7 +243,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingHorizontal: 20,
     gap: 8,
-    ...Shadows.card,
+    borderWidth: StyleSheet.hairlineWidth,
   },
   fieldRow: {
     flexDirection: "row",
