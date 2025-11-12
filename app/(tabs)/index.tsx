@@ -52,7 +52,7 @@ export default function HomeScreen() {
     return [
       {
         key: "from",
-        icon: "radio-button-unchecked",
+        icon: "my-location",
         label: t("home_field_from"),
         value: from.name ?? undefined,
         onPress: () => {
@@ -62,7 +62,7 @@ export default function HomeScreen() {
       },
       {
         key: "to",
-        icon: "radio-button-unchecked",
+        icon: "location-on",
         label: t("home_field_to"),
         value: to.name ?? undefined,
         onPress: () => {
@@ -72,14 +72,14 @@ export default function HomeScreen() {
       },
       {
         key: "date",
-        icon: "calendar-today",
+        icon: "event",
         label: t("home_field_date"),
         value: formatCalendar(date),
         onPress: () => router.push("/select-trip-date"),
       },
       {
         key: "passengers",
-        icon: "person",
+        icon: "people",
         label: t("home_field_passengers"),
         value: passengersValue,
         onPress: () => router.push("/passenger-count"),
