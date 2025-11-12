@@ -31,7 +31,10 @@ type CalendarMarkedDates = Record<
   }
 >;
 
-type CalendarTheme = Record<string, string | number | undefined>;
+type CalendarTheme = Record<
+  string,
+  string | number | Record<string, unknown> | undefined
+>;
 
 LocaleConfig.locales.en = CalendarLocales.en;
 LocaleConfig.locales.ru = CalendarLocales.ru;
@@ -58,6 +61,7 @@ const SelectTripDate = () => {
   const tintColor = useThemeColor({}, "tint");
   const textReverse = useThemeColor({}, "textReverse");
   const taglineColor = useThemeColor({}, "tagline");
+  const disabledDayBackground = useThemeColor({}, "surfaceMuted");
 
   const markedDates = useMemo<CalendarMarkedDates>(() => {
     if (!selectedDate) {
@@ -86,8 +90,26 @@ const SelectTripDate = () => {
       monthTextColor: textColor,
       arrowColor: tintColor,
       indicatorColor: tintColor,
+      "stylesheet.day.basic": {
+        disabled: {
+          backgroundColor: disabledDayBackground,
+          borderRadius: 12,
+        },
+        disabledText: {
+          color: taglineColor,
+          opacity: 0.6,
+          textDecorationLine: "line-through",
+        },
+      },
     }),
-    [backgroundColor, taglineColor, textColor, textReverse, tintColor]
+    [
+      backgroundColor,
+      disabledDayBackground,
+      taglineColor,
+      textColor,
+      textReverse,
+      tintColor,
+    ]
   );
 
   const localeForHeader = useMemo(() => {
