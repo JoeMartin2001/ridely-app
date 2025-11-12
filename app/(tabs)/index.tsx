@@ -43,8 +43,6 @@ export default function HomeScreen() {
   const dividerColor = useThemeColor({}, "divider");
   const iconColor = useThemeColor({}, "icon");
   const taglineColor = useThemeColor({}, "tagline");
-  const chipBackground = useThemeColor({}, "accentSurface");
-  const chipBorder = useThemeColor({}, "accentSurfaceBorder");
   const fieldIconBackground = useThemeColor({}, "surfaceMuted");
 
   const fields: SearchField[] = useMemo(() => {
@@ -90,12 +88,6 @@ export default function HomeScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, date, passengersCount, formatCalendar, t]);
 
-  const quickRoutes = [
-    "Tashkent → Samarkand",
-    "Samarkand → Bukhara",
-    "Fergana → Tashkent",
-  ];
-
   const handleSearch = () => {
     router.push("/trip-results");
   };
@@ -114,30 +106,6 @@ export default function HomeScreen() {
           <ThemedText style={[styles.tagline, { color: taglineColor }]}>
             {t("home_hero_subtitle")}
           </ThemedText>
-        </View>
-
-        <View style={styles.quickRoutesSection}>
-          <ThemedText style={styles.quickRoutesHeading}>
-            {t("home_quick_shortcuts")}
-          </ThemedText>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.quickRoutesList}
-          >
-            {quickRoutes.map((route) => (
-              <Pressable
-                key={route}
-                style={[
-                  styles.quickRouteChip,
-                  { backgroundColor: chipBackground, borderColor: chipBorder },
-                ]}
-                android_ripple={{ color: "rgba(10,126,164,0.12)" }}
-              >
-                <ThemedText style={styles.quickRouteText}>{route}</ThemedText>
-              </Pressable>
-            ))}
-          </ScrollView>
         </View>
 
         <View
@@ -223,8 +191,8 @@ const styles = StyleSheet.create({
   scrollView: {},
   contentContainer: {
     flexGrow: 1,
-    paddingVertical: 24,
-    // paddingHorizontal: 16,
+    paddingTop: 64,
+    paddingBottom: 40,
     gap: 24,
   },
   header: {
@@ -233,35 +201,17 @@ const styles = StyleSheet.create({
   },
   brandTitle: {
     fontFamily: Fonts.rounded,
-    fontSize: 40,
+    fontWeight: "bold",
+    fontSize: 56,
+    lineHeight: 56,
     letterSpacing: 0.5,
+    textAlign: "center",
   },
   tagline: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  quickRoutesSection: {
-    gap: 12,
-  },
-  quickRoutesHeading: {
+    fontSize: 24,
     fontFamily: Fonts.rounded,
-    fontSize: 18,
-    paddingHorizontal: 16,
-  },
-  quickRoutesList: {
-    gap: 12,
-    paddingHorizontal: 16,
-  },
-  quickRouteChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 18,
-    borderWidth: StyleSheet.hairlineWidth,
-    marginRight: 12,
-  },
-  quickRouteText: {
-    fontSize: 14,
-    fontWeight: "600",
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
   searchCard: {
     marginHorizontal: 16,
