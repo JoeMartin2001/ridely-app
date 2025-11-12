@@ -3,7 +3,6 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
-import { PhoneOTPView } from "@/components/auth/PhoneOTPView";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { AppSwitch } from "@/components/ui/app-switch";
@@ -62,17 +61,17 @@ export default function ProfileScreen() {
   );
 
   const initials = useMemo(() => {
-    if (!user?.name) return "";
+    if (!user?.firstName) return "";
 
-    return user.name
+    return user.firstName
       .split(" ")
       .filter(Boolean)
       .slice(0, 2)
       .map((part) => part.charAt(0).toUpperCase())
       .join("");
-  }, [user?.name]);
+  }, [user?.firstName]);
 
-  if (!user) return <PhoneOTPView />;
+  // if (!user) return <PhoneOTPView />;
 
   return (
     <ThemedView
@@ -86,7 +85,7 @@ export default function ProfileScreen() {
         contentContainerStyle={[styles.contentContainer]}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.profileCard]}>
+        {/* <View style={[styles.profileCard]}>
           <View style={[styles.avatar, { backgroundColor: avatarBackground }]}>
             {initials ? (
               <ThemedText style={styles.avatarInitials}>{initials}</ThemedText>
@@ -96,10 +95,12 @@ export default function ProfileScreen() {
           </View>
 
           <View style={styles.profileInfo}>
-            <ThemedText style={styles.profileName}>{user.name}</ThemedText>
-            <ThemedText style={styles.profilePhone}>{user.phone}</ThemedText>
+            <ThemedText style={styles.profileName}>{user.firstName}</ThemedText>
+            <ThemedText style={styles.profilePhone}>
+              {user.phoneNumber}
+            </ThemedText>
           </View>
-        </View>
+        </View> */}
 
         <View style={[styles.menuSection]}>
           {primaryMenuItems.map((item, index) => {

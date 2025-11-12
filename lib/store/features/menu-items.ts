@@ -1,4 +1,3 @@
-import { tempMenuItems } from "@/lib/temp/temp-menu-items";
 import { MenuItem } from "@/lib/types/MenuItem";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -9,7 +8,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   isLoading: false,
-  menuItems: tempMenuItems,
+  menuItems: [],
 };
 
 export const menuItemsSlice = createSlice({

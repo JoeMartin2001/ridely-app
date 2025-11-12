@@ -1,6 +1,5 @@
 // src/i18n/index.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Localization from "expo-localization";
 import { createInstance } from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -9,6 +8,15 @@ import ru from "./locales/ru.json";
 import uz from "./locales/uz.json";
 
 export type Language = "en" | "uz" | "ru";
+
+export const DEFAULT_LANGUAGE = "ru";
+
+// Configure available locales
+export const SUPPORTED_LOCALES = {
+  ru: "ru",
+  uz: "uz",
+  en: "en-gb", // or 'en' depending on your needs
+} as const;
 
 const resources: Record<Language, { translation: Record<string, string> }> = {
   en: { translation: en },
@@ -29,11 +37,11 @@ i18n
         if (storedLanguage) {
           return callback(storedLanguage);
         }
-        const deviceLanguage = Localization.getLocales()[0]?.languageCode;
-        callback(deviceLanguage || "ru"); // Fallback to English
+        // const deviceLanguage = Localization.getLocales()[0]?.languageCode;
+        callback(DEFAULT_LANGUAGE); // Fallback to English
       } catch (error) {
         console.error("Error detecting language:", error);
-        callback("ru");
+        callback(DEFAULT_LANGUAGE);
       }
     },
     cacheUserLanguage: async (language: string) => {
@@ -47,7 +55,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "ru", // Fallback language if detection fails
+    fallbackLng: DEFAULT_LANGUAGE, // Fallback language if detection fails
     debug: true, // Set to false in production
     interpolation: {
       escapeValue: false, // React already escapes by default

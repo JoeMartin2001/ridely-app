@@ -1,4 +1,3 @@
-import { tempFavourites } from "@/lib/temp/temp-favourites";
 import { Favourite } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -9,7 +8,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   isLoading: false,
-  favourites: tempFavourites,
+  favourites: [],
 };
 
 export const favouritesSlice = createSlice({

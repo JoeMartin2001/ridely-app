@@ -111,6 +111,7 @@ const SwitchLanguageScreen = () => {
 
       const onPress = (event: GestureResponderEvent) => {
         event.preventDefault();
+        console.log(`Selecting language: ${option.code}`);
         handleSelect(option.code);
       };
 

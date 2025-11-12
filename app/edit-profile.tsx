@@ -23,8 +23,8 @@ const EditProfileScreen = () => {
   const dividerColor = useThemeColor({}, "divider");
   const avatarBackground = useThemeColor({}, "avatarBackground");
 
-  const [name, setName] = useState(user?.name ?? "");
-  const [phone, setPhone] = useState(user?.phone ?? "+998");
+  const [name, setName] = useState(user?.firstName ?? "");
+  const [phone, setPhone] = useState(user?.phoneNumber ?? "+998");
   const [birthDate, setBirthDate] = useState("26.11.2001");
 
   const handleSave = () => {

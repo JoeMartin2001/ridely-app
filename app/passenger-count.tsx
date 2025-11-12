@@ -1,6 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -9,13 +8,20 @@ import { ThemedView } from "@/components/themed-view";
 import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import {
+  decrementPassengersCount,
+  incrementPassengersCount,
+} from "@/lib/store/features/find-trip/findTripSlice";
 
 const minPassengers = 1;
 const maxPassengers = 8;
 
 export default function PassengerCountScreen() {
   const { t } = useTranslation();
-  const [count, setCount] = useState(1);
+
+  const dispatch = useAppDispatch();
+  const { passengersCount } = useAppSelector((state) => state.findTrip);
 
   const tintColor = useThemeColor({}, "tint");
   const textColor = useThemeColor({}, "text");
@@ -24,11 +30,19 @@ export default function PassengerCountScreen() {
   const textReverse = useThemeColor({}, "textReverse");
 
   const handleDecrease = () => {
-    setCount((prev) => (prev > minPassengers ? prev - 1 : prev));
+    if (passengersCount === minPassengers) {
+      return;
+    }
+
+    dispatch(decrementPassengersCount());
   };
 
   const handleIncrease = () => {
-    setCount((prev) => (prev < maxPassengers ? prev + 1 : prev));
+    if (passengersCount === maxPassengers) {
+      return;
+    }
+
+    dispatch(incrementPassengersCount());
   };
 
   const handleConfirm = () => {
@@ -58,39 +72,45 @@ export default function PassengerCountScreen() {
             style={[
               styles.counterButton,
               {
-                borderColor: count === minPassengers ? dividerColor : tintColor,
+                borderColor:
+                  passengersCount === minPassengers ? dividerColor : tintColor,
               },
-              count === minPassengers && styles.counterButtonDisabled,
+              passengersCount === minPassengers && styles.counterButtonDisabled,
             ]}
             onPress={handleDecrease}
-            disabled={count === minPassengers}
+            disabled={passengersCount === minPassengers}
             android_ripple={{ color: tintColor }}
           >
             <MaterialIcons
               name="remove"
               size={28}
-              color={count === minPassengers ? dividerColor : tintColor}
+              color={
+                passengersCount === minPassengers ? dividerColor : tintColor
+              }
             />
           </Pressable>
 
-          <ThemedText style={styles.counterValue}>{count}</ThemedText>
+          <ThemedText style={styles.counterValue}>{passengersCount}</ThemedText>
 
           <Pressable
             style={[
               styles.counterButton,
               {
-                borderColor: count === maxPassengers ? dividerColor : tintColor,
+                borderColor:
+                  passengersCount === maxPassengers ? dividerColor : tintColor,
               },
-              count === maxPassengers && styles.counterButtonDisabled,
+              passengersCount === maxPassengers && styles.counterButtonDisabled,
             ]}
             onPress={handleIncrease}
             android_ripple={{ color: tintColor }}
-            disabled={count === maxPassengers}
+            disabled={passengersCount === maxPassengers}
           >
             <MaterialIcons
               name="add"
               size={28}
-              color={count === maxPassengers ? dividerColor : tintColor}
+              color={
+                passengersCount === maxPassengers ? dividerColor : tintColor
+              }
             />
           </Pressable>
         </View>

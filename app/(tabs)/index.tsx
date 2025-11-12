@@ -12,8 +12,11 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
+import { useLocalizedMoment } from "@/hooks/use-localized-moment";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useAppSelector } from "@/lib/store";
 import { router } from "expo-router";
+import { useMemo } from "react";
 
 type SearchField = {
   key: string;
@@ -25,6 +28,11 @@ type SearchField = {
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const { calendar: formatCalendar } = useLocalizedMoment();
+
+  const { from, to, date, passengersCount } = useAppSelector(
+    (state) => state.findTrip
+  );
 
   const cardColor = useThemeColor({}, "card");
   const tintColor = useThemeColor({}, "tint");
@@ -36,34 +44,41 @@ export default function HomeScreen() {
   const chipBorder = useThemeColor({}, "accentSurfaceBorder");
   const fieldIconBackground = useThemeColor({}, "surfaceMuted");
 
-  const fields: SearchField[] = [
-    {
-      key: "from",
-      icon: "radio-button-unchecked",
-      label: t("home_field_from"),
-      onPress: () => router.push("/location-search"),
-    },
-    {
-      key: "to",
-      icon: "radio-button-unchecked",
-      label: t("home_field_to"),
-      onPress: () => router.push("/location-search"),
-    },
-    {
-      key: "date",
-      icon: "calendar-today",
-      label: t("home_field_date"),
-      value: t("home_field_date_value"),
-      onPress: () => router.push("/select-trip-date"),
-    },
-    {
-      key: "passengers",
-      icon: "person",
-      label: t("home_field_passengers"),
-      value: t("home_field_passengers_value"),
-      onPress: () => router.push("/passenger-count"),
-    },
-  ];
+  const fields: SearchField[] = useMemo(() => {
+    const passengersValue =
+      passengersCount.toString() ?? t("home_field_passengers_value");
+
+    return [
+      {
+        key: "from",
+        icon: "radio-button-unchecked",
+        label: t("home_field_from"),
+        value: from ?? undefined,
+        onPress: () => router.push("/location-search"),
+      },
+      {
+        key: "to",
+        icon: "radio-button-unchecked",
+        label: t("home_field_to"),
+        value: to ?? undefined,
+        onPress: () => router.push("/location-search"),
+      },
+      {
+        key: "date",
+        icon: "calendar-today",
+        label: t("home_field_date"),
+        value: formatCalendar(date),
+        onPress: () => router.push("/select-trip-date"),
+      },
+      {
+        key: "passengers",
+        icon: "person",
+        label: t("home_field_passengers"),
+        value: passengersValue,
+        onPress: () => router.push("/passenger-count"),
+      },
+    ];
+  }, [from, to, date, passengersCount, formatCalendar, t]);
 
   const quickRoutes = [
     "Tashkent → Samarkand",

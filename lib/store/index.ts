@@ -6,6 +6,7 @@ import { usersApi } from "@/lib/services/users/usersApi";
 import { configureStore } from "@reduxjs/toolkit";
 
 import favouritesReducer from "./features/favourites";
+import findTripReducer from "./features/find-trip/findTripSlice";
 import menuItemsReducer from "./features/menu-items";
 import userReducer from "./features/user";
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     favourites: favouritesReducer,
     menuItems: menuItemsReducer,
     user: userReducer,
+    findTrip: findTripReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

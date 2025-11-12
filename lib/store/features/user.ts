@@ -1,4 +1,3 @@
-import { tempUser } from "@/lib/temp/temp-user";
 import { IUser } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -9,8 +8,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   isLoading: false,
-  user: tempUser,
-  //   user: null,
+  user: null,
 };
 
 export const userSlice = createSlice({

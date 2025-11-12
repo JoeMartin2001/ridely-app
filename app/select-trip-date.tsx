@@ -1,6 +1,6 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
@@ -10,6 +10,8 @@ import { ThemedView } from "@/components/themed-view";
 import { CalendarLocales } from "@/constants/calendar";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { setDate } from "@/lib/store/features/find-trip/findTripSlice";
 
 type CalendarDate = {
   dateString: string;
@@ -37,9 +39,10 @@ LocaleConfig.locales.uz = CalendarLocales.uz;
 
 const SelectTripDate = () => {
   const { t, i18n } = useTranslation();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+
+  const { date: selectedDate } = useAppSelector((state) => state.findTrip);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const localeKey =
@@ -92,7 +95,7 @@ const SelectTripDate = () => {
       case "ru":
         return "ru-RU";
       case "uz":
-        return "uz-UZ";
+        return "uz-latn-UZ";
       default:
         return "en-US";
     }
@@ -121,7 +124,8 @@ const SelectTripDate = () => {
   );
 
   const handleDayPress = useCallback((day: CalendarDate) => {
-    setSelectedDate(day.dateString);
+    dispatch(setDate(day.dateString));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -161,7 +165,7 @@ const SelectTripDate = () => {
 
 const calendarThemeStyles: CalendarTheme = {
   textDayFontFamily: Fonts.rounded,
-  textDayFontSize: 16,
+  textDayFontSize: 14,
   textDayFontWeight: "500",
   textMonthFontFamily: Fonts.rounded,
   textMonthFontSize: 22,
