@@ -125,6 +125,7 @@ const SelectTripDate = () => {
 
   const handleDayPress = useCallback((day: CalendarDate) => {
     dispatch(setDate(day.dateString));
+    router.back();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -146,18 +147,19 @@ const SelectTripDate = () => {
       </View>
 
       <CalendarList
+        minDate={new Date().toISOString()}
         style={styles.calendarList}
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
         pastScrollRange={0}
         futureScrollRange={12}
         scrollEnabled
-        showScrollIndicator
         hideArrows
         onDayPress={handleDayPress}
         markedDates={markedDates}
         theme={calendarTheme}
         renderHeader={renderMonthHeader}
+        disableAllTouchEventsForDisabledDays
       />
     </ThemedView>
   );
