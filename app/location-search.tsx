@@ -15,6 +15,7 @@ import { ThemedView } from "@/components/themed-view";
 import { Divider } from "@/components/ui/divider";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useGetDistrictsByNameQuery } from "@/lib/services/districts/regionsApi";
 
 type LocationSuggestion = {
   id: string;
@@ -22,33 +23,18 @@ type LocationSuggestion = {
   subtitle: string;
 };
 
-const SUGGESTIONS: LocationSuggestion[] = [
-  {
-    id: "moscow",
-    title: "Москва",
-    subtitle: "Россия",
-  },
-  {
-    id: "moscow-city",
-    title: "Москва Сити",
-    subtitle: "Пресненская набережная, Москва, Россия",
-  },
-  {
-    id: "mostovskoy",
-    title: "Мостовской",
-    subtitle: "Краснодарский край, Россия",
-  },
-  {
-    id: "mosty",
-    title: "Мосты",
-    subtitle: "Беларусь",
-  },
-];
-
 const LocationSearch = () => {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const inputRef = useRef<TextInput>(null);
+
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const { data: districts = [], isLoading: isLoadingDistricts } =
+    useGetDistrictsByNameQuery(normalizedQuery, {
+      // skip: normalizedQuery.length === 0,
+      pollingInterval: 1000,
+    });
 
   const textColor = useThemeColor({}, "text");
   const iconColor = useThemeColor({}, "icon");
@@ -63,15 +49,19 @@ const LocationSearch = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const normalizedQuery = query.trim().toLowerCase();
+  const suggestions = useMemo(() => {
+    return districts.map((item) => ({
+      id: item.id,
+      title: item.name_uz,
+      subtitle: item.region?.name_uz || "",
+    }));
+  }, [districts]);
 
   const filteredSuggestions = useMemo(() => {
-    if (!normalizedQuery) return SUGGESTIONS;
-
-    return SUGGESTIONS.filter((item) =>
+    return suggestions.filter((item) =>
       `${item.title} ${item.subtitle}`.toLowerCase().includes(normalizedQuery)
     );
-  }, [normalizedQuery]);
+  }, [normalizedQuery, suggestions]);
 
   const handleClear = () => {
     if (query.length === 0) {
@@ -81,6 +71,10 @@ const LocationSearch = () => {
 
     setQuery("");
     inputRef.current?.focus();
+  };
+
+  const handleSearchChange = (text: string) => {
+    setQuery(text);
   };
 
   const renderItem: ListRenderItem<LocationSuggestion> = ({ item }) => {
@@ -115,7 +109,7 @@ const LocationSearch = () => {
           <TextInput
             ref={inputRef}
             value={query}
-            onChangeText={setQuery}
+            onChangeText={handleSearchChange}
             placeholder={t("location_search_placeholder")}
             placeholderTextColor={placeholderColor}
             style={[styles.searchInput, { color: textColor }]}
@@ -137,6 +131,7 @@ const LocationSearch = () => {
       </View>
 
       <FlatList
+        refreshing={isLoadingDistricts}
         data={filteredSuggestions}
         keyExtractor={(item) => item.id}
         keyboardShouldPersistTaps="handled"

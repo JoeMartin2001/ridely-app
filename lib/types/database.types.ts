@@ -1,4 +1,6 @@
+import type { IDistrict } from "./District";
 import type { IPayment } from "./Payment";
+import type { IRegion } from "./Region";
 import type { IRide } from "./Ride";
 import type { IUser } from "./User";
 import type { IVehicle } from "./Vehicle";
@@ -16,6 +18,8 @@ type PublicSchema = {
     rides: BaseTable<IRide, IRide, Partial<IRide>>;
     payments: BaseTable<IPayment, IPayment, Partial<IPayment>>;
     vehicles: BaseTable<IVehicle, IVehicle, Partial<IVehicle>>;
+    regions: BaseTable<IRegion, IRegion, Partial<IRegion>>;
+    districts: BaseTable<IDistrict, IDistrict, Partial<IDistrict>>;
   };
   Views: Record<string, never>;
   Functions: Record<string, never>;

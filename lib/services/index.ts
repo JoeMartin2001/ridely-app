@@ -4,6 +4,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "../types/Database.types";
 import { AuthService } from "./auth/authService";
 import { BaseService } from "./base/BaseService";
+import { DistrictsService } from "./districts/regionsService";
+import { RegionsService } from "./regions/regionsService";
 import { RidesService } from "./rides/ridesService";
 import { UsersService } from "./users/usersService";
 
@@ -45,3 +47,5 @@ export const serviceFactory = new ServiceFactory(supabase);
 export const authService = serviceFactory.getService(AuthService);
 export const usersService = serviceFactory.getService(UsersService);
 export const ridesService = serviceFactory.getService(RidesService);
+export const regionsService = serviceFactory.getService(RegionsService);
+export const districtsService = serviceFactory.getService(DistrictsService);

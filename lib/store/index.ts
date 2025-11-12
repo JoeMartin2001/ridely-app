@@ -1,9 +1,11 @@
+import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { authApi } from "@/lib/services/auth/authApi";
+import { districtsApi } from "@/lib/services/districts/regionsApi";
+import { regionsApi } from "@/lib/services/regions/regionsApi";
 import { ridesApi } from "@/lib/services/rides/ridesApi";
 import { usersApi } from "@/lib/services/users/usersApi";
-import { configureStore } from "@reduxjs/toolkit";
 
 import favouritesReducer from "./features/favourites";
 import findTripReducer from "./features/find-trip/findTripSlice";
@@ -15,6 +17,8 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [ridesApi.reducerPath]: ridesApi.reducer,
+    [regionsApi.reducerPath]: regionsApi.reducer,
+    [districtsApi.reducerPath]: districtsApi.reducer,
 
     favourites: favouritesReducer,
     menuItems: menuItemsReducer,
@@ -25,7 +29,9 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       authApi.middleware,
       usersApi.middleware,
-      ridesApi.middleware
+      ridesApi.middleware,
+      regionsApi.middleware,
+      districtsApi.middleware
     ),
 });
 
