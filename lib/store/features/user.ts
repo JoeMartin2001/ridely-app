@@ -1,10 +1,10 @@
 import { tempUser } from "@/lib/temp/temp-user";
-import { User } from "@/lib/types";
+import { IUser } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
   isLoading: boolean;
-  user: User | null;
+  user: IUser | null;
 };
 
 const initialState: InitialState = {
