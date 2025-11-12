@@ -28,7 +28,7 @@ type SearchField = {
 
 export default function HomeScreen() {
   const { t } = useTranslation();
-  const { calendar: formatCalendar } = useLocalizedMoment();
+  const { smartCalendar: formatCalendar } = useLocalizedMoment();
 
   const { from, to, date, passengersCount } = useAppSelector(
     (state) => state.findTrip

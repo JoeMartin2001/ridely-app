@@ -1,19 +1,21 @@
 import { DEFAULT_LANGUAGE } from "@/lib/i18n";
+import {
+  formatDayDate,
+  formatDayDateWithYear,
+} from "@/lib/i18n/moment-formatters";
 import { configureMoment } from "@/lib/i18n/moment-setup";
 import moment from "moment";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 export const useLocalizedMoment = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Get current language and configure moment
   const lang = (i18n.language || DEFAULT_LANGUAGE).split("-")[0];
   const currentLanguage = lang === "uz" ? "uz-latn" : lang;
 
   configureMoment(currentLanguage);
-
-  // console.log(`Current date in Uzbek Latin: ${moment().format("LLLL")}`);
 
   console.log(`Current language: ${currentLanguage}`);
 
@@ -39,11 +41,76 @@ export const useLocalizedMoment = () => {
     [currentLanguage]
   );
 
+  const smartCalendar = useCallback(
+    (
+      date: Date | string,
+      options?: { showTime?: boolean; showYear?: boolean }
+    ) => {
+      const { showTime = false, showYear = false } = options || {};
+      const m = moment(date).locale(currentLanguage);
+      const now = moment().locale(currentLanguage);
+
+      const diffDays = m.diff(now, "days");
+
+      // Today
+      if (m.isSame(now, "day")) {
+        return showTime
+          ? `[${t("common_today")}] ${m.format("LT")}`
+          : t("common_today");
+      }
+
+      // Tomorrow
+      if (diffDays === 1 && m.isSame(now.clone().add(1, "day"), "day")) {
+        return showTime
+          ? `[${t("common_tomorrow")}] ${m.format("LT")}`
+          : t("common_tomorrow");
+      }
+
+      // Yesterday
+      if (diffDays === -1 && m.isSame(now.clone().subtract(1, "day"), "day")) {
+        return showTime
+          ? `[${t("common_yesterday")}] ${m.format("LT")}`
+          : t("common_yesterday");
+      }
+
+      // Within the same week
+      if (Math.abs(diffDays) <= 6) {
+        if (showYear) {
+          return formatDayDateWithYear(date, currentLanguage);
+        }
+
+        return formatDayDate(date, currentLanguage);
+      }
+
+      // Future dates beyond a week
+      if (showYear) {
+        return formatDayDateWithYear(date, currentLanguage);
+      }
+
+      return formatDayDate(date, currentLanguage);
+    },
+    [currentLanguage, t]
+  );
+
+  // Original calendar function for backward compatibility
+  const calendarFormats = useMemo(() => {
+    return {
+      sameDay: `[${t("common_today")}]`,
+      nextDay: `[${t("common_tomorrow")}]`,
+      lastDay: `[${t("common_yesterday")}]`,
+      nextWeek: "ddd Do MMM",
+      lastWeek: "ddd Do MMM",
+      sameElse: "ddd Do MMM YYYY",
+    };
+  }, [t]);
+
   const calendar = useCallback(
     (date: Date | string) => {
-      return moment(date).locale(currentLanguage).calendar();
+      return moment(date)
+        .locale(currentLanguage)
+        .calendar(null, calendarFormats);
     },
-    [currentLanguage]
+    [currentLanguage, calendarFormats]
   );
 
   const isSameDay = useCallback(
@@ -57,6 +124,7 @@ export const useLocalizedMoment = () => {
     moment: localizedMoment,
     formatDate,
     fromNow,
+    smartCalendar,
     calendar,
     isSameDay,
     currentLocale: currentLanguage,
