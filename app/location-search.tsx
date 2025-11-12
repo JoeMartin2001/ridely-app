@@ -50,8 +50,6 @@ const LocationSearch = () => {
   const [query, setQuery] = useState("");
   const inputRef = useRef<TextInput>(null);
 
-  const backgroundColor = useThemeColor({}, "background");
-  const cardColor = useThemeColor({}, "card");
   const textColor = useThemeColor({}, "text");
   const iconColor = useThemeColor({}, "icon");
   const dividerColor = useThemeColor({}, "divider");
@@ -103,13 +101,8 @@ const LocationSearch = () => {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
-      <View
-        style={[
-          styles.searchBar,
-          { backgroundColor: cardColor, borderBottomColor: dividerColor },
-        ]}
-      >
+    <ThemedView style={[styles.container]} applyTopInsets>
+      <View style={[styles.searchBar, { borderBottomColor: dividerColor }]}>
         <Pressable
           accessibilityRole="button"
           onPress={() => router.back()}
@@ -118,9 +111,7 @@ const LocationSearch = () => {
           <IconSymbol name="chevron.backward" size={22} color={iconColor} />
         </Pressable>
 
-        <View
-          style={[styles.searchInputWrapper, { backgroundColor: cardColor }]}
-        >
+        <View style={[styles.searchInputWrapper]}>
           <TextInput
             ref={inputRef}
             value={query}
@@ -150,6 +141,7 @@ const LocationSearch = () => {
         keyExtractor={(item) => item.id}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
+        style={[styles.list]}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => (
           <View style={[styles.separator, { borderColor: dividerColor }]}>
@@ -167,7 +159,6 @@ const LocationSearch = () => {
             </ThemedText>
           </View>
         )}
-        style={styles.list}
       />
     </ThemedView>
   );
