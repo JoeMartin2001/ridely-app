@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import moment from "moment";
 
 interface FindTripState {
   from: {
@@ -22,7 +23,7 @@ const initialState: FindTripState = {
     id: "",
     name: "",
   },
-  date: new Date().toISOString().split("T")[0],
+  date: moment().format("YYYY-MM-DD"),
   passengersCount: 1,
 };
 
