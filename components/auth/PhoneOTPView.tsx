@@ -1,12 +1,18 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import MaskInput, { Mask } from "react-native-mask-input";
 
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useSendPhoneOTPMutation } from "@/lib/services/auth/authApi";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 
@@ -34,6 +40,15 @@ const uzbekPhoneMask: Mask = [
 
 export const PhoneOTPView = () => {
   const { t } = useTranslation();
+  const [
+    sendPhoneOTP,
+    {
+      isLoading: isSendPhoneOTPLoading,
+      error: sendPhoneOTPError,
+      isSuccess: isSendPhoneOTPSuccess,
+    },
+  ] = useSendPhoneOTPMutation();
+
   const [phoneNumber, setPhoneNumber] = useState("+998 ");
   const [rawPhoneNumber, setRawPhoneNumber] = useState("998");
   const [isFocused, setIsFocused] = useState(false);
@@ -75,9 +90,12 @@ export const PhoneOTPView = () => {
       return;
     }
 
-    // TODO: hook up submission logic (e.g., request OTP)
-  }, [isPhoneComplete]);
-
+    sendPhoneOTP({ phoneNumber: rawPhoneNumber });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPhoneComplete, rawPhoneNumber]);
+  console.log(sendPhoneOTPError);
+  console.log(isSendPhoneOTPLoading);
+  console.log(isSendPhoneOTPSuccess);
   return (
     <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
       <KeyboardAwareScrollView
@@ -148,9 +166,11 @@ export const PhoneOTPView = () => {
               },
             ]}
             onPress={handleSubmit}
-            disabled={!isPhoneComplete}
+            disabled={!isPhoneComplete || isSendPhoneOTPLoading}
             accessibilityRole="button"
-            accessibilityState={{ disabled: !isPhoneComplete }}
+            accessibilityState={{
+              disabled: !isPhoneComplete || isSendPhoneOTPLoading,
+            }}
             accessibilityHint={t("auth_phone_submit_accessibility_hint")}
           >
             <ThemedText
@@ -158,7 +178,11 @@ export const PhoneOTPView = () => {
               lightColor={textOnTint}
               darkColor={textOnTint}
             >
-              {t("auth_phone_submit")}
+              {isSendPhoneOTPLoading ? (
+                <ActivityIndicator size="small" color={textOnTint} />
+              ) : (
+                t("auth_phone_submit")
+              )}
             </ThemedText>
           </TouchableOpacity>
         </ThemedView>

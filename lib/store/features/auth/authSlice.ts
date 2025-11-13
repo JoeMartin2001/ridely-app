@@ -2,9 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthUIState {
   loginForm: {
-    email: string;
-    password: string;
-    rememberMe: boolean;
+    phoneNumber: string;
+    otpCode: string;
   };
   isLoading: boolean;
   error: string | null;
@@ -12,7 +11,7 @@ interface AuthUIState {
 }
 
 const initialState: AuthUIState = {
-  loginForm: { email: "", password: "", rememberMe: false },
+  loginForm: { phoneNumber: "", otpCode: "" },
   isLoading: false,
   error: null,
   biometricsEnabled: false,
@@ -35,7 +34,7 @@ export const authSlice = createSlice({
       state.error = action.payload;
     },
     clearAuthForm: (state) => {
-      state.loginForm = { email: "", password: "", rememberMe: false };
+      state.loginForm = { phoneNumber: "", otpCode: "" };
       state.error = null;
     },
   },

@@ -8,6 +8,52 @@ export class AuthService extends BaseService<"users"> {
     super(supabase, "users");
   }
 
+  /**
+   * sendPhoneOTP edge function to send OTP to the phone number
+   * @param phoneNumber Phone number to send OTP to
+   */
+  async sendPhoneOTP(phoneNumber: string): Promise<void> {
+    const res = await fetch(
+      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sendPhoneOtp`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Send phone OTP failed");
+
+    return data;
+  }
+
+  /**
+   * verifyPhoneAndLogin edge function to verify the OTP and login the user
+   * @param phoneNumber Phone number to verify OTP for
+   * @param otpCode OTP code to verify
+   */
+  async verifyPhoneAndLogin(
+    phoneNumber: string,
+    code: string
+  ): Promise<Session> {
+    const res = await fetch(
+      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/verifyPhoneAndLogin`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber, code }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Verify phone and login failed");
+
+    return data;
+  }
+
   async signIn(email: string, password: string): Promise<Session> {
     const { data, error } = await this.supabase.auth.signInWithPassword({
       email,
