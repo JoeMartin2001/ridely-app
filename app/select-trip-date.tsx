@@ -17,17 +17,16 @@ import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { setDate } from "@/lib/store/features/find-trip/findTripSlice";
+import moment from "moment";
+
+const todayISO = moment().format("YYYY-MM-DD");
 
 const SelectTripDate = () => {
   const { t, i18n } = useTranslation();
 
   const { date: selectedDate } = useAppSelector((state) => state.findTrip);
 
-  const today = useMemo(() => {
-    const now = new Date();
-    const timezoneOffset = now.getTimezoneOffset() * 60 * 1000;
-    return new Date(now.getTime() - timezoneOffset).toISOString().split("T")[0];
-  }, []);
+  console.log("selectedDate", selectedDate);
 
   const dispatch = useAppDispatch();
 
@@ -125,7 +124,7 @@ const SelectTripDate = () => {
       </View>
 
       <CalendarList
-        minDate={today}
+        minDate={todayISO}
         style={styles.calendarList}
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
