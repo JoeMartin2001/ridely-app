@@ -1,14 +1,12 @@
-import { type ViewProps } from "react-native";
+import { View, type ViewProps } from "react-native";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { useMemo } from "react";
-import { Edge, SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type ThemedViewProps = ViewProps & {
   lightColor?: string;
   darkColor?: string;
   applyTopInsets?: boolean;
-  applyBottomInsets?: boolean;
 };
 
 export function ThemedView({
@@ -16,7 +14,6 @@ export function ThemedView({
   lightColor,
   darkColor,
   applyTopInsets,
-  applyBottomInsets,
   ...otherProps
 }: ThemedViewProps) {
   const backgroundColor = useThemeColor(
@@ -24,20 +21,11 @@ export function ThemedView({
     "background"
   );
 
-  const edges = useMemo(() => {
-    const edges: Edge[] = [];
+  const insets = useSafeAreaInsets();
 
-    if (applyTopInsets) edges.push("top");
-    if (applyBottomInsets) edges.push("bottom");
-
-    return edges;
-  }, [applyTopInsets, applyBottomInsets]);
+  const themedStyle = applyTopInsets ? { paddingTop: insets.top } : {};
 
   return (
-    <SafeAreaView
-      edges={edges}
-      style={[{ backgroundColor }, style]}
-      {...otherProps}
-    />
+    <View style={[{ backgroundColor }, style, themedStyle]} {...otherProps} />
   );
 }

@@ -1,44 +1,22 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
-import { CalendarList, LocaleConfig } from "react-native-calendars";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import {
+  CalendarDate,
+  CalendarList,
+  CalendarMarkedDates,
+  CalendarTheme,
+} from "@/components/ui/calendar-list";
 import { CalendarLocales } from "@/constants/calendar";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { setDate } from "@/lib/store/features/find-trip/findTripSlice";
-
-type CalendarDate = {
-  dateString: string;
-  day: number;
-  month: number;
-  year: number;
-  timestamp: number;
-};
-
-type CalendarMarkedDates = Record<
-  string,
-  {
-    selected?: boolean;
-    selectedColor?: string;
-    selectedTextColor?: string;
-    disableTouchEvent?: boolean;
-  }
->;
-
-type CalendarTheme = Record<
-  string,
-  string | number | Record<string, unknown> | undefined
->;
-
-LocaleConfig.locales.en = CalendarLocales.en;
-LocaleConfig.locales.ru = CalendarLocales.ru;
-LocaleConfig.locales.uz = CalendarLocales.uz;
 
 const SelectTripDate = () => {
   const { t, i18n } = useTranslation();
@@ -53,22 +31,19 @@ const SelectTripDate = () => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const localeKey =
+  const localeKey = useMemo(
+    () =>
       i18n.language in CalendarLocales
         ? (i18n.language as keyof typeof CalendarLocales)
-        : "en";
-
-    LocaleConfig.defaultLocale = localeKey;
-  }, [i18n.language]);
+        : "en",
+    [i18n.language]
+  );
 
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const tintColor = useThemeColor({}, "tint");
   const textReverse = useThemeColor({}, "textReverse");
   const taglineColor = useThemeColor({}, "tagline");
-  const disabledDayBackground = useThemeColor({}, "surfaceMuted");
-
   const markedDates = useMemo<CalendarMarkedDates>(() => {
     if (!selectedDate) {
       return {};
@@ -94,28 +69,8 @@ const SelectTripDate = () => {
       todayTextColor: tintColor,
       textDisabledColor: taglineColor,
       monthTextColor: textColor,
-      arrowColor: tintColor,
-      indicatorColor: tintColor,
-      "stylesheet.day.basic": {
-        disabled: {
-          backgroundColor: disabledDayBackground,
-          borderRadius: 12,
-        },
-        disabledText: {
-          color: taglineColor,
-          opacity: 0.6,
-          textDecorationLine: "line-through",
-        },
-      },
     }),
-    [
-      backgroundColor,
-      disabledDayBackground,
-      taglineColor,
-      textColor,
-      textReverse,
-      tintColor,
-    ]
+    [backgroundColor, taglineColor, textColor, textReverse, tintColor]
   );
 
   const localeForHeader = useMemo(() => {
@@ -130,17 +85,12 @@ const SelectTripDate = () => {
   }, [i18n.language]);
 
   const renderMonthHeader = useCallback(
-    (date: any) => {
-      const baseDate =
-        date instanceof Date
-          ? date
-          : new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
+    (date: Date) => {
       const formatter = new Intl.DateTimeFormat(localeForHeader, {
         month: "long",
         year: "numeric",
       });
-      const formatted = formatter.format(baseDate);
+      const formatted = formatter.format(date);
 
       return (
         <View style={styles.monthHeader}>
@@ -158,11 +108,7 @@ const SelectTripDate = () => {
   }, []);
 
   return (
-    <ThemedView
-      style={[styles.container, { backgroundColor }]}
-      applyTopInsets
-      applyBottomInsets
-    >
+    <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
       <View style={styles.header}>
         <Pressable
           accessibilityRole="button"
@@ -183,15 +129,20 @@ const SelectTripDate = () => {
         style={styles.calendarList}
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
+        weekDayNames={[...CalendarLocales[localeKey].dayNamesShort]}
         pastScrollRange={0}
         futureScrollRange={1}
         scrollEnabled
-        hideArrows
+        locale={localeForHeader}
         onDayPress={handleDayPress}
         markedDates={markedDates}
         theme={calendarTheme}
         renderHeader={renderMonthHeader}
         disableAllTouchEventsForDisabledDays
+        removeClippedSubviews={true}
+        initialNumToRender={2}
+        maxToRenderPerBatch={1}
+        windowSize={3}
       />
     </ThemedView>
   );
