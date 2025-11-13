@@ -17,8 +17,6 @@ export const useLocalizedMoment = () => {
 
   configureMoment(currentLanguage);
 
-  console.log(`Current language: ${currentLanguage}`);
-
   // Wrapper functions that automatically use current locale
   const localizedMoment = useCallback(
     (input?: moment.MomentInput) => {
