@@ -15,6 +15,10 @@ import { Fonts } from "@/constants/theme";
 import { useLocalizedMoment } from "@/hooks/use-localized-moment";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
+import {
+  setFromDistrict,
+  setToDistrict,
+} from "@/lib/store/features/find-trip/findTripSlice";
 import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
 import { router } from "expo-router";
 import { useMemo } from "react";
@@ -25,13 +29,15 @@ type SearchField = {
   label: string;
   value?: string;
   onPress?: (event: GestureResponderEvent) => void;
+  showSwapButton?: boolean;
+  onSwapButtonPress?: (event: GestureResponderEvent) => void;
 };
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const { smartCalendar: formatCalendar } = useLocalizedMoment();
+  const { calendar: formatCalendar } = useLocalizedMoment();
 
   const { from, to, date, passengersCount } = useAppSelector(
     (state) => state.findTrip
@@ -58,6 +64,11 @@ export default function HomeScreen() {
         onPress: () => {
           dispatch(setSearchQuery(from.name ?? ""));
           router.push("/location-search?type=from");
+        },
+        showSwapButton: from.id !== "" || to.id !== "",
+        onSwapButtonPress: () => {
+          dispatch(setFromDistrict({ id: to.id, name: to.name }));
+          dispatch(setToDistrict({ id: from.id, name: from.name }));
         },
       },
       {
@@ -158,11 +169,21 @@ export default function HomeScreen() {
                   ) : null}
                 </View>
 
-                <MaterialIcons
-                  name="chevron-right"
-                  size={22}
-                  color={iconColor}
-                />
+                {field.showSwapButton ? (
+                  <Pressable onPress={field.onSwapButtonPress}>
+                    <MaterialIcons
+                      name="swap-vert"
+                      size={30}
+                      color={tintColor}
+                    />
+                  </Pressable>
+                ) : (
+                  <MaterialIcons
+                    name="chevron-right"
+                    size={22}
+                    color={iconColor}
+                  />
+                )}
               </Pressable>
             );
           })}
@@ -193,11 +214,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 64,
     paddingBottom: 40,
+    paddingHorizontal: "5%",
     gap: 24,
   },
   header: {
     gap: 8,
-    paddingHorizontal: 16,
   },
   brandTitle: {
     fontFamily: Fonts.rounded,
@@ -214,7 +235,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   searchCard: {
-    marginHorizontal: 16,
     borderRadius: 28,
     paddingBottom: 20,
     paddingHorizontal: 20,
