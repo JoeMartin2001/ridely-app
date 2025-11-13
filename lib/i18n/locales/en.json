@@ -110,7 +110,7 @@
   "wallet_balance_value": "{{amount}} UZS",
   "wallet_no_phone": "Add your phone number to show a QR code.",
   "auth_phone_title": "Mellio",
-  "auth_phone_tagline": "Order. Enjoy. Repeat.",
+  "auth_phone_tagline": "Enter your phone number",
   "auth_phone_input_placeholder": "+998",
   "auth_phone_submit": "Continue",
 

@@ -1,7 +1,7 @@
 {
   "search": "Qidirish",
   "publish": "Chop etish",
-  "my_trips": "Mening yo'llaringim",
+  "my_trips": "Sayohatlarim",
   "chat": "Chat",
   "favourites": "Saqlangan",
   "wallet": "Ballar",
@@ -112,7 +112,7 @@
   "wallet_balance_value": "{{amount}} so'm",
   "wallet_no_phone": "QR-kodni ko'rsatish uchun telefon raqamingizni qo'shing.",
   "auth_phone_title": "Mellio",
-  "auth_phone_tagline": "Buyurtma qiling. Bahramand bo'ling. Takrorlang.",
+  "auth_phone_tagline": "Telefon raqamingizni kiriting",
   "auth_phone_input_placeholder": "+998",
   "auth_phone_submit": "Davom etish",
 

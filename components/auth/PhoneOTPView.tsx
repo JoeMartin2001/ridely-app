@@ -1,31 +1,49 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import MaskInput, { Mask } from "react-native-mask-input";
 
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 
+const uzbekPhoneMask: Mask = [
+  "+",
+  "9",
+  "9",
+  "8",
+  " ",
+  "(",
+  /\d/,
+  /\d/,
+  ")",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+];
+
 export const PhoneOTPView = () => {
   const { t } = useTranslation();
-  const [phoneNumber, setPhoneNumber] = useState("+998");
-  const colorScheme = useColorScheme();
+  const [phoneNumber, setPhoneNumber] = useState("+998 ");
 
+  const taglineColor = useThemeColor({}, "tagline");
   const backgroundColor = useThemeColor({}, "background");
   const cardColor = useThemeColor({}, "card");
   const textColor = useThemeColor({}, "text");
+  const textOnTint = useThemeColor({}, "textOnTint");
   const tintColor = useThemeColor({}, "tint");
-  const placeholderColor =
-    colorScheme === "dark"
-      ? "rgba(236, 237, 238, 0.5)"
-      : "rgba(17, 24, 28, 0.4)";
+  const placeholderColor = useThemeColor({}, "placeholder");
+  const dividerColor = useThemeColor({}, "divider");
 
   return (
     <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
@@ -33,24 +51,33 @@ export const PhoneOTPView = () => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContainer}
       >
-        <ThemedView style={styles.brandContainer}>
-          <ThemedText style={styles.brand}>{t("auth_phone_title")}</ThemedText>
-          <ThemedText style={styles.tagline}>
+        <View style={styles.header}>
+          <ThemedText style={[styles.brandTitle, { color: tintColor }]}>
+            Ridely
+          </ThemedText>
+          <ThemedText style={[styles.tagline, { color: taglineColor }]}>
             {t("auth_phone_tagline")}
           </ThemedText>
-        </ThemedView>
+        </View>
 
         <ThemedView
-          style={[styles.formContainer, { backgroundColor: cardColor }]}
+          style={[
+            styles.formContainer,
+            Shadows.xxxs,
+            { backgroundColor: cardColor },
+          ]}
         >
-          <TextInput
-            style={[styles.input, { color: textColor }]}
+          <MaskInput
+            style={[
+              styles.input,
+              { color: textColor, borderColor: dividerColor },
+            ]}
             keyboardType="phone-pad"
             value={phoneNumber}
-            onChangeText={setPhoneNumber}
+            onChangeText={(masked) => setPhoneNumber(masked)}
+            mask={uzbekPhoneMask}
             placeholder={t("auth_phone_input_placeholder")}
             placeholderTextColor={placeholderColor}
-            maxLength={17}
           />
           <TouchableOpacity
             activeOpacity={0.85}
@@ -58,8 +85,8 @@ export const PhoneOTPView = () => {
           >
             <ThemedText
               style={styles.submitText}
-              lightColor="#ffffff"
-              darkColor="#11181C"
+              lightColor={textOnTint}
+              darkColor={textOnTint}
             >
               {t("auth_phone_submit")}
             </ThemedText>
@@ -82,35 +109,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  brandContainer: {
-    alignItems: "center",
-    gap: 12,
+  header: {
+    gap: 8,
   },
-  brand: {
-    fontSize: 48,
-    fontWeight: "700",
-    letterSpacing: 4,
-    textTransform: "none",
-    textAlign: "center",
+  brandTitle: {
     fontFamily: Fonts.rounded,
-    lineHeight: 48,
+    fontWeight: "bold",
+    fontSize: 56,
+    lineHeight: 56,
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
   tagline: {
-    fontSize: 16,
-    opacity: 0.7,
-    textTransform: "uppercase",
-    letterSpacing: 2,
+    fontSize: 24,
+    fontFamily: Fonts.rounded,
+    letterSpacing: 0.5,
     textAlign: "center",
   },
   formContainer: {
     width: "100%",
     padding: 24,
-    borderRadius: 32,
+    borderRadius: BorderRadius.card,
     gap: 24,
   },
   input: {
     height: 56,
-    borderRadius: 28,
+    borderRadius: BorderRadius.lg,
     paddingHorizontal: 24,
     fontSize: 20,
     letterSpacing: 1,
@@ -118,7 +142,7 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     height: 56,
-    borderRadius: 28,
+    borderRadius: BorderRadius.lg,
     alignItems: "center",
     justifyContent: "center",
   },

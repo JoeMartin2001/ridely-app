@@ -10,7 +10,7 @@ import {
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { Shadows } from "@/constants/style";
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useLocalizedMoment } from "@/hooks/use-localized-moment";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   searchCard: {
-    borderRadius: 16,
+    borderRadius: BorderRadius.card,
     gap: 8,
     borderWidth: StyleSheet.hairlineWidth,
   },
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   fieldIconWrapper: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: BorderRadius.card,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: "center",
     justifyContent: "center",
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
+    borderBottomLeftRadius: BorderRadius.card,
+    borderBottomRightRadius: BorderRadius.card,
   },
   searchButtonText: {
     fontSize: 16,

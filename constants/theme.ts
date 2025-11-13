@@ -35,6 +35,7 @@ export const Colors = {
     switchThumb: "#FFFFFF",
     switchTrack: tintColorLight,
     switchTrackInactive: "rgba(10, 126, 164, 0.25)",
+    placeholder: "rgba(17, 24, 28, 0.4)",
   },
   dark: {
     text: "#E4F6FB",
@@ -62,6 +63,7 @@ export const Colors = {
     switchThumb: "#0B1820",
     switchTrack: tintColorDark,
     switchTrackInactive: "rgba(10, 126, 164, 0.3)",
+    placeholder: "rgba(236, 237, 238, 0.5)",
   },
 };
 
