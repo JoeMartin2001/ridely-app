@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
   const cardColor = useThemeColor({}, "card");
   const tintColor = useThemeColor({}, "tint");
-  const textOnTint = useThemeColor({}, "text");
+  const textOnTint = useThemeColor({}, "textOnTint");
   const dividerColor = useThemeColor({}, "divider");
   const iconColor = useThemeColor({}, "icon");
   const taglineColor = useThemeColor({}, "tagline");
@@ -235,7 +235,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   searchCard: {
-    overflow: "hidden",
     borderRadius: 16,
     gap: 8,
     borderWidth: StyleSheet.hairlineWidth,
@@ -269,6 +268,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: "center",
     justifyContent: "center",
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
   searchButtonText: {
     fontSize: 16,

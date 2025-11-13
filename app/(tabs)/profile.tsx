@@ -3,7 +3,6 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
-import { PhoneOTPView } from "@/components/auth/PhoneOTPView";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { AppSwitch } from "@/components/ui/app-switch";
@@ -72,7 +71,7 @@ export default function ProfileScreen() {
       .join("");
   }, [user?.firstName]);
 
-  if (!user) return <PhoneOTPView />;
+  // if (!user) return <PhoneOTPView />;
 
   return (
     <ThemedView
@@ -86,7 +85,7 @@ export default function ProfileScreen() {
         contentContainerStyle={[styles.contentContainer]}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[styles.profileCard]}>
+        {/* <View style={[styles.profileCard]}>
           <View style={[styles.avatar, { backgroundColor: avatarBackground }]}>
             {initials ? (
               <ThemedText style={styles.avatarInitials}>{initials}</ThemedText>
@@ -101,7 +100,7 @@ export default function ProfileScreen() {
               {user.phoneNumber}
             </ThemedText>
           </View>
-        </View>
+        </View> */}
 
         <View style={[styles.menuSection]}>
           {primaryMenuItems.map((item, index) => {

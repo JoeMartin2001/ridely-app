@@ -27,7 +27,7 @@ export default function PassengerCountScreen() {
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const dividerColor = useThemeColor({}, "divider");
-  const textReverse = useThemeColor({}, "text");
+  const textOnTint = useThemeColor({}, "textOnTint");
 
   const handleDecrease = () => {
     if (passengersCount === minPassengers) {
@@ -125,7 +125,7 @@ export default function PassengerCountScreen() {
         onPress={handleConfirm}
         android_ripple={{ color: "rgba(255,255,255,0.2)" }}
       >
-        <ThemedText style={[styles.confirmText, { color: textReverse }]}>
+        <ThemedText style={[styles.confirmText, { color: textOnTint }]}>
           {t("home_passenger_confirm")}
         </ThemedText>
       </Pressable>

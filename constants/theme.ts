@@ -11,6 +11,7 @@ const tintColorDark = "#0a7ea4";
 export const Colors = {
   light: {
     text: "#102028",
+    textOnTint: "#FFFFFF",
     textReverse: "#FFFFFF",
     tagline: "rgba(16, 32, 40, 0.68)",
     background: "#F5FBFD",
@@ -37,6 +38,7 @@ export const Colors = {
   },
   dark: {
     text: "#E4F6FB",
+    textOnTint: "#ffffff",
     textReverse: "#0B1820",
     tagline: "rgba(228, 246, 251, 0.72)",
     background: "#08161B",
