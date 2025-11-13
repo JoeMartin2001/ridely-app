@@ -178,7 +178,7 @@ const SelectTripDate = () => {
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
         pastScrollRange={0}
-        futureScrollRange={2}
+        futureScrollRange={1}
         scrollEnabled
         hideArrows
         onDayPress={handleDayPress}
