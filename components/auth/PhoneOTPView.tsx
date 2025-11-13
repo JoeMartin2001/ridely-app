@@ -51,7 +51,7 @@ export const PhoneOTPView = () => {
   const helperColor = useThemeColor({}, "tagline");
 
   const isPhoneComplete = useMemo(
-    () => rawPhoneNumber.replace(/\D/g, "").length === 12,
+    () => rawPhoneNumber.replace(/\D/g, "").length === 9,
     [rawPhoneNumber]
   );
   const showError = isTouched && !isPhoneComplete;
