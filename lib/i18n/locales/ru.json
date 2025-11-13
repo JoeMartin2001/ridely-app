@@ -113,7 +113,6 @@
   "auth_phone_title": "Ridely",
   "auth_phone_tagline": "Введите ваш телефон",
   "auth_phone_input_placeholder": "+998 (XX) XXX-XX-XX",
-  "auth_phone_description": "Мы отправим вам одноразовый код для безопасного входа.",
   "auth_phone_input_label": "Номер телефона",
   "auth_phone_input_helper": "Используйте узбекский номер телефона, чтобы получить код подтверждения.",
   "auth_phone_input_error_invalid": "Введите корректный номер телефона Узбекистана.",

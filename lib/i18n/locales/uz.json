@@ -114,7 +114,6 @@
   "auth_phone_title": "Ridely",
   "auth_phone_tagline": "Telefon raqamingizni kiriting",
   "auth_phone_input_placeholder": "+998 (XX) XXX-XX-XX",
-  "auth_phone_description": "Xavfsiz kirish uchun sizga bir martalik kod yuboramiz.",
   "auth_phone_input_label": "Telefon raqami",
   "auth_phone_input_helper": "Tasdiqlash kodi uchun O'zbekiston telefon raqamingizni kiriting.",
   "auth_phone_input_error_invalid": "Yaroqli O'zbekiston telefon raqamini kiriting.",

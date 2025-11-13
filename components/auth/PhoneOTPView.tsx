@@ -91,9 +91,6 @@ export const PhoneOTPView = () => {
           <ThemedText style={[styles.tagline, { color: taglineColor }]}>
             {t("auth_phone_tagline")}
           </ThemedText>
-          <ThemedText style={[styles.description, { color: helperColor }]}>
-            {t("auth_phone_description")}
-          </ThemedText>
         </View>
 
         <ThemedView

@@ -112,7 +112,6 @@
   "auth_phone_title": "Ridely",
   "auth_phone_tagline": "Enter your phone number",
   "auth_phone_input_placeholder": "+998 (XX) XXX-XX-XX",
-  "auth_phone_description": "We’ll text you a one-time code to sign in securely.",
   "auth_phone_input_label": "Phone number",
   "auth_phone_input_helper": "Use your Uzbek phone number to receive the verification code.",
   "auth_phone_input_error_invalid": "Enter a valid Uzbek phone number.",
