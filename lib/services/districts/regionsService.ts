@@ -14,7 +14,7 @@ export class DistrictsService extends BaseService<"districts"> {
 
   async getDistrict(id: string): Promise<District> {
     const { data, error } = await this.supabase
-      .from("districts")
+      .from(this.tableName)
       .select("*")
       .eq("id", id)
       .single();
@@ -39,7 +39,7 @@ export class DistrictsService extends BaseService<"districts"> {
     const wildcard = `*${normalized}*`;
 
     const { data, error } = await this.supabase
-      .from("districts")
+      .from(this.tableName)
       .select("*, region:regions(id, name_uz, name_ru, name_oz)")
       .or(
         ["name_uz", "name_ru", "name_oz"]

@@ -13,12 +13,14 @@ import {
   decrementPassengersCount,
   incrementPassengersCount,
 } from "@/lib/store/features/find-trip/findTripSlice";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const minPassengers = 1;
 const maxPassengers = 8;
 
 export default function PassengerCountScreen() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   const dispatch = useAppDispatch();
   const { passengersCount } = useAppSelector((state) => state.findTrip);
@@ -50,7 +52,13 @@ export default function PassengerCountScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
+    <ThemedView
+      style={[
+        styles.container,
+        { backgroundColor, paddingBottom: insets.bottom + 32 },
+      ]}
+      applyTopInsets
+    >
       <View style={styles.header}>
         <Pressable
           accessibilityRole="button"
@@ -137,10 +145,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingBottom: 32,
   },
   header: {
     alignItems: "flex-start",
+    paddingTop: 16,
   },
   content: {
     flex: 1,

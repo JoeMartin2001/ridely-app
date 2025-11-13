@@ -152,7 +152,11 @@ const SelectTripDate = () => {
   }, []);
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
+    <ThemedView
+      style={[styles.container, { backgroundColor }]}
+      applyTopInsets
+      applyBottomInsets
+    >
       <View style={styles.header}>
         <Pressable
           accessibilityRole="button"
@@ -174,7 +178,7 @@ const SelectTripDate = () => {
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
         pastScrollRange={0}
-        futureScrollRange={12}
+        futureScrollRange={2}
         scrollEnabled
         hideArrows
         onDayPress={handleDayPress}
@@ -205,6 +209,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   header: {
+    paddingTop: 16,
     alignItems: "flex-start",
     marginBottom: 24,
     paddingHorizontal: 24,
