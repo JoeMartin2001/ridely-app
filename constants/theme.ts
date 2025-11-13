@@ -36,6 +36,7 @@ export const Colors = {
     switchTrack: tintColorLight,
     switchTrackInactive: "rgba(10, 126, 164, 0.25)",
     placeholder: "rgba(17, 24, 28, 0.4)",
+    error: "#D92D20",
   },
   dark: {
     text: "#E4F6FB",
@@ -64,6 +65,7 @@ export const Colors = {
     switchTrack: tintColorDark,
     switchTrackInactive: "rgba(10, 126, 164, 0.3)",
     placeholder: "rgba(236, 237, 238, 0.5)",
+    error: "#F97066",
   },
 };
 
