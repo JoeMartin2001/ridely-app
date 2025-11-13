@@ -161,10 +161,11 @@ export const PhoneOTPView = () => {
               {t("auth_phone_submit")}
             </ThemedText>
           </TouchableOpacity>
-          <ThemedText style={[styles.termsText, { color: helperColor }]}>
-            {t("auth_phone_terms")}
-          </ThemedText>
         </ThemedView>
+
+        <ThemedText style={[styles.termsText, { color: helperColor }]}>
+          {t("auth_phone_terms")}
+        </ThemedText>
       </KeyboardAwareScrollView>
     </ThemedView>
   );
