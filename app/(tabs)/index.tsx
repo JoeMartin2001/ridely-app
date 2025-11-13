@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 64,
     paddingBottom: 40,
-    paddingHorizontal: "5%",
+    paddingHorizontal: 20,
     gap: 24,
   },
   header: {
@@ -235,9 +235,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   searchCard: {
-    borderRadius: 28,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    overflow: "hidden",
+    borderRadius: 16,
     gap: 8,
     borderWidth: StyleSheet.hairlineWidth,
   },
@@ -246,6 +245,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 16,
     gap: 16,
+    paddingHorizontal: 20,
   },
   fieldIconWrapper: {
     width: 32,
@@ -266,7 +266,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   searchButton: {
-    borderRadius: 20,
     paddingVertical: 16,
     alignItems: "center",
     justifyContent: "center",
