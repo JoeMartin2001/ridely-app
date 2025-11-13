@@ -45,6 +45,12 @@ const SelectTripDate = () => {
 
   const { date: selectedDate } = useAppSelector((state) => state.findTrip);
 
+  const today = useMemo(() => {
+    const now = new Date();
+    const timezoneOffset = now.getTimezoneOffset() * 60 * 1000;
+    return new Date(now.getTime() - timezoneOffset).toISOString().split("T")[0];
+  }, []);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -173,7 +179,7 @@ const SelectTripDate = () => {
       </View>
 
       <CalendarList
-        minDate={new Date().toISOString()}
+        minDate={today}
         style={styles.calendarList}
         contentContainerStyle={styles.calendarListContent}
         firstDay={1}
