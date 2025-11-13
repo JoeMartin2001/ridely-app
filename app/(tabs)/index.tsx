@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
   const cardColor = useThemeColor({}, "card");
   const tintColor = useThemeColor({}, "tint");
-  const textOnTint = useThemeColor({}, "textReverse");
+  const textOnTint = useThemeColor({}, "text");
   const dividerColor = useThemeColor({}, "divider");
   const iconColor = useThemeColor({}, "icon");
   const taglineColor = useThemeColor({}, "tagline");

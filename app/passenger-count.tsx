@@ -27,7 +27,7 @@ export default function PassengerCountScreen() {
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const dividerColor = useThemeColor({}, "divider");
-  const textReverse = useThemeColor({}, "textReverse");
+  const textReverse = useThemeColor({}, "text");
 
   const handleDecrease = () => {
     if (passengersCount === minPassengers) {
