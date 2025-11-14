@@ -1,7 +1,6 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import { PhoneOTPView } from "@/components/auth/PhoneOTPView";
 import { EmptyFavouritesView } from "@/components/favourites/EmptyFavouritesView";
 import { FavouriteItem } from "@/components/favourites/FavouriteItem";
 import { ThemedView } from "@/components/themed-view";
@@ -17,14 +16,11 @@ export default function ChatScreen() {
   const backgroundColor = useThemeColor({}, "background");
   const cardColor = useThemeColor({}, "card");
 
-  const { user } = useAppSelector((state) => state.user);
   const { favourites } = useAppSelector((state) => state.favourites);
 
   const handlePress = (favourite: Favourite) => {
     console.log("Open favourite", favourite.menuItemId);
   };
-
-  if (!user) return <PhoneOTPView />;
 
   if (favourites.length === 0) {
     return <EmptyFavouritesView />;

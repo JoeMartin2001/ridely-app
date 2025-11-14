@@ -120,6 +120,21 @@
   "auth_phone_submit_accessibility_hint": "Перейти далее и запросить код подтверждения.",
   "auth_phone_terms": "Продолжая, вы соглашаетесь с Условиями обслуживания и Политикой конфиденциальности.",
   "auth_phone_submit": "Далее",
+  "auth_phone_submit_error": "Не удалось отправить код. Попробуйте ещё раз.",
+  "auth_otp_tagline": "Введите проверочный код",
+  "auth_otp_description": "Мы отправили шестизначный код на {{phone}}.",
+  "auth_otp_input_label": "Код подтверждения",
+  "auth_otp_input_placeholder": "••••••",
+  "auth_otp_input_helper": "Введите шестизначный код, чтобы продолжить.",
+  "auth_otp_input_error_invalid": "Введите шестизначный код.",
+  "auth_otp_submit_accessibility_hint": "Отправьте код подтверждения.",
+  "auth_otp_resend": "Отправить код повторно",
+  "auth_otp_resend_in": "Отправить повторно через {{seconds}} с",
+  "auth_otp_resend_accessibility_hint": "Запросить новый код подтверждения.",
+  "auth_otp_change_phone": "Изменить номер телефона",
+  "auth_otp_change_phone_accessibility_hint": "Вернуться, чтобы ввести другой номер.",
+  "auth_otp_error_generic": "Не удалось проверить код. Попробуйте ещё раз.",
+  "auth_otp_message_code_sent": "Мы отправили новый код на {{phone}}.",
 
   "menu_item_details": "Детали меню"
 }

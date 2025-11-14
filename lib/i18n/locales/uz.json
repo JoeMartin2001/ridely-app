@@ -121,6 +121,21 @@
   "auth_phone_submit_accessibility_hint": "Tasdiqlash kodini so'rash uchun davom eting.",
   "auth_phone_terms": "Davom etish orqali siz Foydalanish shartlari va Maxfiylik siyosatiga rozilik bildirasiz.",
   "auth_phone_submit": "Davom etish",
+  "auth_phone_submit_error": "Kod yuborilmadi. Qaytadan urinib ko'ring.",
+  "auth_otp_tagline": "Tasdiqlash kodini kiriting",
+  "auth_otp_description": "Biz {{phone}} raqamiga 6 xonali kod yubordik.",
+  "auth_otp_input_label": "Tasdiqlash kodi",
+  "auth_otp_input_placeholder": "••••••",
+  "auth_otp_input_helper": "Davom etish uchun 6 xonali kodni kiriting.",
+  "auth_otp_input_error_invalid": "6 xonali kodni kiriting.",
+  "auth_otp_submit_accessibility_hint": "Tasdiqlash kodini yuboring.",
+  "auth_otp_resend": "Kodini qayta yuborish",
+  "auth_otp_resend_in": "{{seconds}} soniyadan keyin qayta yuborish",
+  "auth_otp_resend_accessibility_hint": "Yangi tasdiqlash kodini so'rang.",
+  "auth_otp_change_phone": "Telefon raqamini o'zgartirish",
+  "auth_otp_change_phone_accessibility_hint": "Boshqa telefon raqamini kiritish uchun qayting.",
+  "auth_otp_error_generic": "Kod tasdiqlanmadi. Qayta urinib ko'ring.",
+  "auth_otp_message_code_sent": "Biz {{phone}} raqamiga yangi kod yubordik.",
 
   "menu_item_details": "Taom haqida"
 }

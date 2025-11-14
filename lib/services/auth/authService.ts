@@ -3,6 +3,8 @@ import { BaseService } from "@/lib/services/base/BaseService";
 import { Database } from "@/lib/types";
 import { AuthError, Session, SupabaseClient } from "@supabase/supabase-js";
 
+type SendPhoneOTPResponse = { data: { message: string }; success: boolean };
+
 export class AuthService extends BaseService<"users"> {
   constructor(supabase: SupabaseClient<Database>) {
     super(supabase, "users");
@@ -12,21 +14,25 @@ export class AuthService extends BaseService<"users"> {
    * sendPhoneOTP edge function to send OTP to the phone number
    * @param phoneNumber Phone number to send OTP to
    */
-  async sendPhoneOTP(phoneNumber: string): Promise<void> {
-    const res = await fetch(
-      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sendPhoneOtp`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber }),
-      }
-    );
+  async sendPhoneOTP(phoneNumber: string): Promise<SendPhoneOTPResponse> {
+    try {
+      const res = await fetch(
+        `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sendPhoneOtp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phoneNumber }),
+        }
+      );
 
-    const data = await res.json();
+      const { data } = (await res.json()) as SendPhoneOTPResponse;
 
-    if (!res.ok) throw new Error(data.error || "Send phone OTP failed");
+      if (!res.ok) throw new Error(data.message || "Send phone OTP failed");
 
-    return data;
+      return { data, success: res.ok };
+    } catch (error) {
+      throw new Error((error as Error).message || "Send phone OTP failed");
+    }
   }
 
   /**
@@ -48,6 +54,8 @@ export class AuthService extends BaseService<"users"> {
     );
 
     const data = await res.json();
+
+    console.log(data);
 
     if (!res.ok) throw new Error(data.error || "Verify phone and login failed");
 

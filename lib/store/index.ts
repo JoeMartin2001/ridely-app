@@ -7,6 +7,7 @@ import { regionsApi } from "@/lib/services/regions/regionsApi";
 import { ridesApi } from "@/lib/services/rides/ridesApi";
 import { usersApi } from "@/lib/services/users/usersApi";
 
+import authReducer from "./features/auth/authSlice";
 import favouritesReducer from "./features/favourites";
 import findTripReducer from "./features/find-trip/findTripSlice";
 import locationSearchReducer from "./features/location-search/locationSearchSlice";
@@ -27,6 +28,7 @@ export const store = configureStore({
 
     findTrip: findTripReducer,
     locationSearch: locationSearchReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

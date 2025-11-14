@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
+  Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -9,12 +10,48 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import MaskInput, { Mask } from "react-native-mask-input";
 
+import { SubmitOTPView } from "@/components/auth/SubmitOTPView";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useSendPhoneOTPMutation } from "@/lib/services/auth/authApi";
-import { ThemedText } from "../themed-text";
-import { ThemedView } from "../themed-view";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
+
+const resolveErrorMessage = (
+  error: unknown,
+  fallback: string | null
+): string | null => {
+  if (!error) return null;
+
+  if (typeof error === "object") {
+    if ("data" in (error as Record<string, unknown>)) {
+      const data = (error as { data?: unknown }).data;
+
+      if (
+        data &&
+        typeof data === "object" &&
+        "message" in (data as Record<string, unknown>)
+      ) {
+        const message = (data as { message?: unknown }).message;
+        if (typeof message === "string" && message.trim().length > 0) {
+          return message;
+        }
+      }
+    }
+
+    if ("message" in (error as Record<string, unknown>)) {
+      const message = (error as { message?: unknown }).message;
+      if (typeof message === "string" && message.trim().length > 0) {
+        return message;
+      }
+    }
+  }
+
+  return fallback;
+};
 
 const uzbekPhoneMask: Mask = [
   "+",
@@ -38,7 +75,7 @@ const uzbekPhoneMask: Mask = [
   /\d/,
 ];
 
-export const PhoneOTPView = () => {
+export default function PhoneOTPScreen() {
   const { t } = useTranslation();
   const [
     sendPhoneOTP,
@@ -46,6 +83,7 @@ export const PhoneOTPView = () => {
       isLoading: isSendPhoneOTPLoading,
       error: sendPhoneOTPError,
       isSuccess: isSendPhoneOTPSuccess,
+      reset: resetSendPhoneOTPMutation,
     },
   ] = useSendPhoneOTPMutation();
 
@@ -53,6 +91,14 @@ export const PhoneOTPView = () => {
   const [rawPhoneNumber, setRawPhoneNumber] = useState("998");
   const [isFocused, setIsFocused] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
+  const [flowStep, setFlowStep] = useState<"phone" | "otp">("phone");
+  const [submittedPhone, setSubmittedPhone] = useState<{
+    masked: string;
+    raw: string;
+  }>({
+    masked: "",
+    raw: "",
+  });
 
   const taglineColor = useThemeColor({}, "tagline");
   const backgroundColor = useThemeColor({}, "background");
@@ -71,6 +117,11 @@ export const PhoneOTPView = () => {
   );
   const showError = isTouched && !isPhoneComplete;
 
+  const sendPhoneErrorMessage = useMemo(
+    () => resolveErrorMessage(sendPhoneOTPError, t("auth_phone_submit_error")),
+    [sendPhoneOTPError, t]
+  );
+
   const inputBorderColor = showError
     ? errorColor
     : isFocused
@@ -79,6 +130,7 @@ export const PhoneOTPView = () => {
 
   const handlePhoneChange = useCallback((masked: string, unmasked?: string) => {
     setPhoneNumber(masked);
+
     if (typeof unmasked === "string") {
       setRawPhoneNumber(unmasked);
     }
@@ -93,11 +145,48 @@ export const PhoneOTPView = () => {
     sendPhoneOTP({ phoneNumber: rawPhoneNumber });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPhoneComplete, rawPhoneNumber]);
-  console.log(sendPhoneOTPError);
-  console.log(isSendPhoneOTPLoading);
-  console.log(isSendPhoneOTPSuccess);
+
+  const handleEditPhone = useCallback(() => {
+    resetSendPhoneOTPMutation();
+    setFlowStep("phone");
+    setIsTouched(false);
+    setIsFocused(false);
+    setSubmittedPhone({ masked: "", raw: "" });
+  }, [resetSendPhoneOTPMutation]);
+
+  useEffect(() => {
+    if (!isSendPhoneOTPSuccess) return;
+
+    setSubmittedPhone({
+      masked: phoneNumber,
+      raw: rawPhoneNumber,
+    });
+    setFlowStep("otp");
+  }, [isSendPhoneOTPSuccess, phoneNumber, rawPhoneNumber]);
+
+  if (flowStep === "otp" && submittedPhone.raw) {
+    return (
+      <SubmitOTPView
+        key={submittedPhone.raw}
+        rawPhoneNumber={submittedPhone.raw}
+        onEditPhone={handleEditPhone}
+      />
+    );
+  }
+
   return (
     <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
+      <View style={styles.pageHeader}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t("common_close")}
+          hitSlop={12}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="close" size={28} color={textColor} />
+        </Pressable>
+      </View>
+
       <KeyboardAwareScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContainer}
@@ -185,6 +274,12 @@ export const PhoneOTPView = () => {
               )}
             </ThemedText>
           </TouchableOpacity>
+
+          {sendPhoneErrorMessage ? (
+            <ThemedText style={[styles.errorText, { color: errorColor }]}>
+              {sendPhoneErrorMessage}
+            </ThemedText>
+          ) : null}
         </ThemedView>
 
         <ThemedText style={[styles.termsText, { color: helperColor }]}>
@@ -193,7 +288,7 @@ export const PhoneOTPView = () => {
       </KeyboardAwareScrollView>
     </ThemedView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   scrollView: {},
@@ -201,11 +296,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: 24,
     paddingHorizontal: 24,
-    justifyContent: "center",
     alignItems: "center",
+    paddingTop: 64,
   },
   container: {
     flex: 1,
+  },
+  pageHeader: {
+    alignItems: "flex-start",
+    paddingTop: 16,
+    paddingHorizontal: 24,
   },
   header: {
     gap: 8,
@@ -273,6 +373,12 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sans,
     fontSize: 14,
     lineHeight: 20,
+  },
+  errorText: {
+    fontFamily: Fonts.sans,
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: "center",
   },
   termsText: {
     fontFamily: Fonts.sans,

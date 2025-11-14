@@ -26,6 +26,11 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
+              name="(auth)/phone-otp"
+              options={{ headerShown: false, presentation: "fullScreenModal" }}
+            />
+
+            <Stack.Screen
               name="menu-item-details"
               options={{
                 presentation: "modal",

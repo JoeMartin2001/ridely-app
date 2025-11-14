@@ -43,11 +43,17 @@ export const authApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    sendPhoneOTP: builder.mutation<void, { phoneNumber: string }>({
+    sendPhoneOTP: builder.mutation<
+      { success: boolean; message: string },
+      { phoneNumber: string }
+    >({
       queryFn: async ({ phoneNumber }) => {
         try {
-          await authService.sendPhoneOTP(phoneNumber);
-          return toVoidSuccess();
+          const result = await authService.sendPhoneOTP(phoneNumber);
+
+          return {
+            data: { success: result.success, message: result.data.message },
+          };
         } catch (error) {
           return { error: formatError(error) };
         }

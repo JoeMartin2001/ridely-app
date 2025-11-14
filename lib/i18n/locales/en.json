@@ -119,6 +119,21 @@
   "auth_phone_submit_accessibility_hint": "Continue to request a verification code.",
   "auth_phone_terms": "By continuing, you agree to the Terms of Service and Privacy Policy.",
   "auth_phone_submit": "Continue",
+  "auth_phone_submit_error": "We couldn't send the code. Try again.",
+  "auth_otp_tagline": "Enter the verification code",
+  "auth_otp_description": "We sent a 6-digit code to {{phone}}.",
+  "auth_otp_input_label": "Verification code",
+  "auth_otp_input_placeholder": "••••••",
+  "auth_otp_input_helper": "Enter the 6-digit code to continue.",
+  "auth_otp_input_error_invalid": "Enter the 6-digit code.",
+  "auth_otp_submit_accessibility_hint": "Submit the verification code.",
+  "auth_otp_resend": "Resend code",
+  "auth_otp_resend_in": "Resend in {{seconds}}s",
+  "auth_otp_resend_accessibility_hint": "Request a new verification code.",
+  "auth_otp_change_phone": "Change phone number",
+  "auth_otp_change_phone_accessibility_hint": "Go back to enter a different phone number.",
+  "auth_otp_error_generic": "We couldn't verify the code. Try again.",
+  "auth_otp_message_code_sent": "We sent a new code to {{phone}}.",
 
   "menu_item_details": "Menu Item Details"
 }

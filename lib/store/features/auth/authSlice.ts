@@ -18,7 +18,7 @@ const initialState: AuthUIState = {
 };
 
 export const authSlice = createSlice({
-  name: "authUI",
+  name: "auth",
   initialState,
   reducers: {
     updateLoginForm: (
