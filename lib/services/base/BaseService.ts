@@ -71,12 +71,22 @@ export abstract class BaseService<
   protected toCamel<T>(obj: T): T {
     return camelcaseKeys(obj as Record<string, unknown>, { deep: true }) as T;
   }
-
+  /**
+   * Invoke an edge function
+   * @param name - The name of the edge function
+   * @param method - The HTTP method to use
+   * @param body - The body of the request
+   * @returns The data returned from the edge function
+   */
   protected async invokeEdgeFunction<T>(
     name: EdgeFunction,
     method: "POST" | "GET" | "PUT" | "DELETE",
     body?: unknown
   ): Promise<T> {
+    if (method === "POST" && !body) {
+      throw new Error("Body is required for POST requests");
+    }
+
     const res = await fetch(
       `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/${name}`,
       {
@@ -88,10 +98,11 @@ export abstract class BaseService<
 
     const { error, data, success } = (await res.json()) as ApiResponse<T>;
 
-    if (!success)
-      throw new Error(error?.message || "Failed to invoke edge function");
+    if (!success) {
+      throw new Error(`Failed to invoke edge function: ${error?.message}`);
+    }
 
-    if (!data) throw new Error("No data returned from edge function");
+    if (!data) throw new Error(`No data returned from edge function: ${name}`);
 
     return data;
   }
