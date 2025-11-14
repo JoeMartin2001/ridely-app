@@ -290,16 +290,31 @@ npx expo start
 
 ## 🧪 Testing
 
+**E2E Tests (Detox)**
+
 ```bash
-# Unit tests
-npm test
+# Build for iOS
+npm run detox:build:ios
 
-# E2E tests
-npm run test:e2e
+# Build for Android
+npm run detox:build:android
 
-# Test coverage
-npm run test:coverage
+# Run E2E tests on iOS
+npm run detox:test:ios
+
+# Run E2E tests on Android
+npm run detox:test:android
 ```
+
+The E2E test suite uses Detox and follows a Page Object Model (POM) pattern. Tests are organized by features and flows. See [`e2e/README.md`](./e2e/README.md) for detailed documentation on the test structure and best practices.
+
+**Test Structure**
+
+- `e2e/features/` - Feature-specific tests
+- `e2e/flows/` - Complete user journey tests
+- `e2e/screens/` - Page Object Models for screen interactions
+- `e2e/__helpers__/` - Shared utilities and test IDs
+- `e2e/__fixtures__/` - Test data and fixtures
 
 ## 🚀 Deployment
 
