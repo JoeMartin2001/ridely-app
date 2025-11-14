@@ -14,7 +14,7 @@
       "appleTeamId": "DB4HH72ZTJ"
     },
     "android": {
-      "icon": "./assets/images/android-icon.png",
+      "icon": "./assets/images/icon.png",
       "backgroundColor": "#a7cdb8",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
