@@ -15,38 +15,31 @@ export class UsersService extends BaseService<"users"> {
   }
 
   async getProfile(userId: string): Promise<User> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("users")
       .select("*")
       .eq("id", userId)
       .single();
 
-    if (error) this.handleError(error);
-
-    if (!data) this.handleError(new Error("User not found"));
-
-    return data;
+    return this.handleError(result);
   }
 
   async updateProfile(userId: string, updates: UpdateUser): Promise<User> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("users")
       .update(updates as never)
       .eq("id", userId)
       .select()
       .single();
 
-    if (error) this.handleError(error);
-    return data;
+    return this.handleError(result);
   }
-
   async searchUsers(query: string): Promise<User[]> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("users")
       .select("*")
       .ilike("username", `%${query}%`);
 
-    if (error) this.handleError(error);
-    return data || [];
+    return this.handleError(result);
   }
 }

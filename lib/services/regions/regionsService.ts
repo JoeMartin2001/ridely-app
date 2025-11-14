@@ -13,17 +13,13 @@ export class RegionsService extends BaseService<"regions"> {
   }
 
   async getRegion(id: string): Promise<Region> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("regions")
       .select("*")
       .eq("id", id)
       .single();
 
-    if (error) this.handleError(error);
-
-    if (!data) this.handleError(new Error("Region not found"));
-
-    return data;
+    return this.handleError(result);
   }
 
   /**
@@ -38,7 +34,7 @@ export class RegionsService extends BaseService<"regions"> {
 
     const wildcard = `*${normalized}*`;
 
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("regions")
       .select("*")
       .or(
@@ -47,8 +43,6 @@ export class RegionsService extends BaseService<"regions"> {
           .join(",")
       );
 
-    if (error) this.handleError(error);
-
-    return data || [];
+    return this.handleError(result);
   }
 }

@@ -13,59 +13,47 @@ export class RidesService extends BaseService<"rides"> {
   }
 
   async getRide(id: string): Promise<Ride> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("rides")
       .select("*")
       .eq("id", id)
       .single();
 
-    if (error) this.handleError(error);
-
-    if (!data) this.handleError(new Error("Ride not found"));
-
-    return data;
+    return this.handleError(result);
   }
 
   async getRides(userId: string): Promise<Ride[]> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("rides")
       .select("*")
       .eq("user_id", userId);
 
-    if (error) this.handleError(error);
-
-    return data;
+    return this.handleError(result);
   }
 
   async createRide(ride: CreateRide): Promise<Ride> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("rides")
       .insert(ride as never)
       .select()
       .single();
 
-    if (error) this.handleError(error);
-
-    return data;
+    return this.handleError(result);
   }
 
   async updateRide(ride: UpdateRide): Promise<Ride> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from("rides")
       .update(ride as never)
       .select()
       .single();
 
-    if (error) this.handleError(error);
-
-    return data;
+    return this.handleError(result);
   }
 
   async deleteRide(id: string): Promise<boolean> {
-    const { error } = await this.supabase.from("rides").delete().eq("id", id);
+    const result = await this.supabase.from("rides").delete().eq("id", id);
 
-    if (error) this.handleError(error);
-
-    return true;
+    return this.handleErrorBoolean(result);
   }
 }

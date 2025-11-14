@@ -13,17 +13,13 @@ export class DistrictsService extends BaseService<"districts"> {
   }
 
   async getDistrict(id: string): Promise<District> {
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from(this.tableName)
       .select("*")
       .eq("id", id)
       .single();
 
-    if (error) this.handleError(error);
-
-    if (!data) this.handleError(new Error("District not found"));
-
-    return data;
+    return this.handleError(result);
   }
 
   /**
@@ -38,7 +34,7 @@ export class DistrictsService extends BaseService<"districts"> {
 
     const wildcard = `*${normalized}*`;
 
-    const { data, error } = await this.supabase
+    const result = await this.supabase
       .from(this.tableName)
       .select("*, region:regions(id, name_uz, name_ru, name_oz)")
       .or(
@@ -47,8 +43,6 @@ export class DistrictsService extends BaseService<"districts"> {
           .join(",")
       );
 
-    if (error) this.handleError(error);
-
-    return data || [];
+    return this.handleError(result);
   }
 }
