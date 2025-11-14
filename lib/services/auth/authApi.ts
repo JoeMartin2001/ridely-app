@@ -2,6 +2,7 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AuthError, Session, User } from "@supabase/supabase-js";
 import { authService } from "..";
+import { SendPhoneOTPResponse, SessionResponse } from "./authService";
 
 type QueryError = {
   status: number | string;
@@ -44,16 +45,15 @@ export const authApi = createApi({
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
     sendPhoneOTP: builder.mutation<
-      { success: boolean; message: string },
+      SendPhoneOTPResponse,
+      { phoneNumber: string },
       { phoneNumber: string }
     >({
       queryFn: async ({ phoneNumber }) => {
         try {
           const result = await authService.sendPhoneOTP(phoneNumber);
 
-          return {
-            data: { success: result.success, message: result.data.message },
-          };
+          return { data: result };
         } catch (error) {
           return { error: formatError(error) };
         }
@@ -61,7 +61,7 @@ export const authApi = createApi({
     }),
 
     verifyPhoneAndLogin: builder.mutation<
-      Session,
+      SessionResponse,
       { phoneNumber: string; otpCode: string }
     >({
       queryFn: async ({ phoneNumber, otpCode }) => {

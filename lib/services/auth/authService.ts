@@ -1,9 +1,17 @@
 // services/auth/authService.ts
 import { BaseService } from "@/lib/services/base/BaseService";
-import { Database } from "@/lib/types";
+import { Database, IUser } from "@/lib/types";
 import { AuthError, Session, SupabaseClient } from "@supabase/supabase-js";
 
-type SendPhoneOTPResponse = { data: { message: string }; success: boolean };
+export type SendPhoneOTPResponse = { message: string };
+
+export type SessionResponse = {
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    user: IUser;
+  };
+};
 
 export class AuthService extends BaseService<"users"> {
   constructor(supabase: SupabaseClient<Database>) {
@@ -14,25 +22,14 @@ export class AuthService extends BaseService<"users"> {
    * sendPhoneOTP edge function to send OTP to the phone number
    * @param phoneNumber Phone number to send OTP to
    */
-  async sendPhoneOTP(phoneNumber: string): Promise<SendPhoneOTPResponse> {
-    try {
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/sendPhoneOtp`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phoneNumber }),
-        }
-      );
+  async sendPhoneOTP(phoneNumber: string): Promise<{ message: string }> {
+    const data = await this.invokeEdgeFunction<SendPhoneOTPResponse>(
+      "sendPhoneOtp",
+      "POST",
+      { phoneNumber }
+    );
 
-      const { data } = (await res.json()) as SendPhoneOTPResponse;
-
-      if (!res.ok) throw new Error(data.message || "Send phone OTP failed");
-
-      return { data, success: res.ok };
-    } catch (error) {
-      throw new Error((error as Error).message || "Send phone OTP failed");
-    }
+    return data;
   }
 
   /**
@@ -43,21 +40,12 @@ export class AuthService extends BaseService<"users"> {
   async verifyPhoneAndLogin(
     phoneNumber: string,
     code: string
-  ): Promise<Session> {
-    const res = await fetch(
-      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/verifyPhoneAndLogin`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber, code }),
-      }
+  ): Promise<SessionResponse> {
+    const data = await this.invokeEdgeFunction<SessionResponse>(
+      "verifyPhoneAndLogin",
+      "POST",
+      { phoneNumber, code }
     );
-
-    const data = await res.json();
-
-    console.log(data);
-
-    if (!res.ok) throw new Error(data.error || "Verify phone and login failed");
 
     return data;
   }

@@ -71,4 +71,40 @@ export abstract class BaseService<
   protected toCamel<T>(obj: T): T {
     return camelcaseKeys(obj as Record<string, unknown>, { deep: true }) as T;
   }
+
+  protected async invokeEdgeFunction<T>(
+    name: EdgeFunction,
+    method: "POST" | "GET" | "PUT" | "DELETE",
+    body?: unknown
+  ): Promise<T> {
+    const res = await fetch(
+      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/${name}`,
+      {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
+
+    const { error, data, success } = (await res.json()) as ApiResponse<T>;
+
+    if (!success)
+      throw new Error(error?.message || "Failed to invoke edge function");
+
+    if (!data) throw new Error("No data returned from edge function");
+
+    return data;
+  }
+}
+
+type EdgeFunction = "sendPhoneOtp" | "verifyPhoneAndLogin";
+
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: {
+    message: string;
+    code?: string;
+    details?: unknown;
+  };
 }

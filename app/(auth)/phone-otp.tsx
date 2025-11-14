@@ -17,41 +17,9 @@ import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useSendPhoneOTPMutation } from "@/lib/services/auth/authApi";
+import { resolveErrorMessage } from "@/lib/utils/errorUtils";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
-
-const resolveErrorMessage = (
-  error: unknown,
-  fallback: string | null
-): string | null => {
-  if (!error) return null;
-
-  if (typeof error === "object") {
-    if ("data" in (error as Record<string, unknown>)) {
-      const data = (error as { data?: unknown }).data;
-
-      if (
-        data &&
-        typeof data === "object" &&
-        "message" in (data as Record<string, unknown>)
-      ) {
-        const message = (data as { message?: unknown }).message;
-        if (typeof message === "string" && message.trim().length > 0) {
-          return message;
-        }
-      }
-    }
-
-    if ("message" in (error as Record<string, unknown>)) {
-      const message = (error as { message?: unknown }).message;
-      if (typeof message === "string" && message.trim().length > 0) {
-        return message;
-      }
-    }
-  }
-
-  return fallback;
-};
 
 const uzbekPhoneMask: Mask = [
   "+",
