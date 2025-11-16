@@ -2,7 +2,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Linking, Pressable, StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -54,13 +54,22 @@ export const ImagePickerModal = (props: Props) => {
       if (!result?.granted) {
         Alert.alert(
           t("image_picker_permission_denied_title"),
-          t("image_picker_permission_denied_message")
+          t("image_picker_permission_denied_message"),
+          [
+            {
+              text: t("common_cancel"),
+              style: "cancel",
+            },
+            {
+              text: t("common_grant"),
+              onPress: () => Linking.openSettings(),
+            },
+          ]
         );
         return;
       }
     }
 
-    // No permissions request is necessary for launching the image library
     setIsLaunchingGallery(true);
 
     try {
@@ -87,7 +96,17 @@ export const ImagePickerModal = (props: Props) => {
       if (!result?.granted) {
         Alert.alert(
           t("image_picker_camera_permission_denied_title"),
-          t("image_picker_camera_permission_denied_message")
+          t("image_picker_camera_permission_denied_message"),
+          [
+            {
+              text: t("common_cancel"),
+              style: "cancel",
+            },
+            {
+              text: t("common_grant"),
+              onPress: () => Linking.openSettings(),
+            },
+          ]
         );
         return;
       }

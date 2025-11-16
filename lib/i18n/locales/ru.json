@@ -149,6 +149,8 @@
 
   "menu_item_details": "Детали меню",
   "common_close": "Закрыть",
+  "common_cancel": "Отмена",
+  "common_grant": "Предоставить",
   "image_picker_title": "Выбрать изображение",
   "image_picker_camera": "Камера",
   "image_picker_gallery": "Галерея",

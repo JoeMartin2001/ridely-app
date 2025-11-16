@@ -148,6 +148,8 @@
 
   "menu_item_details": "Menu Item Details",
   "common_close": "Close",
+  "common_cancel": "Cancel",
+  "common_grant": "Grant",
   "image_picker_title": "Select Image",
   "image_picker_camera": "Camera",
   "image_picker_gallery": "Gallery",
