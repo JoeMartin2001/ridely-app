@@ -1,6 +1,13 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useState } from "react";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -11,8 +18,12 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { useSignOutMutation } from "@/lib/services/auth/authApi";
+
 const EditProfileScreen = () => {
   const { t } = useTranslation();
+  const [signOut, { isLoading: isSigningOut }] = useSignOutMutation();
+
   const { user } = useAppSelector((state) => state.user);
 
   const cardColor = useThemeColor({}, "card");
@@ -32,6 +43,23 @@ const EditProfileScreen = () => {
     router.back();
   };
 
+  const handleLogout = () => {
+    Alert.alert(
+      t("edit_profile_logout_title"),
+      t("edit_profile_logout_message"),
+      [
+        {
+          text: t("edit_profile_logout_cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("edit_profile_logout_confirm"),
+          onPress: () => signOut().then(() => router.back()),
+        },
+      ]
+    );
+  };
+
   return (
     <ThemedView
       style={[styles.container, { backgroundColor: cardColor }]}
@@ -41,8 +69,12 @@ const EditProfileScreen = () => {
         title={t("edit_profile_title")}
         onGoBack={() => router.back()}
         rightButton={
-          <Pressable onPress={() => {}}>
-            <MaterialIcons name="logout" size={22} color={textColor} />
+          <Pressable onPress={handleLogout} disabled={isSigningOut}>
+            {isSigningOut ? (
+              <ActivityIndicator size="small" color={textColor} />
+            ) : (
+              <MaterialIcons name="logout" size={22} color={textColor} />
+            )}
           </Pressable>
         }
       />

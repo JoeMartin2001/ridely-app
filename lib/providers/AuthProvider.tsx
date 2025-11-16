@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  console.log("authUser", authUser?.id);
+
   return (
     <AuthContext.Provider
       value={{
