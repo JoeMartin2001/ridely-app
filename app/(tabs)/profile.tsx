@@ -13,6 +13,7 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppTheme } from "@/lib/providers/ThemeProvider";
 import { useGetProfileQuery } from "@/lib/services/users/usersApi";
 import { useAppSelector } from "@/lib/store";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -96,7 +97,12 @@ export default function ProfileScreen() {
       >
         <View style={[styles.profileCard]}>
           <View style={[styles.avatar, { backgroundColor: avatarBackground }]}>
-            {initials ? (
+            {profile?.avatarUrl ? (
+              <Image
+                source={{ uri: profile.avatarUrl }}
+                style={styles.avatar}
+              />
+            ) : initials ? (
               <ThemedText style={styles.avatarInitials}>{initials}</ThemedText>
             ) : (
               <MaterialIcons name="person" size={42} color={textColor} />
@@ -108,7 +114,7 @@ export default function ProfileScreen() {
               {profile?.firstName}
             </ThemedText>
             <ThemedText style={styles.profilePhone}>
-              {profile?.phoneNumber}
+              {profile?.phoneNumber || profile?.username}
             </ThemedText>
           </View>
         </View>
