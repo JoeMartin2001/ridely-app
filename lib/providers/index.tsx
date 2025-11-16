@@ -6,6 +6,7 @@ import {
 import type { ReactNode } from "react";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { AuthProvider } from "./AuthProvider";
 import { StoreProvider } from "./StoreProvider";
 import { AppThemeProvider } from "./ThemeProvider";
 
@@ -25,7 +26,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <StoreProvider>
       <AppThemeProvider>
-        <NavigationThemeWrapper>{children}</NavigationThemeWrapper>
+        <NavigationThemeWrapper>
+          <AuthProvider>{children}</AuthProvider>
+        </NavigationThemeWrapper>
       </AppThemeProvider>
     </StoreProvider>
   );

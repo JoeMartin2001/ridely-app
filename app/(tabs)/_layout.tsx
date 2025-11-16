@@ -5,14 +5,14 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useAppSelector } from "@/lib/store";
+import { useAuthContext } from "@/lib/providers/AuthProvider";
 import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
-  const { user } = useAppSelector((state) => state.user);
+  const { authUser } = useAuthContext();
 
   return (
     <Tabs
@@ -50,9 +50,9 @@ export default function TabLayout() {
         }}
         listeners={{
           tabPress: (e) => {
-            e.preventDefault();
+            if (!authUser) {
+              e.preventDefault();
 
-            if (!user) {
               router.push("/phone-otp");
             }
           },
@@ -79,9 +79,9 @@ export default function TabLayout() {
         }}
         listeners={{
           tabPress: (e) => {
-            e.preventDefault();
+            if (!authUser) {
+              e.preventDefault();
 
-            if (!user) {
               router.push("/phone-otp");
             }
           },
@@ -98,9 +98,9 @@ export default function TabLayout() {
         }}
         listeners={{
           tabPress: (e) => {
-            e.preventDefault();
+            if (!authUser) {
+              e.preventDefault();
 
-            if (!user) {
               router.push("/phone-otp");
             }
           },
