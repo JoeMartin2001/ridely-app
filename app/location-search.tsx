@@ -63,17 +63,20 @@ const LocationSearch = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  console.log("regions", regions);
+  console.log("districts", districts);
+
   const suggestions = useMemo(() => {
     return [
       ...regions.map((item) => ({
         id: item.id,
-        title: item.name_uz,
+        title: item.nameUz,
         subtitle: "",
       })),
       ...districts.map((item) => ({
         id: item.id,
-        title: item.name_uz,
-        subtitle: item.region?.name_uz || "",
+        title: item.nameUz,
+        subtitle: item.region?.nameUz || "",
       })),
     ];
   }, [districts, regions]);

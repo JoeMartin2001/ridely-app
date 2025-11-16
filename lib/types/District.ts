@@ -2,12 +2,12 @@ import { IRegion } from "./Region";
 
 export interface IDistrict {
   id: string;
-  old_int_id: number;
-  soato_id: string;
-  name_uz: string;
-  name_ru: string;
-  name_oz: string;
-  region_id: string;
+  oldIntId: number;
+  soatoId: string;
+  nameUz: string;
+  nameRu: string;
+  nameOz: string;
+  regionId: string;
 
   region?: IRegion;
 }
