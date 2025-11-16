@@ -2,6 +2,7 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AuthError, Session, User } from "@supabase/supabase-js";
 import { authService } from "..";
+import { usersApi } from "../users/usersApi";
 import { SendPhoneOTPResponse } from "./authService";
 
 type QueryError = {
@@ -136,9 +137,14 @@ export const authApi = createApi({
      * @returns void
      */
     signOut: builder.mutation<void, void>({
-      queryFn: async () => {
+      queryFn: async (_, { dispatch }) => {
         try {
           await authService.signOut();
+
+          // Invalidate and reset user queries to clear cached data
+          dispatch(usersApi.util.invalidateTags(["User"]));
+          dispatch(usersApi.util.resetApiState());
+
           return toVoidSuccess();
         } catch (error) {
           return { error: formatError(error) };

@@ -79,7 +79,8 @@ export default function ProfileScreen() {
     [setColorScheme]
   );
 
-  if (!profile || isLoadingProfile) return <LoadingView />;
+  // Show loading if no session or if profile is loading
+  if (!session || !profile || isLoadingProfile) return <LoadingView />;
 
   const initials = getInitials(profile?.firstName ?? "");
 

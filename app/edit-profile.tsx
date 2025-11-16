@@ -64,11 +64,9 @@ const EditProfileScreen = () => {
 
   // Initialize form state from profile data
   useEffect(() => {
-    if (profile) {
-      setName(profile.firstName ?? "");
-      setPhone(profile.phoneNumber ?? "+998");
-      setSelectedAvatarUri(null); // Reset selected avatar when profile loads
-    }
+    setName(profile?.firstName ?? "");
+    setPhone(profile?.phoneNumber ?? "+998");
+    setSelectedAvatarUri(profile?.avatarUrl ?? null); // Reset selected avatar when profile loads
   }, [profile]);
 
   // Reset errors when user types
@@ -177,7 +175,7 @@ const EditProfileScreen = () => {
         },
         {
           text: t("edit_profile_logout_confirm"),
-          onPress: () => signOut().then(() => router.back()),
+          onPress: () => signOut().then(() => router.push("/(tabs)")),
         },
       ]
     );
