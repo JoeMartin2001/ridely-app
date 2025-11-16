@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import { EmptyFavouritesView } from "@/components/favourites/EmptyFavouritesView";
+import { EmptyChatView } from "@/components/chat/EmptyChatView";
 import { FavouriteItem } from "@/components/favourites/FavouriteItem";
 import { ThemedView } from "@/components/themed-view";
 import { Divider } from "@/components/ui/divider";
@@ -23,7 +23,7 @@ export default function ChatScreen() {
   };
 
   if (favourites.length === 0) {
-    return <EmptyFavouritesView />;
+    return <EmptyChatView />;
   }
 
   return (

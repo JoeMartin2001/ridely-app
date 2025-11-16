@@ -1,5 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -18,13 +18,30 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { LoadingView } from "@/components/ui/loading-view";
 import { useSignOutMutation } from "@/lib/services/auth/authApi";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "@/lib/services/users/usersApi";
+import { resolveErrorMessage } from "@/lib/utils/errorUtils";
 
 const EditProfileScreen = () => {
   const { t } = useTranslation();
   const [signOut, { isLoading: isSigningOut }] = useSignOutMutation();
 
-  const { user } = useAppSelector((state) => state.user);
+  const { session } = useAppSelector((state) => state.auth);
+  const userId = session?.user?.id ?? "";
+
+  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery(
+    userId,
+    {
+      skip: !userId,
+    }
+  );
+
+  const [updateProfile, { isLoading: isUpdating, error: updateError }] =
+    useUpdateProfileMutation();
 
   const cardColor = useThemeColor({}, "card");
   const backgroundColor = useThemeColor({}, "background");
@@ -33,14 +50,102 @@ const EditProfileScreen = () => {
   const tintColor = useThemeColor({}, "tint");
   const dividerColor = useThemeColor({}, "divider");
   const avatarBackground = useThemeColor({}, "avatarBackground");
+  const errorColor = useThemeColor({}, "error");
 
-  const [name, setName] = useState(user?.firstName ?? "");
-  const [phone, setPhone] = useState(user?.phoneNumber ?? "+998");
-  const [birthDate, setBirthDate] = useState("26.11.2001");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
-  const handleSave = () => {
-    // TODO: connect to API or store update
-    router.back();
+  // Initialize form state from profile data
+  useEffect(() => {
+    if (profile) {
+      setName(profile.firstName ?? "");
+      setPhone(profile.phoneNumber ?? "+998");
+    }
+  }, [profile]);
+
+  // Reset errors when user types
+  useEffect(() => {
+    if (name.trim()) {
+      setNameError(null);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (phone.trim()) {
+      setPhoneError(null);
+    }
+  }, [phone]);
+
+  const hasChanges = useMemo(() => {
+    if (!profile) return false;
+    return (
+      name.trim() !== (profile.firstName ?? "") ||
+      phone.trim() !== (profile.phoneNumber ?? "")
+    );
+  }, [name, phone, profile]);
+
+  const updateErrorMessage = useMemo(
+    () =>
+      resolveErrorMessage(
+        updateError,
+        t("edit_profile_update_error") || "Failed to update profile"
+      ),
+    [updateError, t]
+  );
+
+  const validateForm = (): boolean => {
+    let isValid = true;
+
+    if (!name.trim()) {
+      setNameError(t("edit_profile_name_required") || "Name is required");
+      isValid = false;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (!phone.trim() || phone.trim() === "+998" || phoneDigits.length < 12) {
+      setPhoneError(
+        t("edit_profile_phone_required") || "Phone number is required"
+      );
+      isValid = false;
+    } else if (!phone.trim().startsWith("+998") || phoneDigits.length !== 12) {
+      setPhoneError(
+        t("edit_profile_phone_invalid") || "Please enter a valid phone number"
+      );
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  const handleSave = async () => {
+    if (!userId || !profile) return;
+
+    // Clear previous errors
+    setNameError(null);
+    setPhoneError(null);
+
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      await updateProfile({
+        userId,
+        updates: {
+          firstName: name.trim(),
+          phoneNumber: phone.trim(),
+        },
+      }).unwrap();
+
+      // Show success and navigate back
+      router.back();
+    } catch (error) {
+      // Error is handled by updateErrorMessage
+      console.error("Failed to update profile:", error);
+    }
   };
 
   const handleLogout = () => {
@@ -59,6 +164,8 @@ const EditProfileScreen = () => {
       ]
     );
   };
+
+  if (isLoadingProfile) return <LoadingView />;
 
   return (
     <ThemedView
@@ -120,7 +227,11 @@ const EditProfileScreen = () => {
             <View
               style={[
                 styles.inputWrapper,
-                { backgroundColor: cardColor, borderColor: dividerColor },
+                {
+                  backgroundColor: cardColor,
+                  borderColor: nameError ? errorColor : dividerColor,
+                  borderWidth: nameError ? 1 : StyleSheet.hairlineWidth,
+                },
               ]}
             >
               <TextInput
@@ -129,29 +240,14 @@ const EditProfileScreen = () => {
                 placeholder={t("edit_profile_name_placeholder")}
                 placeholderTextColor={dividerColor}
                 style={[styles.input, { color: textColor }]}
+                editable={!isUpdating}
               />
             </View>
-          </View>
-
-          <View style={styles.fieldGroup}>
-            <ThemedText style={styles.fieldLabel}>
-              {t("edit_profile_birthday_label")}
-            </ThemedText>
-            <View
-              style={[
-                styles.inputWrapper,
-                { backgroundColor: cardColor, borderColor: dividerColor },
-              ]}
-            >
-              <TextInput
-                value={birthDate}
-                onChangeText={setBirthDate}
-                placeholder="dd.mm.yyyy"
-                placeholderTextColor={dividerColor}
-                style={[styles.input, { color: textColor }]}
-                keyboardType="numbers-and-punctuation"
-              />
-            </View>
+            {nameError && (
+              <ThemedText style={[styles.errorText, { color: errorColor }]}>
+                {nameError}
+              </ThemedText>
+            )}
           </View>
 
           <View style={styles.fieldGroup}>
@@ -161,7 +257,11 @@ const EditProfileScreen = () => {
             <View
               style={[
                 styles.inputWrapper,
-                { backgroundColor: cardColor, borderColor: dividerColor },
+                {
+                  backgroundColor: cardColor,
+                  borderColor: phoneError ? errorColor : dividerColor,
+                  borderWidth: phoneError ? 1 : StyleSheet.hairlineWidth,
+                },
               ]}
             >
               <TextInput
@@ -171,8 +271,19 @@ const EditProfileScreen = () => {
                 placeholderTextColor={dividerColor}
                 style={[styles.input, { color: textColor }]}
                 keyboardType="phone-pad"
+                editable={!isUpdating}
               />
             </View>
+            {phoneError && (
+              <ThemedText style={[styles.errorText, { color: errorColor }]}>
+                {phoneError}
+              </ThemedText>
+            )}
+            {updateErrorMessage && !phoneError && (
+              <ThemedText style={[styles.errorText, { color: errorColor }]}>
+                {updateErrorMessage}
+              </ThemedText>
+            )}
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -181,14 +292,25 @@ const EditProfileScreen = () => {
         <Pressable
           accessibilityRole="button"
           onPress={handleSave}
-          style={[styles.saveButton, { backgroundColor: tintColor }]}
+          disabled={isUpdating || !hasChanges}
+          style={[
+            styles.saveButton,
+            {
+              backgroundColor: hasChanges ? tintColor : dividerColor,
+              opacity: isUpdating || !hasChanges ? 0.6 : 1,
+            },
+          ]}
         >
-          <ThemedText
-            type="defaultSemiBold"
-            style={[styles.saveButtonText, { color: textReverse }]}
-          >
-            {t("edit_profile_save")}
-          </ThemedText>
+          {isUpdating ? (
+            <ActivityIndicator size="small" color={textReverse} />
+          ) : (
+            <ThemedText
+              type="defaultSemiBold"
+              style={[styles.saveButtonText, { color: textReverse }]}
+            >
+              {t("edit_profile_save")}
+            </ThemedText>
+          )}
         </Pressable>
       </View>
     </ThemedView>
@@ -278,6 +400,11 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 16,
     letterSpacing: 0.6,
+  },
+  errorText: {
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 4,
   },
 });
 
