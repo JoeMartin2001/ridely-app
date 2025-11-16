@@ -140,9 +140,7 @@ const TripResultsScreen = () => {
           accessibilityRole="button"
           android_ripple={{ color: dividerColor }}
         >
-          <ThemedText style={[styles.filterButtonText, { color: tintColor }]}>
-            {t("trip_results_filter")}
-          </ThemedText>
+          <MaterialIcons name="filter-list" size={24} color={tintColor} />
         </Pressable>
       </View>
 
