@@ -15,6 +15,7 @@ import { ThemedView } from "@/components/themed-view";
 import { Divider } from "@/components/ui/divider";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { DEFAULT_LANGUAGE, Language } from "@/lib/i18n";
 import { useGetDistrictsByNameQuery } from "@/lib/services/districts/regionsApi";
 import { useGetRegionsByNameQuery } from "@/lib/services/regions/regionsApi";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
@@ -23,6 +24,7 @@ import {
   setToDistrict,
 } from "@/lib/store/features/find-trip/findTripSlice";
 import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
+import { IRegion } from "@/lib/types/Region";
 
 type LocationSuggestion = {
   id: string;
@@ -31,7 +33,7 @@ type LocationSuggestion = {
 };
 
 const LocationSearch = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
 
   const { type } = useLocalSearchParams();
@@ -64,19 +66,22 @@ const LocationSearch = () => {
   }, []);
 
   const suggestions = useMemo(() => {
+    const lang = (i18n.language || DEFAULT_LANGUAGE).split("-")[0] as Language;
+    const nameKey: keyof IRegion = lang === "ru" ? "nameRu" : "nameUz";
+
     return [
       ...regions.map((item) => ({
         id: item.id,
-        title: item.nameUz,
+        title: item[nameKey],
         subtitle: "",
       })),
       ...districts.map((item) => ({
         id: item.id,
-        title: item.nameUz,
-        subtitle: item.region?.nameUz || "",
+        title: item[nameKey],
+        subtitle: item.region?.[nameKey] || "",
       })),
     ];
-  }, [districts, regions]);
+  }, [districts, i18n.language, regions]);
 
   const handleClear = () => {
     if (searchQuery.length === 0) {

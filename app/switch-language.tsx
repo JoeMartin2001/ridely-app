@@ -13,7 +13,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import type { Language } from "@/lib/i18n";
+import { DEFAULT_LANGUAGE, type Language } from "@/lib/i18n";
 import { router } from "expo-router";
 
 type LanguageOption = {
@@ -67,7 +67,9 @@ const hexToRgba = (hexColor: string, alpha: number) => {
 
 const SwitchLanguageScreen = () => {
   const { t, i18n } = useTranslation();
-  const currentLanguage = (i18n.language || "ru").split("-")[0] as Language;
+  const currentLanguage = (i18n.language || DEFAULT_LANGUAGE).split(
+    "-"
+  )[0] as Language;
 
   const cardColor = useThemeColor({}, "card");
   const backgroundColor = useThemeColor({}, "background");
