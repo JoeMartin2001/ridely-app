@@ -1,8 +1,19 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { RootState } from "../index";
 
 export const rootApi = createApi({
   reducerPath: "rootApi",
-  baseQuery: fakeBaseQuery(),
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.EXPO_PUBLIC_API_URL, // or your backend
+    prepareHeaders: (headers, { getState }) => {
+      const session = (getState() as RootState).auth.session;
+
+      if (session?.access_token) {
+        headers.set("Authorization", `Bearer ${session.access_token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: () => ({}),
 });
 

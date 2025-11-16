@@ -5,14 +5,14 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useAuthContext } from "@/lib/providers/AuthProvider";
+import { useAppSelector } from "@/lib/store";
 import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
-  const { authUser } = useAuthContext();
+  const { authUser } = useAppSelector((state) => state.auth);
 
   return (
     <Tabs
