@@ -58,6 +58,7 @@ export const authApi = createApi({
           return { error: formatError(error) };
         }
       },
+      extraOptions: { retry: false },
     }),
 
     verifyPhoneAndLogin: builder.mutation<
@@ -75,6 +76,7 @@ export const authApi = createApi({
           return { error: formatError(error) };
         }
       },
+      extraOptions: { retry: false },
     }),
 
     signIn: builder.mutation<Session, { email: string; password: string }>({
@@ -87,6 +89,7 @@ export const authApi = createApi({
         }
       },
       invalidatesTags: ["Auth"],
+      extraOptions: { retry: false },
     }),
 
     signUp: builder.mutation<
@@ -101,6 +104,7 @@ export const authApi = createApi({
           return { error: formatError(error) };
         }
       },
+      extraOptions: { retry: false },
     }),
 
     signOut: builder.mutation<void, void>({
@@ -113,6 +117,7 @@ export const authApi = createApi({
         }
       },
       invalidatesTags: ["Auth"],
+      extraOptions: { retry: false },
     }),
 
     getCurrentUser: builder.query<User | null, void>({
@@ -125,6 +130,7 @@ export const authApi = createApi({
         }
       },
       providesTags: ["Auth"],
+      extraOptions: { retry: false },
     }),
 
     signInWithTelegram: builder.mutation<Session | null, void>({
@@ -136,6 +142,7 @@ export const authApi = createApi({
           return { error: formatError(error) };
         }
       },
+      extraOptions: { retry: false },
     }),
   }),
 });
