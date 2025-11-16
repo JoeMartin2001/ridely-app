@@ -147,5 +147,13 @@
   "auth_telegram_sign_in_accessibility_hint": "Войти используя аккаунт Telegram",
   "auth_phone_divider": "или",
 
-  "menu_item_details": "Детали меню"
+  "menu_item_details": "Детали меню",
+  "common_close": "Закрыть",
+  "image_picker_title": "Выбрать изображение",
+  "image_picker_camera": "Камера",
+  "image_picker_gallery": "Галерея",
+  "image_picker_permission_denied_title": "Доступ к фотобиблиотеке запрещен",
+  "image_picker_permission_denied_message": "Предоставьте доступ к фотобиблиотеке, чтобы использовать эту функцию.",
+  "image_picker_camera_permission_denied_title": "Доступ к камере запрещен",
+  "image_picker_camera_permission_denied_message": "Предоставьте доступ к камере, чтобы использовать эту функцию."
 }

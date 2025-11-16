@@ -148,5 +148,13 @@
   "auth_telegram_sign_in_accessibility_hint": "Telegram hisobingizdan foydalanib kirish",
   "auth_phone_divider": "yoki",
 
-  "menu_item_details": "Taom haqida"
+  "menu_item_details": "Taom haqida",
+  "common_close": "Yopish",
+  "image_picker_title": "Rasm tanlash",
+  "image_picker_camera": "Kamera",
+  "image_picker_gallery": "Galereya",
+  "image_picker_permission_denied_title": "Foto galereyaga kirish rad etildi",
+  "image_picker_permission_denied_message": "Ushbu funksiyadan foydalanish uchun foto galereyaga kirish ruxsatini bering.",
+  "image_picker_camera_permission_denied_title": "Kameraga kirish rad etildi",
+  "image_picker_camera_permission_denied_message": "Ushbu funksiyadan foydalanish uchun kameraga kirish ruxsatini bering."
 }

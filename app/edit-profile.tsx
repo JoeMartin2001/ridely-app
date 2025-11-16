@@ -1,4 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Image } from "expo-image";
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -12,6 +13,7 @@ import {
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
+import { ImagePickerModal } from "@/components/ui/image-picker-modal";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppSelector } from "@/lib/store";
 import { router } from "expo-router";
@@ -54,6 +56,9 @@ const EditProfileScreen = () => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [selectedAvatarUri, setSelectedAvatarUri] = useState<string | null>(
+    null
+  );
   const [nameError, setNameError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
@@ -62,6 +67,7 @@ const EditProfileScreen = () => {
     if (profile) {
       setName(profile.firstName ?? "");
       setPhone(profile.phoneNumber ?? "+998");
+      setSelectedAvatarUri(null); // Reset selected avatar when profile loads
     }
   }, [profile]);
 
@@ -82,9 +88,10 @@ const EditProfileScreen = () => {
     if (!profile) return false;
     return (
       name.trim() !== (profile.firstName ?? "") ||
-      phone.trim() !== (profile.phoneNumber ?? "")
+      phone.trim() !== (profile.phoneNumber ?? "") ||
+      selectedAvatarUri !== null
     );
-  }, [name, phone, profile]);
+  }, [name, phone, selectedAvatarUri, profile]);
 
   const updateErrorMessage = useMemo(
     () =>
@@ -132,12 +139,23 @@ const EditProfileScreen = () => {
     }
 
     try {
+      const updates: {
+        firstName: string;
+        phoneNumber: string;
+        avatarUrl?: string;
+      } = {
+        firstName: name.trim(),
+        phoneNumber: phone.trim(),
+      };
+
+      // Include avatarUrl if a new image was selected
+      if (selectedAvatarUri) {
+        updates.avatarUrl = selectedAvatarUri;
+      }
+
       await updateProfile({
         userId,
-        updates: {
-          firstName: name.trim(),
-          phoneNumber: phone.trim(),
-        },
+        updates,
       }).unwrap();
 
       // Show success and navigate back
@@ -200,23 +218,49 @@ const EditProfileScreen = () => {
               },
             ]}
           >
-            <MaterialIcons name="person" size={46} color={textColor} />
+            {selectedAvatarUri ? (
+              <Image
+                source={{ uri: selectedAvatarUri }}
+                style={styles.avatarImage}
+                contentFit="cover"
+              />
+            ) : profile?.avatarUrl ? (
+              <Image
+                source={{ uri: profile.avatarUrl }}
+                style={styles.avatarImage}
+                contentFit="cover"
+              />
+            ) : (
+              <MaterialIcons name="person" size={46} color={textColor} />
+            )}
           </View>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => {}}
-            style={[styles.changeAvatarButton, { backgroundColor: cardColor }]}
+          <ImagePickerModal
+            onImageSelected={setSelectedAvatarUri}
+            extraOptions={{
+              mediaTypes: ["images"],
+              allowsEditing: true,
+              aspect: [1, 1],
+              quality: 0.8,
+            }}
           >
-            <ThemedText
-              type="defaultSemiBold"
+            <View
+              accessibilityRole="button"
               style={[
-                styles.changeAvatarText,
-                { color: textColor, opacity: 0.9 },
+                styles.changeAvatarButton,
+                { backgroundColor: cardColor },
               ]}
             >
-              {t("edit_profile_change_avatar")}
-            </ThemedText>
-          </Pressable>
+              <ThemedText
+                type="defaultSemiBold"
+                style={[
+                  styles.changeAvatarText,
+                  { color: textColor, opacity: 0.9 },
+                ]}
+              >
+                {t("edit_profile_change_avatar")}
+              </ThemedText>
+            </View>
+          </ImagePickerModal>
         </View>
 
         <View style={styles.fields}>
@@ -352,6 +396,12 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
   },
   changeAvatarButton: {
     paddingHorizontal: 24,
