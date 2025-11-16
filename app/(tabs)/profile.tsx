@@ -1,5 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -7,12 +7,23 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { AppSwitch } from "@/components/ui/app-switch";
 import { Header } from "@/components/ui/header";
+import { LoadingView } from "@/components/ui/loading-view";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppTheme } from "@/lib/providers/ThemeProvider";
+import { useGetProfileQuery } from "@/lib/services/users/usersApi";
 import { useAppSelector } from "@/lib/store";
 import { router } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+const getInitials = (firstName: string) => {
+  return firstName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part.charAt(0).toUpperCase())
+    .join("");
+};
 
 type MenuItem = {
   key: string;
@@ -41,17 +52,24 @@ const primaryMenuItems: MenuItem[] = [
 export default function ProfileScreen() {
   const { t } = useTranslation();
 
+  const { colorScheme, setColorScheme } = useAppTheme();
+
+  const isDarkThemeEnabled = colorScheme === "dark";
+
   const cardColor = useThemeColor({}, "card");
   const dividerColor = useThemeColor({}, "dividerDark");
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const avatarBackground = useThemeColor({}, "avatarBackground");
 
-  const { user } = useAppSelector((state) => state.user);
+  const { session } = useAppSelector((state) => state.auth);
 
-  const { colorScheme, setColorScheme } = useAppTheme();
-
-  const isDarkThemeEnabled = colorScheme === "dark";
+  const { data: profile, isLoading: isLoadingProfile } = useGetProfileQuery(
+    session?.user?.id ?? "",
+    {
+      skip: !session,
+    }
+  );
 
   const handleChangeTheme = useCallback(
     (value: boolean) => {
@@ -60,18 +78,9 @@ export default function ProfileScreen() {
     [setColorScheme]
   );
 
-  const initials = useMemo(() => {
-    if (!user?.firstName) return "";
+  if (!profile || isLoadingProfile) return <LoadingView />;
 
-    return user.firstName
-      .split(" ")
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part.charAt(0).toUpperCase())
-      .join("");
-  }, [user?.firstName]);
-
-  // if (!user) return <PhoneOTPView />;
+  const initials = getInitials(profile?.firstName ?? "");
 
   return (
     <ThemedView
@@ -85,7 +94,7 @@ export default function ProfileScreen() {
         contentContainerStyle={[styles.contentContainer]}
         showsVerticalScrollIndicator={false}
       >
-        {/* <View style={[styles.profileCard]}>
+        <View style={[styles.profileCard]}>
           <View style={[styles.avatar, { backgroundColor: avatarBackground }]}>
             {initials ? (
               <ThemedText style={styles.avatarInitials}>{initials}</ThemedText>
@@ -95,12 +104,14 @@ export default function ProfileScreen() {
           </View>
 
           <View style={styles.profileInfo}>
-            <ThemedText style={styles.profileName}>{user.firstName}</ThemedText>
+            <ThemedText style={styles.profileName}>
+              {profile?.firstName}
+            </ThemedText>
             <ThemedText style={styles.profilePhone}>
-              {user.phoneNumber}
+              {profile?.phoneNumber}
             </ThemedText>
           </View>
-        </View> */}
+        </View>
 
         <View style={[styles.menuSection]}>
           {primaryMenuItems.map((item, index) => {
