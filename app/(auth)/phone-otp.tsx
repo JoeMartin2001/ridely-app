@@ -16,7 +16,10 @@ import { ThemedView } from "@/components/themed-view";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
-import { useSendPhoneOTPMutation } from "@/lib/services/auth/authApi";
+import {
+  useSendPhoneOTPMutation,
+  useSignInWithTelegramMutation,
+} from "@/lib/services/auth/authApi";
 import { resolveErrorMessage } from "@/lib/utils/errorUtils";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
@@ -55,6 +58,11 @@ export default function PhoneOTPScreen() {
     },
   ] = useSendPhoneOTPMutation();
 
+  const [
+    signInWithTelegram,
+    { isLoading: isTelegramLoading, error: telegramError },
+  ] = useSignInWithTelegramMutation();
+
   const [phoneNumber, setPhoneNumber] = useState("+998 ");
   const [rawPhoneNumber, setRawPhoneNumber] = useState("998");
   const [isFocused, setIsFocused] = useState(false);
@@ -90,6 +98,11 @@ export default function PhoneOTPScreen() {
     [sendPhoneOTPError, t]
   );
 
+  const telegramErrorMessage = useMemo(
+    () => resolveErrorMessage(telegramError, t("auth_phone_submit_error")),
+    [telegramError, t]
+  );
+
   const inputBorderColor = showError
     ? errorColor
     : isFocused
@@ -121,6 +134,16 @@ export default function PhoneOTPScreen() {
     setIsFocused(false);
     setSubmittedPhone({ masked: "", raw: "" });
   }, [resetSendPhoneOTPMutation]);
+
+  const handleTelegramSignIn = useCallback(() => {
+    signInWithTelegram().then((session) => {
+      if (session) {
+        router.back();
+      } else {
+        console.error("Failed to sign in with Telegram");
+      }
+    });
+  }, [signInWithTelegram]);
 
   useEffect(() => {
     if (!isSendPhoneOTPSuccess) return;
@@ -248,6 +271,53 @@ export default function PhoneOTPScreen() {
               {sendPhoneErrorMessage}
             </ThemedText>
           ) : null}
+
+          {telegramErrorMessage ? (
+            <ThemedText style={[styles.errorText, { color: errorColor }]}>
+              {telegramErrorMessage}
+            </ThemedText>
+          ) : null}
+
+          <View style={styles.dividerContainer}>
+            <View
+              style={[styles.dividerLine, { backgroundColor: dividerColor }]}
+            />
+            <ThemedText style={[styles.dividerText, { color: helperColor }]}>
+              {t("auth_phone_divider")}
+            </ThemedText>
+            <View
+              style={[styles.dividerLine, { backgroundColor: dividerColor }]}
+            />
+          </View>
+
+          <TouchableOpacity
+            activeOpacity={0.85}
+            style={[
+              styles.telegramButton,
+              {
+                backgroundColor: cardColor,
+                borderColor: dividerColor,
+              },
+            ]}
+            onPress={handleTelegramSignIn}
+            disabled={isTelegramLoading}
+            accessibilityRole="button"
+            accessibilityState={{
+              disabled: isTelegramLoading,
+              busy: isTelegramLoading,
+            }}
+            accessibilityHint={t("auth_telegram_sign_in_accessibility_hint")}
+          >
+            {isTelegramLoading ? (
+              <ActivityIndicator size="small" color={tintColor} />
+            ) : (
+              <ThemedText
+                style={[styles.telegramButtonText, { color: textColor }]}
+              >
+                {t("auth_telegram_sign_in")}
+              </ThemedText>
+            )}
+          </TouchableOpacity>
         </ThemedView>
 
         <ThemedText style={[styles.termsText, { color: helperColor }]}>
@@ -353,5 +423,32 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     textAlign: "center",
+  },
+  dividerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    gap: 12,
+  },
+  dividerLine: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+  },
+  dividerText: {
+    fontFamily: Fonts.sans,
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  telegramButton: {
+    height: 56,
+    borderRadius: BorderRadius.lg,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+  },
+  telegramButtonText: {
+    fontSize: 18,
+    fontWeight: "600",
+    letterSpacing: 1,
   },
 });

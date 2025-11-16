@@ -134,6 +134,9 @@
   "auth_otp_change_phone_accessibility_hint": "Go back to enter a different phone number.",
   "auth_otp_error_generic": "We couldn't verify the code. Try again.",
   "auth_otp_message_code_sent": "We sent a new code to {{phone}}.",
+  "auth_telegram_sign_in": "Sign in with Telegram",
+  "auth_telegram_sign_in_accessibility_hint": "Sign in using your Telegram account",
+  "auth_phone_divider": "or",
 
   "menu_item_details": "Menu Item Details"
 }

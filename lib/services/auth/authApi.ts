@@ -2,7 +2,7 @@
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AuthError, Session, User } from "@supabase/supabase-js";
 import { authService } from "..";
-import { SendPhoneOTPResponse, SessionResponse } from "./authService";
+import { SendPhoneOTPResponse } from "./authService";
 
 type QueryError = {
   status: number | string;
@@ -61,16 +61,16 @@ export const authApi = createApi({
     }),
 
     verifyPhoneAndLogin: builder.mutation<
-      SessionResponse,
+      Session | null,
       { phoneNumber: string; otpCode: string }
     >({
       queryFn: async ({ phoneNumber, otpCode }) => {
         try {
-          const data = await authService.verifyPhoneAndLogin(
+          const session = await authService.verifyPhoneAndLogin(
             phoneNumber,
             otpCode
           );
-          return { data };
+          return { data: session };
         } catch (error) {
           return { error: formatError(error) };
         }
@@ -126,6 +126,17 @@ export const authApi = createApi({
       },
       providesTags: ["Auth"],
     }),
+
+    signInWithTelegram: builder.mutation<Session | null, void>({
+      queryFn: async () => {
+        try {
+          const session = await authService.signInWithTelegram();
+          return { data: session };
+        } catch (error) {
+          return { error: formatError(error) };
+        }
+      },
+    }),
   }),
 });
 
@@ -136,4 +147,5 @@ export const {
   useGetCurrentUserQuery,
   useSendPhoneOTPMutation,
   useVerifyPhoneAndLoginMutation,
+  useSignInWithTelegramMutation,
 } = authApi;

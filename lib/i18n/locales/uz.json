@@ -136,6 +136,9 @@
   "auth_otp_change_phone_accessibility_hint": "Boshqa telefon raqamini kiritish uchun qayting.",
   "auth_otp_error_generic": "Kod tasdiqlanmadi. Qayta urinib ko'ring.",
   "auth_otp_message_code_sent": "Biz {{phone}} raqamiga yangi kod yubordik.",
+  "auth_telegram_sign_in": "Telegram orqali kirish",
+  "auth_telegram_sign_in_accessibility_hint": "Telegram hisobingizdan foydalanib kirish",
+  "auth_phone_divider": "yoki",
 
   "menu_item_details": "Taom haqida"
 }

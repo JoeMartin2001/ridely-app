@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "ridelyapp",
+    "deepLinks": ["ridelyapp://"],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -48,7 +49,8 @@
       "router": {},
       "eas": {
         "projectId": "78efa26d-dca0-4ea5-b956-ec4dcb4c0e23"
-      }
+      },
+      "telegramBot": "RidelyLoginBot"
     }
   }
 }

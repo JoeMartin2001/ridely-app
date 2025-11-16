@@ -135,6 +135,9 @@
   "auth_otp_change_phone_accessibility_hint": "Вернуться, чтобы ввести другой номер.",
   "auth_otp_error_generic": "Не удалось проверить код. Попробуйте ещё раз.",
   "auth_otp_message_code_sent": "Мы отправили новый код на {{phone}}.",
+  "auth_telegram_sign_in": "Войти через Telegram",
+  "auth_telegram_sign_in_accessibility_hint": "Войти используя аккаунт Telegram",
+  "auth_phone_divider": "или",
 
   "menu_item_details": "Детали меню"
 }

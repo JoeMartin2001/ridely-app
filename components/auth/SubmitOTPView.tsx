@@ -61,8 +61,6 @@ export const SubmitOTPView = ({
     { isLoading: isVerifyLoading, error: verifyError, reset: resetVerify },
   ] = useVerifyPhoneAndLoginMutation();
 
-  console.log(verifyError);
-
   const [
     resendPhoneOTP,
     { isLoading: isResendLoading, error: resendError, reset: resetResend },
@@ -120,7 +118,15 @@ export const SubmitOTPView = ({
       return;
     }
 
-    verifyPhoneAndLogin({ phoneNumber: rawPhoneNumber, otpCode });
+    verifyPhoneAndLogin({ phoneNumber: rawPhoneNumber, otpCode }).then(
+      (session) => {
+        if (session) {
+          router.back();
+        } else {
+          console.error("Failed to verify phone and login");
+        }
+      }
+    );
   }, [isCodeComplete, otpCode, rawPhoneNumber, verifyPhoneAndLogin]);
 
   const handleResend = useCallback(() => {

@@ -108,7 +108,10 @@ export abstract class BaseService<
   }
 }
 
-type EdgeFunction = "sendPhoneOtp" | "verifyPhoneAndLogin";
+type EdgeFunction =
+  | "sendPhoneOtp"
+  | "verifyPhoneAndLogin"
+  | "signInWithTelegram";
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
