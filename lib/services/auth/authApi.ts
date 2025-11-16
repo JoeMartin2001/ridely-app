@@ -44,6 +44,11 @@ export const authApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
+    /**
+     * sendPhoneOTP to send a phone OTP
+     * @param phoneNumber Phone number to send OTP to
+     * @returns SendPhoneOTPResponse
+     */
     sendPhoneOTP: builder.mutation<
       SendPhoneOTPResponse,
       { phoneNumber: string },
@@ -61,6 +66,12 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * verifyPhoneAndLogin to verify phone and login
+     * @param phoneNumber Phone number to verify
+     * @param otpCode OTP code to verify
+     * @returns Session or null if failed to verify phone and login
+     */
     verifyPhoneAndLogin: builder.mutation<
       Session | null,
       { phoneNumber: string; otpCode: string }
@@ -79,6 +90,12 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * signIn with email and password
+     * @param email Email to sign in with
+     * @param password Password to sign in with
+     * @returns Session
+     */
     signIn: builder.mutation<Session, { email: string; password: string }>({
       queryFn: async ({ email, password }) => {
         try {
@@ -92,6 +109,13 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * signUp with email and password
+     * @param email Email to sign up with
+     * @param password Password to sign up with
+     * @param userData User data to sign up with
+     * @returns void
+     */
     signUp: builder.mutation<
       void,
       { email: string; password: string; userData: any }
@@ -107,6 +131,10 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * signOut to sign out the user
+     * @returns void
+     */
     signOut: builder.mutation<void, void>({
       queryFn: async () => {
         try {
@@ -120,6 +148,10 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * getCurrentUser to get the current user
+     * @returns User or null if failed to get current user
+     */
     getCurrentUser: builder.query<User | null, void>({
       queryFn: async () => {
         try {
@@ -133,6 +165,10 @@ export const authApi = createApi({
       extraOptions: { retry: false },
     }),
 
+    /**
+     * signInWithTelegram to sign in with Telegram
+     * @returns Session or null if failed to sign in with Telegram
+     */
     signInWithTelegram: builder.mutation<Session | null, void>({
       queryFn: async () => {
         try {
