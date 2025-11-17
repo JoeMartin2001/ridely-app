@@ -64,6 +64,7 @@ export default function PhoneOTPScreen() {
     { isLoading: isTelegramLoading, error: telegramError },
   ] = useSignInWithTelegramMutation();
 
+  const telegramButtonColor = useThemeColor({}, "telegramButton");
   const taglineColor = useThemeColor({}, "tagline");
   const backgroundColor = useThemeColor({}, "background");
   const cardColor = useThemeColor({}, "card");
@@ -249,10 +250,9 @@ export default function PhoneOTPScreen() {
           <TouchableOpacity
             activeOpacity={0.85}
             style={[
-              styles.submitButton,
+              styles.telegramButton,
               {
-                backgroundColor: tintColor,
-                borderColor: dividerColor,
+                backgroundColor: telegramButtonColor,
               },
             ]}
             onPress={handleTelegramSignIn}
@@ -382,14 +382,8 @@ const styles = StyleSheet.create({
   },
   telegramButton: {
     height: 56,
-    borderRadius: BorderRadius.lg,
+    borderRadius: BorderRadius.full,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 1,
-  },
-  telegramButtonText: {
-    fontSize: 18,
-    fontWeight: "600",
-    letterSpacing: 1,
   },
 });
