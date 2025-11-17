@@ -11,6 +11,8 @@ interface PublishTripState {
     name: string;
   };
   date: string;
+  passengersCount: number;
+  seatPrice: number;
 }
 
 const initialState: PublishTripState = {
@@ -23,6 +25,8 @@ const initialState: PublishTripState = {
     name: "",
   },
   date: moment().format("YYYY-MM-DD"),
+  passengersCount: 1,
+  seatPrice: 50000,
 };
 
 export const publishTripSlice = createSlice({
@@ -50,15 +54,39 @@ export const publishTripSlice = createSlice({
     setDate: (state, action: PayloadAction<string>) => {
       state.date = action.payload;
     },
+    incrementPassengersCount: (state) => {
+      state.passengersCount = state.passengersCount + 1;
+    },
+    decrementPassengersCount: (state) => {
+      state.passengersCount = state.passengersCount - 1;
+    },
+    incrementSeatPrice: (state) => {
+      state.seatPrice = state.seatPrice + 10000;
+    },
+    decrementSeatPrice: (state) => {
+      if (state.seatPrice > 10000) {
+        state.seatPrice = state.seatPrice - 10000;
+      }
+    },
     resetPublishTrip: (state) => {
       state.from = { id: "", name: "" };
       state.to = { id: "", name: "" };
       state.date = moment().format("YYYY-MM-DD");
+      state.passengersCount = 1;
+      state.seatPrice = 10000;
     },
   },
 });
 
-export const { setFromDistrict, setToDistrict, setDate, resetPublishTrip } =
-  publishTripSlice.actions;
+export const {
+  setFromDistrict,
+  setToDistrict,
+  setDate,
+  incrementPassengersCount,
+  decrementPassengersCount,
+  incrementSeatPrice,
+  decrementSeatPrice,
+  resetPublishTrip,
+} = publishTripSlice.actions;
 
 export default publishTripSlice.reducer;

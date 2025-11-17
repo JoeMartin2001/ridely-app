@@ -28,6 +28,8 @@
   "home_quick_shortcuts": "Quick routes",
   "home_passenger_title": "Number of seats to reserve",
   "home_passenger_confirm": "Confirm",
+  "seat_price_title": "Price per seat",
+  "currency_uzs": "UZS",
   "common_today": "Today",
   "common_tomorrow": "Tomorrow",
   "common_yesterday": "Yesterday",

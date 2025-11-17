@@ -10,33 +10,20 @@ import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import {
-  decrementPassengersCount,
-  incrementPassengersCount,
-} from "@/lib/store/features/find-trip/findTripSlice";
-import {
-  decrementPassengersCount as decrementPublishPassengersCount,
-  incrementPassengersCount as incrementPublishPassengersCount,
+  decrementSeatPrice,
+  incrementSeatPrice,
 } from "@/lib/store/features/publish-trip/publishTripSlice";
-import { useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const minPassengers = 1;
-const maxPassengers = 8;
+const minPrice = 10000;
+const maxPrice = 1000000;
 
-export default function PassengerCountScreen() {
+export default function SeatPriceScreen() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const { context = "find" } = useLocalSearchParams();
 
   const dispatch = useAppDispatch();
-  const findTripPassengersCount = useAppSelector(
-    (state) => state.findTrip.passengersCount
-  );
-  const publishTripPassengersCount = useAppSelector(
-    (state) => state.publishTrip.passengersCount
-  );
-  const passengersCount =
-    context === "publish" ? publishTripPassengersCount : findTripPassengersCount;
+  const { seatPrice } = useAppSelector((state) => state.publishTrip);
 
   const tintColor = useThemeColor({}, "tint");
   const textColor = useThemeColor({}, "text");
@@ -45,27 +32,19 @@ export default function PassengerCountScreen() {
   const textOnTint = useThemeColor({}, "textOnTint");
 
   const handleDecrease = () => {
-    if (passengersCount === minPassengers) {
+    if (seatPrice <= minPrice) {
       return;
     }
 
-    if (context === "publish") {
-      dispatch(decrementPublishPassengersCount());
-    } else {
-      dispatch(decrementPassengersCount());
-    }
+    dispatch(decrementSeatPrice());
   };
 
   const handleIncrease = () => {
-    if (passengersCount === maxPassengers) {
+    if (seatPrice >= maxPrice) {
       return;
     }
 
-    if (context === "publish") {
-      dispatch(incrementPublishPassengersCount());
-    } else {
-      dispatch(incrementPassengersCount());
-    }
+    dispatch(incrementSeatPrice());
   };
 
   const handleConfirm = () => {
@@ -92,55 +71,58 @@ export default function PassengerCountScreen() {
       </View>
 
       <View style={styles.content}>
-        <ThemedText style={styles.title}>
-          {t("home_passenger_title")}
-        </ThemedText>
+        <ThemedText style={styles.title}>{t("seat_price_title")}</ThemedText>
 
         <View style={[styles.counterCard]}>
           <Pressable
             style={[
               styles.counterButton,
               {
-                borderColor:
-                  passengersCount === minPassengers ? dividerColor : tintColor,
+                borderColor: seatPrice <= minPrice ? dividerColor : tintColor,
               },
-              passengersCount === minPassengers && styles.counterButtonDisabled,
+              seatPrice <= minPrice && styles.counterButtonDisabled,
             ]}
             onPress={handleDecrease}
-            disabled={passengersCount === minPassengers}
+            disabled={seatPrice <= minPrice}
             android_ripple={{ color: tintColor }}
           >
             <MaterialIcons
               name="remove"
               size={28}
-              color={
-                passengersCount === minPassengers ? dividerColor : tintColor
-              }
+              color={seatPrice <= minPrice ? dividerColor : tintColor}
             />
           </Pressable>
 
-          <ThemedText style={styles.counterValue}>{passengersCount}</ThemedText>
+          <View style={styles.priceContainer}>
+            <ThemedText
+              style={styles.priceValue}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.5}
+            >
+              {seatPrice.toLocaleString()}
+            </ThemedText>
+            <ThemedText
+              style={styles.currencyLabel}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {t("currency_uzs")}
+            </ThemedText>
+          </View>
 
           <Pressable
             style={[
               styles.counterButton,
               {
-                borderColor:
-                  passengersCount === maxPassengers ? dividerColor : tintColor,
+                borderColor: seatPrice >= maxPrice ? dividerColor : tintColor,
               },
-              passengersCount === maxPassengers && styles.counterButtonDisabled,
+              seatPrice >= maxPrice && styles.counterButtonDisabled,
             ]}
             onPress={handleIncrease}
             android_ripple={{ color: tintColor }}
-            disabled={passengersCount === maxPassengers}
           >
-            <MaterialIcons
-              name="add"
-              size={28}
-              color={
-                passengersCount === maxPassengers ? dividerColor : tintColor
-              }
-            />
+            <MaterialIcons name="add" size={28} color={tintColor} />
           </Pressable>
         </View>
       </View>
@@ -187,23 +169,40 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderRadius: 32,
     paddingVertical: 32,
-    paddingHorizontal: 24,
-    gap: 24,
+    paddingHorizontal: 16,
+    gap: 12,
   },
   counterButton: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
   },
   counterButtonDisabled: {
     opacity: 0.4,
   },
-  counterValue: {
-    fontSize: 48,
+  priceContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    paddingHorizontal: 4,
+    minWidth: 0,
+    maxWidth: "100%",
+  },
+  priceValue: {
+    fontSize: 32,
     fontFamily: Fonts.rounded,
+    textAlign: "center",
+    flexShrink: 1,
+    maxWidth: "100%",
+  },
+  currencyLabel: {
+    fontSize: 16,
+    opacity: 0.7,
   },
   confirmButton: {
     borderRadius: 28,

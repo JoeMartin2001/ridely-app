@@ -39,7 +39,9 @@ const PublishTrip = () => {
 
   const { calendar: formatCalendar } = useLocalizedMoment();
 
-  const { from, to, date } = useAppSelector((state) => state.publishTrip);
+  const { from, to, date, passengersCount, seatPrice } = useAppSelector(
+    (state) => state.publishTrip
+  );
 
   const cardColor = useThemeColor({}, "card");
   const dividerColor = useThemeColor({}, "divider");
@@ -81,9 +83,23 @@ const PublishTrip = () => {
         value: formatCalendar(date),
         onPress: () => router.push("/select-trip-date?context=publish"),
       },
+      {
+        key: "passengers",
+        icon: "people",
+        label: t("home_field_passengers"),
+        value: passengersCount.toString(),
+        onPress: () => router.push("/passenger-count?context=publish"),
+      },
+      {
+        key: "price",
+        icon: "attach-money",
+        label: t("seat_price_title"),
+        value: t("price_with_currency", { price: seatPrice.toLocaleString() }),
+        onPress: () => router.push("/(publish-trip)/seat-price"),
+      },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [from, to, date, formatCalendar, t]);
+  }, [from, to, date, passengersCount, seatPrice, formatCalendar, t]);
 
   return (
     <ThemedView

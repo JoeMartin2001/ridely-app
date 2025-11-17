@@ -63,6 +63,10 @@ export default function RootLayout() {
               name="passenger-count"
               options={{ presentation: "fullScreenModal", headerShown: false }}
             />
+            <Stack.Screen
+              name="(publish-trip)/seat-price"
+              options={{ presentation: "fullScreenModal", headerShown: false }}
+            />
 
             <Stack.Screen
               name="trip-results"
