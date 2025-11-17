@@ -1,6 +1,5 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { Header } from "@/components/ui/header";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useLocalizedMoment } from "@/hooks/use-localized-moment";
@@ -48,6 +47,8 @@ const PublishTrip = () => {
   const iconColor = useThemeColor({}, "icon");
   const fieldIconBackground = useThemeColor({}, "surfaceMuted");
   const tintColor = useThemeColor({}, "tint");
+  const textOnTint = useThemeColor({}, "textOnTint");
+  const taglineColor = useThemeColor({}, "tagline");
 
   const fields: LocationField[] = useMemo(() => {
     return [
@@ -101,16 +102,33 @@ const PublishTrip = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, date, passengersCount, seatPrice, formatCalendar, t]);
 
+  const handlePublish = () => {
+    // TODO: Implement publish trip logic
+    console.log("Publishing trip:", {
+      from,
+      to,
+      date,
+      passengersCount,
+      seatPrice,
+    });
+  };
+
   return (
-    <ThemedView
-      style={[styles.container, { backgroundColor: cardColor }]}
-      applyTopInsets
-    >
-      <Header title={t("publish")} />
+    <ThemedView style={styles.container} applyTopInsets>
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
       >
+        <View style={styles.header}>
+          <ThemedText style={[styles.brandTitle, { color: tintColor }]}>
+            {t("brand_title")}
+          </ThemedText>
+          <ThemedText style={[styles.tagline, { color: taglineColor }]}>
+            {t("publish_trip_title")}
+          </ThemedText>
+        </View>
+
         <View
           style={[
             styles.locationCard,
@@ -133,6 +151,18 @@ const PublishTrip = () => {
               />
             );
           })}
+
+          <Pressable
+            style={[styles.publishButton, { backgroundColor: tintColor }]}
+            android_ripple={{ color: "rgba(255,255,255,0.2)" }}
+            onPress={handlePublish}
+          >
+            <ThemedText
+              style={[styles.publishButtonText, { color: textOnTint }]}
+            >
+              {t("publish")}
+            </ThemedText>
+          </Pressable>
         </View>
       </ScrollView>
     </ThemedView>
@@ -202,17 +232,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollView: {
-    flex: 1,
+  scrollView: {},
+  contentContainer: {
+    flexGrow: 1,
+    paddingTop: 64,
+    paddingBottom: 40,
+    paddingHorizontal: 20,
+    gap: 24,
   },
-  scrollContent: {
-    padding: 16,
-    gap: 16,
+  header: {
+    gap: 8,
+  },
+  brandTitle: {
+    fontFamily: Fonts.rounded,
+    fontWeight: "bold",
+    fontSize: 56,
+    lineHeight: 56,
+    letterSpacing: 0.5,
+    textAlign: "center",
+  },
+  tagline: {
+    fontSize: 24,
+    fontFamily: Fonts.rounded,
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
   locationCard: {
     borderRadius: BorderRadius.card,
     gap: 8,
     borderWidth: StyleSheet.hairlineWidth,
+  },
+  publishButton: {
+    paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomLeftRadius: BorderRadius.card,
+    borderBottomRightRadius: BorderRadius.card,
+  },
+  publishButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
   },
   fieldRow: {
     flexDirection: "row",
