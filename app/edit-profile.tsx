@@ -6,7 +6,6 @@ import {
   Alert,
   Pressable,
   StyleSheet,
-  TextInput,
   View,
 } from "react-native";
 
@@ -20,6 +19,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { AppTextInput } from "@/components/ui/input/app-text-input";
 import { LoadingView } from "@/components/ui/loading-view";
 import { useSignOutMutation } from "@/lib/services/auth/authApi";
 import {
@@ -262,71 +262,31 @@ const EditProfileScreen = () => {
         </View>
 
         <View style={styles.fields}>
-          <View style={styles.fieldGroup}>
-            <ThemedText style={styles.fieldLabel}>
-              {t("edit_profile_name_label")}
-            </ThemedText>
-            <View
-              style={[
-                styles.inputWrapper,
-                {
-                  backgroundColor: cardColor,
-                  borderColor: nameError ? errorColor : dividerColor,
-                  borderWidth: nameError ? 1 : StyleSheet.hairlineWidth,
-                },
-              ]}
-            >
-              <TextInput
-                value={name}
-                onChangeText={setName}
-                placeholder={t("edit_profile_name_placeholder")}
-                placeholderTextColor={dividerColor}
-                style={[styles.input, { color: textColor }]}
-                editable={!isUpdating}
-              />
-            </View>
-            {nameError && (
-              <ThemedText style={[styles.errorText, { color: errorColor }]}>
-                {nameError}
-              </ThemedText>
-            )}
-          </View>
+          <AppTextInput
+            label={t("edit_profile_name_label")}
+            value={name}
+            onChangeText={setName}
+            placeholder={t("edit_profile_name_placeholder")}
+            editable={!isUpdating}
+            error={nameError}
+            placeholderTextColor={dividerColor}
+          />
 
-          <View style={styles.fieldGroup}>
-            <ThemedText style={styles.fieldLabel}>
-              {t("edit_profile_phone_label")}
+          <AppTextInput
+            label={t("edit_profile_phone_label")}
+            value={phone}
+            onChangeText={setPhone}
+            placeholder={t("edit_profile_phone_placeholder")}
+            editable={!isUpdating}
+            error={phoneError}
+            placeholderTextColor={dividerColor}
+          />
+
+          {updateErrorMessage && !phoneError && !nameError && (
+            <ThemedText style={[styles.errorText, { color: errorColor }]}>
+              {updateErrorMessage}
             </ThemedText>
-            <View
-              style={[
-                styles.inputWrapper,
-                {
-                  backgroundColor: cardColor,
-                  borderColor: phoneError ? errorColor : dividerColor,
-                  borderWidth: phoneError ? 1 : StyleSheet.hairlineWidth,
-                },
-              ]}
-            >
-              <TextInput
-                value={phone}
-                onChangeText={setPhone}
-                placeholder="+998"
-                placeholderTextColor={dividerColor}
-                style={[styles.input, { color: textColor }]}
-                keyboardType="phone-pad"
-                editable={!isUpdating}
-              />
-            </View>
-            {phoneError && (
-              <ThemedText style={[styles.errorText, { color: errorColor }]}>
-                {phoneError}
-              </ThemedText>
-            )}
-            {updateErrorMessage && !phoneError && (
-              <ThemedText style={[styles.errorText, { color: errorColor }]}>
-                {updateErrorMessage}
-              </ThemedText>
-            )}
-          </View>
+          )}
         </View>
       </KeyboardAwareScrollView>
 

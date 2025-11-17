@@ -116,6 +116,10 @@ export class AuthService extends BaseService<"users"> {
 
     const res = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
 
+    if (res.type === "cancel") {
+      return null;
+    }
+
     if (res.type !== "success") {
       throw new Error("Failed to sign in with Telegram");
     }

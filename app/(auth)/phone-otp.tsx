@@ -8,11 +8,12 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import MaskInput, { Mask } from "react-native-mask-input";
+import { Mask } from "react-native-mask-input";
 
 import { SubmitOTPView } from "@/components/auth/SubmitOTPView";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { AppMaskInput } from "@/components/ui/input/app-mask-input";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -63,9 +64,18 @@ export default function PhoneOTPScreen() {
     { isLoading: isTelegramLoading, error: telegramError },
   ] = useSignInWithTelegramMutation();
 
+  const taglineColor = useThemeColor({}, "tagline");
+  const backgroundColor = useThemeColor({}, "background");
+  const cardColor = useThemeColor({}, "card");
+  const textColor = useThemeColor({}, "text");
+  const textOnTint = useThemeColor({}, "textOnTint");
+  const tintColor = useThemeColor({}, "tint");
+  const dividerColor = useThemeColor({}, "divider");
+  const errorColor = useThemeColor({}, "error");
+  const helperColor = useThemeColor({}, "tagline");
+
   const [phoneNumber, setPhoneNumber] = useState("+998 ");
   const [rawPhoneNumber, setRawPhoneNumber] = useState("998");
-  const [isFocused, setIsFocused] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [flowStep, setFlowStep] = useState<"phone" | "otp">("phone");
   const [submittedPhone, setSubmittedPhone] = useState<{
@@ -75,17 +85,6 @@ export default function PhoneOTPScreen() {
     masked: "",
     raw: "",
   });
-
-  const taglineColor = useThemeColor({}, "tagline");
-  const backgroundColor = useThemeColor({}, "background");
-  const cardColor = useThemeColor({}, "card");
-  const textColor = useThemeColor({}, "text");
-  const textOnTint = useThemeColor({}, "textOnTint");
-  const tintColor = useThemeColor({}, "tint");
-  const placeholderColor = useThemeColor({}, "placeholder");
-  const dividerColor = useThemeColor({}, "divider");
-  const errorColor = useThemeColor({}, "error");
-  const helperColor = useThemeColor({}, "tagline");
 
   const isPhoneComplete = useMemo(
     () => rawPhoneNumber.replace(/\D/g, "").length === 9,
@@ -102,12 +101,6 @@ export default function PhoneOTPScreen() {
     () => resolveErrorMessage(telegramError, t("auth_phone_submit_error")),
     [telegramError, t]
   );
-
-  const inputBorderColor = showError
-    ? errorColor
-    : isFocused
-    ? tintColor
-    : dividerColor;
 
   const handlePhoneChange = useCallback((masked: string, unmasked?: string) => {
     setPhoneNumber(masked);
@@ -131,18 +124,11 @@ export default function PhoneOTPScreen() {
     resetSendPhoneOTPMutation();
     setFlowStep("phone");
     setIsTouched(false);
-    setIsFocused(false);
     setSubmittedPhone({ masked: "", raw: "" });
   }, [resetSendPhoneOTPMutation]);
 
   const handleTelegramSignIn = useCallback(() => {
-    signInWithTelegram().then((session) => {
-      if (session) {
-        router.back();
-      } else {
-        console.error("Failed to sign in with Telegram");
-      }
-    });
+    signInWithTelegram();
   }, [signInWithTelegram]);
 
   useEffect(() => {
@@ -194,48 +180,16 @@ export default function PhoneOTPScreen() {
         <ThemedView
           style={[styles.formContainer, { backgroundColor: cardColor }]}
         >
-          <View style={styles.field}>
-            <ThemedText style={[styles.label, { color: helperColor }]}>
-              {t("auth_phone_input_label")}
-            </ThemedText>
+          <AppMaskInput
+            label={t("auth_phone_input_label")}
+            value={phoneNumber}
+            onChangeText={handlePhoneChange}
+            mask={uzbekPhoneMask}
+            placeholder={t("auth_phone_input_placeholder")}
+            error={showError ? t("auth_phone_input_error_invalid") : undefined}
+            helperText={!showError ? t("auth_phone_input_helper") : undefined}
+          />
 
-            <MaskInput
-              style={[
-                styles.input,
-                {
-                  color: textColor,
-                  borderColor: inputBorderColor,
-                },
-              ]}
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              onChangeText={handlePhoneChange}
-              mask={uzbekPhoneMask}
-              placeholder={t("auth_phone_input_placeholder")}
-              placeholderTextColor={placeholderColor}
-              textContentType="telephoneNumber"
-              autoComplete="tel"
-              returnKeyType="done"
-              selectionColor={tintColor}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => {
-                setIsFocused(false);
-                setIsTouched(true);
-              }}
-              accessibilityLabel={t("auth_phone_input_label")}
-              accessibilityHint={t("auth_phone_input_accessibility_hint")}
-            />
-            <ThemedText
-              style={[
-                styles.helperText,
-                { color: showError ? errorColor : helperColor },
-              ]}
-            >
-              {showError
-                ? t("auth_phone_input_error_invalid")
-                : t("auth_phone_input_helper")}
-            </ThemedText>
-          </View>
           <TouchableOpacity
             activeOpacity={0.85}
             style={[
@@ -277,7 +231,9 @@ export default function PhoneOTPScreen() {
               {telegramErrorMessage}
             </ThemedText>
           ) : null}
+        </ThemedView>
 
+        <View style={{ gap: 12, width: "100%" }}>
           <View style={styles.dividerContainer}>
             <View
               style={[styles.dividerLine, { backgroundColor: dividerColor }]}
@@ -293,9 +249,9 @@ export default function PhoneOTPScreen() {
           <TouchableOpacity
             activeOpacity={0.85}
             style={[
-              styles.telegramButton,
+              styles.submitButton,
               {
-                backgroundColor: cardColor,
+                backgroundColor: tintColor,
                 borderColor: dividerColor,
               },
             ]}
@@ -309,16 +265,20 @@ export default function PhoneOTPScreen() {
             accessibilityHint={t("auth_telegram_sign_in_accessibility_hint")}
           >
             {isTelegramLoading ? (
-              <ActivityIndicator size="small" color={tintColor} />
+              <ActivityIndicator size="small" color={textOnTint} />
             ) : (
-              <ThemedText
-                style={[styles.telegramButtonText, { color: textColor }]}
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
               >
-                {t("auth_telegram_sign_in")}
-              </ThemedText>
+                <ThemedText style={[styles.submitText, { color: textOnTint }]}>
+                  {t("auth_telegram_sign_in")}
+                </ThemedText>
+
+                <MaterialIcons name="telegram" size={24} color={textOnTint} />
+              </View>
             )}
           </TouchableOpacity>
-        </ThemedView>
+        </View>
 
         <ThemedText style={[styles.termsText, { color: helperColor }]}>
           {t("auth_phone_terms")}
@@ -376,25 +336,6 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.card,
     gap: 20,
     ...Shadows.xxs,
-  },
-  field: {
-    gap: 8,
-  },
-  label: {
-    fontFamily: Fonts.sans,
-    fontSize: 14,
-    fontWeight: "500",
-    letterSpacing: 0.3,
-    textTransform: "uppercase",
-  },
-  input: {
-    height: 56,
-    borderRadius: BorderRadius.lg,
-    paddingHorizontal: 24,
-    fontSize: 20,
-    letterSpacing: 1,
-    backgroundColor: "transparent",
-    borderWidth: 1,
   },
   submitButton: {
     height: 56,
