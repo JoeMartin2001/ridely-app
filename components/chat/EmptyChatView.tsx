@@ -1,8 +1,6 @@
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { useNavigation } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 
@@ -11,16 +9,9 @@ import { ThemedView } from "../themed-view";
 import { IconSymbol } from "../ui/icon-symbol";
 
 export const EmptyChatView = () => {
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const { t } = useTranslation();
   const cardColor = useThemeColor({}, "card");
   const textColor = useThemeColor({}, "text");
-  const tintColor = useThemeColor({}, "tint");
-  const textOnTint = useThemeColor({}, "textOnTint");
-
-  const handleGoToHome = () => {
-    navigation.navigate("index");
-  };
 
   return (
     <ThemedView
@@ -29,10 +20,6 @@ export const EmptyChatView = () => {
       darkColor={cardColor}
     >
       <View style={styles.content}>
-        <ThemedText style={styles.heading} type="subtitle">
-          {t("chat_empty_heading")}
-        </ThemedText>
-
         <View style={[styles.illustration, { borderColor: textColor }]}>
           <IconSymbol name="message.fill" size={88} color={textColor} />
         </View>
@@ -45,21 +32,6 @@ export const EmptyChatView = () => {
           {t("chat_empty_description")}
         </ThemedText>
       </View>
-
-      <Pressable
-        onPress={handleGoToHome}
-        style={[styles.ctaButton, { backgroundColor: tintColor }]}
-        accessibilityRole="button"
-      >
-        <ThemedText
-          style={styles.ctaText}
-          type="defaultSemiBold"
-          lightColor={textOnTint}
-          darkColor={textOnTint}
-        >
-          {t("chat_empty_cta")}
-        </ThemedText>
-      </Pressable>
     </ThemedView>
   );
 };
