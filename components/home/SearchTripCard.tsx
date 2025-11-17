@@ -25,7 +25,6 @@ type SearchField = {
   icon: React.ComponentProps<typeof MaterialIcons>["name"];
   label: string;
   value?: string;
-  href?: string;
   onPress?: (event: GestureResponderEvent) => void;
   showSwapButton?: boolean;
   onSwapButtonPress?: (event: GestureResponderEvent) => void;
@@ -86,7 +85,6 @@ export const SearchTripCard = () => {
         label: t("home_field_date"),
         value: formatCalendar(date),
         onPress: () => router.push("/select-trip-date"),
-        href: "/select-trip-date",
       },
       {
         key: "passengers",
@@ -94,7 +92,6 @@ export const SearchTripCard = () => {
         label: t("home_field_passengers"),
         value: passengersValue,
         onPress: () => router.push("/passenger-count"),
-        href: "/passenger-count",
       },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps

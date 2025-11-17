@@ -12,6 +12,7 @@ import favouritesReducer from "./features/favourites";
 import findTripReducer from "./features/find-trip/findTripSlice";
 import locationSearchReducer from "./features/location-search/locationSearchSlice";
 import menuItemsReducer from "./features/menu-items";
+import publishTripReducer from "./features/publish-trip/publishTripSlice";
 import userReducer from "./features/user";
 
 export const store = configureStore({
@@ -28,6 +29,7 @@ export const store = configureStore({
 
     findTrip: findTripReducer,
     locationSearch: locationSearchReducer,
+    publishTrip: publishTripReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>

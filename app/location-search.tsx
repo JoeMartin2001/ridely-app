@@ -24,6 +24,10 @@ import {
   setToDistrict,
 } from "@/lib/store/features/find-trip/findTripSlice";
 import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
+import {
+  setFromDistrict as setPublishFromDistrict,
+  setToDistrict as setPublishToDistrict,
+} from "@/lib/store/features/publish-trip/publishTripSlice";
 import { IRegion } from "@/lib/types/Region";
 
 type LocationSuggestion = {
@@ -36,7 +40,7 @@ const LocationSearch = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const { type } = useLocalSearchParams();
+  const { type, context = "find" } = useLocalSearchParams();
 
   const inputRef = useRef<TextInput>(null);
 
@@ -89,10 +93,18 @@ const LocationSearch = () => {
       return;
     }
 
-    if (type === "from") {
-      dispatch(setFromDistrict({ id: "", name: "" }));
+    if (context === "publish") {
+      if (type === "from") {
+        dispatch(setPublishFromDistrict({ id: "", name: "" }));
+      } else {
+        dispatch(setPublishToDistrict({ id: "", name: "" }));
+      }
     } else {
-      dispatch(setToDistrict({ id: "", name: "" }));
+      if (type === "from") {
+        dispatch(setFromDistrict({ id: "", name: "" }));
+      } else {
+        dispatch(setToDistrict({ id: "", name: "" }));
+      }
     }
 
     dispatch(setSearchQuery(""));
@@ -104,10 +116,18 @@ const LocationSearch = () => {
   };
 
   const handlePressItem = (item: LocationSuggestion) => {
-    if (type === "from") {
-      dispatch(setFromDistrict({ id: item.id, name: item.title }));
+    if (context === "publish") {
+      if (type === "from") {
+        dispatch(setPublishFromDistrict({ id: item.id, name: item.title }));
+      } else {
+        dispatch(setPublishToDistrict({ id: item.id, name: item.title }));
+      }
     } else {
-      dispatch(setToDistrict({ id: item.id, name: item.title }));
+      if (type === "from") {
+        dispatch(setFromDistrict({ id: item.id, name: item.title }));
+      } else {
+        dispatch(setToDistrict({ id: item.id, name: item.title }));
+      }
     }
 
     dispatch(setSearchQuery(""));
