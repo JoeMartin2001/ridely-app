@@ -3,6 +3,7 @@ import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
+import { useLocalizedMoment } from "@/hooks/use-localized-moment";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { setSearchQuery } from "@/lib/store/features/location-search/locationSearchSlice";
@@ -36,7 +37,9 @@ const PublishTrip = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const { from, to } = useAppSelector((state) => state.publishTrip);
+  const { calendar: formatCalendar } = useLocalizedMoment();
+
+  const { from, to, date } = useAppSelector((state) => state.publishTrip);
 
   const cardColor = useThemeColor({}, "card");
   const dividerColor = useThemeColor({}, "divider");
@@ -71,9 +74,16 @@ const PublishTrip = () => {
           router.push("/location-search?type=to&context=publish");
         },
       },
+      {
+        key: "date",
+        icon: "event",
+        label: t("home_field_date"),
+        value: formatCalendar(date),
+        onPress: () => router.push("/select-trip-date?context=publish"),
+      },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [from, to, t]);
+  }, [from, to, date, formatCalendar, t]);
 
   return (
     <ThemedView

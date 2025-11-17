@@ -17,16 +17,22 @@ import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { setDate } from "@/lib/store/features/find-trip/findTripSlice";
+import {
+  setDate as setPublishDate,
+} from "@/lib/store/features/publish-trip/publishTripSlice";
+import { useLocalSearchParams } from "expo-router";
 import moment from "moment";
 
 const todayISO = moment().format("YYYY-MM-DD");
 
 const SelectTripDate = () => {
   const { t, i18n } = useTranslation();
+  const { context = "find" } = useLocalSearchParams();
 
-  const { date: selectedDate } = useAppSelector((state) => state.findTrip);
-
-  console.log("selectedDate", selectedDate);
+  const findTripDate = useAppSelector((state) => state.findTrip.date);
+  const publishTripDate = useAppSelector((state) => state.publishTrip.date);
+  const selectedDate =
+    context === "publish" ? publishTripDate : findTripDate;
 
   const dispatch = useAppDispatch();
 
@@ -100,11 +106,18 @@ const SelectTripDate = () => {
     [localeForHeader]
   );
 
-  const handleDayPress = useCallback((day: CalendarDate) => {
-    dispatch(setDate(day.dateString));
-    router.back();
+  const handleDayPress = useCallback(
+    (day: CalendarDate) => {
+      if (context === "publish") {
+        dispatch(setPublishDate(day.dateString));
+      } else {
+        dispatch(setDate(day.dateString));
+      }
+      router.back();
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [context]
+  );
 
   return (
     <ThemedView style={[styles.container, { backgroundColor }]} applyTopInsets>
