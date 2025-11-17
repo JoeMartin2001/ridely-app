@@ -48,7 +48,7 @@ const EditProfileScreen = () => {
   const cardColor = useThemeColor({}, "card");
   const backgroundColor = useThemeColor({}, "background");
   const textColor = useThemeColor({}, "text");
-  const textReverse = useThemeColor({}, "textReverse");
+  const textOnTint = useThemeColor({}, "textOnTint");
   const tintColor = useThemeColor({}, "tint");
   const dividerColor = useThemeColor({}, "divider");
   const avatarBackground = useThemeColor({}, "avatarBackground");
@@ -344,11 +344,11 @@ const EditProfileScreen = () => {
           ]}
         >
           {isUpdating ? (
-            <ActivityIndicator size="small" color={textReverse} />
+            <ActivityIndicator size="small" color={textOnTint} />
           ) : (
             <ThemedText
               type="defaultSemiBold"
-              style={[styles.saveButtonText, { color: textReverse }]}
+              style={[styles.saveButtonText, { color: textOnTint }]}
             >
               {t("edit_profile_save")}
             </ThemedText>
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   inputWrapper: {
-    borderRadius: 18,
+    borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 18,
     paddingVertical: 14,
