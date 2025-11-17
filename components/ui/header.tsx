@@ -13,9 +13,14 @@ type HeaderProps = {
 export const Header = ({ title, onGoBack, rightButton }: HeaderProps) => {
   const color = useThemeColor({}, "card");
   const textColor = useThemeColor({}, "text");
+  const dividerColor = useThemeColor({}, "divider");
 
   return (
-    <ThemedView style={styles.header} lightColor={color} darkColor={color}>
+    <ThemedView
+      style={[styles.header, { borderBottomColor: dividerColor }]}
+      lightColor={color}
+      darkColor={color}
+    >
       {onGoBack && (
         <Pressable onPress={onGoBack} style={styles.backButton}>
           <IconSymbol name="chevron.backward" size={24} color={textColor} />
@@ -37,6 +42,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   headerTitle: {
     fontSize: 20,

@@ -19,6 +19,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { AppMaskInput } from "@/components/ui/input/app-mask-input";
 import { AppTextInput } from "@/components/ui/input/app-text-input";
 import { LoadingView } from "@/components/ui/loading-view";
 import { useSignOutMutation } from "@/lib/services/auth/authApi";
@@ -272,14 +273,12 @@ const EditProfileScreen = () => {
             placeholderTextColor={dividerColor}
           />
 
-          <AppTextInput
+          <AppMaskInput
             label={t("edit_profile_phone_label")}
             value={phone}
             onChangeText={setPhone}
             placeholder={t("edit_profile_phone_placeholder")}
-            editable={!isUpdating}
             error={phoneError}
-            placeholderTextColor={dividerColor}
           />
 
           {updateErrorMessage && !phoneError && !nameError && (

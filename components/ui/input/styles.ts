@@ -15,7 +15,7 @@ export const InputStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 18,
-    height: 50,
+    paddingVertical: 14,
     ...Shadows.xxxs,
   },
   input: {

@@ -27,7 +27,7 @@ export class UsersService extends BaseService<"users"> {
   async updateProfile(userId: string, updates: UpdateUser): Promise<User> {
     const result = await this.supabase
       .from("users")
-      .update(updates as never)
+      .update(this.toSnake(updates) as never)
       .eq("id", userId)
       .select()
       .single();
