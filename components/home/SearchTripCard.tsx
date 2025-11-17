@@ -101,6 +101,22 @@ export const SearchTripCard = () => {
   }, [from, to, date, passengersCount, formatCalendar, t]);
 
   const handleSearch = () => {
+    if (!from.id) {
+      return router.push("/location-search?type=from");
+    }
+
+    if (!to.id) {
+      return router.push("/location-search?type=to");
+    }
+
+    if (!date) {
+      return router.push("/select-trip-date");
+    }
+
+    if (passengersCount === 0) {
+      return router.push("/passenger-count");
+    }
+
     router.push("/trip-results");
   };
 
