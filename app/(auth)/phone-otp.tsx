@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
+  Alert,
   Pressable,
   StyleSheet,
   TouchableOpacity,
@@ -129,8 +130,14 @@ export default function PhoneOTPScreen() {
   }, [resetSendPhoneOTPMutation]);
 
   const handleTelegramSignIn = useCallback(() => {
-    signInWithTelegram();
-  }, [signInWithTelegram]);
+    signInWithTelegram().then((session) => {
+      if (session) {
+        router.back();
+      } else {
+        Alert.alert(t("auth_telegram_sign_in_error"));
+      }
+    });
+  }, [signInWithTelegram, t]);
 
   useEffect(() => {
     if (!isSendPhoneOTPSuccess) return;
