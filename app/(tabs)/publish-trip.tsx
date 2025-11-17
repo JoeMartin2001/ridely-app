@@ -103,6 +103,22 @@ const PublishTrip = () => {
   }, [from, to, date, passengersCount, seatPrice, formatCalendar, t]);
 
   const handlePublish = () => {
+    if (!from.id) {
+      return router.push("/location-search?type=from&context=publish");
+    }
+
+    if (!to.id) {
+      return router.push("/location-search?type=to&context=publish");
+    }
+
+    if (!date) {
+      return router.push("/select-trip-date?context=publish");
+    }
+
+    if (passengersCount === 0) {
+      return router.push("/passenger-count?context=publish");
+    }
+
     // TODO: Implement publish trip logic
     console.log("Publishing trip:", {
       from,
