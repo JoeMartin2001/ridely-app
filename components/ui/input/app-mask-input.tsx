@@ -1,7 +1,7 @@
 import { ThemedText } from "@/components/themed-text";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, TextStyle, View } from "react-native";
+import { TextStyle, View } from "react-native";
 import MaskInput, { Mask } from "react-native-mask-input";
 import { InputStyles } from "./styles";
 
@@ -117,7 +117,6 @@ export const AppMaskInput = (props: AppMaskInputProps) => {
           {
             backgroundColor: cardColor,
             borderColor,
-            borderWidth: error || isFocused ? 1 : StyleSheet.hairlineWidth,
           },
         ]}
       >
