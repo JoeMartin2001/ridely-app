@@ -1,26 +1,11 @@
 // services/auth/authService.ts
 import { BaseService } from "@/lib/services/base/BaseService";
-import { Database, IUser } from "@/lib/types";
+import { Database } from "@/lib/types";
+import { EdgeFns } from "@/lib/types/edge-functions";
 import { AuthError, Session, SupabaseClient } from "@supabase/supabase-js";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
-
-export type SendPhoneOTPResponse = { message: string };
-
-type SessionResponse = {
-  accessToken: string;
-  refreshToken: string;
-  user: IUser;
-};
-
-export type TelegramAuthData = {
-  id: string;
-  first_name: string;
-  username: string | null;
-  photo_url: string | null;
-  auth_date: string;
-  hash: string;
-};
+import { User } from "../users/usersService";
 
 export class AuthService extends BaseService<"users"> {
   constructor(supabase: SupabaseClient<Database>) {
@@ -31,8 +16,8 @@ export class AuthService extends BaseService<"users"> {
    * sendPhoneOTP edge function to send OTP to the phone number
    * @param phoneNumber Phone number to send OTP to
    */
-  async sendPhoneOTP(phoneNumber: string): Promise<{ message: string }> {
-    const data = await this.invokeEdgeFunction<SendPhoneOTPResponse>(
+  async sendPhoneOTP(phoneNumber: string): Promise<EdgeFns.SendPhoneOtpOutput> {
+    const data = await this.invokeEdgeFunction<"sendPhoneOtp">(
       "sendPhoneOtp",
       "POST",
       { phoneNumber }
@@ -49,11 +34,11 @@ export class AuthService extends BaseService<"users"> {
   async verifyPhoneAndLogin(
     phoneNumber: string,
     code: string
-  ): Promise<Session | null> {
-    const data = await this.invokeEdgeFunction<SessionResponse>(
+  ): Promise<EdgeFns.VerifyPhoneOtpOutput> {
+    const data = await this.invokeEdgeFunction<"verifyPhoneAndLogin">(
       "verifyPhoneAndLogin",
       "POST",
-      { phoneNumber, code }
+      { phoneNumber, code } as EdgeFns.VerifyPhoneOtpInput
     );
 
     return this.setAuthSession(data.accessToken, data.refreshToken);
@@ -86,7 +71,7 @@ export class AuthService extends BaseService<"users"> {
   async setAuthSession(
     accessToken: string,
     refreshToken: string
-  ): Promise<Session | null> {
+  ): Promise<EdgeFns.SessionResponse> {
     const { error, data: sessionData } = await this.supabase.auth.setSession({
       access_token: accessToken,
       refresh_token: refreshToken,
@@ -96,14 +81,20 @@ export class AuthService extends BaseService<"users"> {
       throw new AuthError(error.message, error.status);
     }
 
-    return sessionData.session;
+    const user = sessionData.session?.user as unknown as User | undefined;
+
+    return {
+      accessToken,
+      refreshToken,
+      user,
+    };
   }
 
   /**
    * signInWithTelegram edge function to sign in with Telegram
    * @returns Session or null if failed to sign in with Telegram
    */
-  async signInWithTelegram(): Promise<Session | null> {
+  async signInWithTelegram(): Promise<EdgeFns.SessionResponse> {
     const redirectUrl = AuthSession.makeRedirectUri({
       scheme: "ridelyapp",
       path: "auth",
@@ -117,7 +108,7 @@ export class AuthService extends BaseService<"users"> {
     const res = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
 
     if (res.type === "cancel") {
-      return null;
+      throw new Error("User cancelled the sign in with Telegram");
     }
 
     if (res.type !== "success") {
@@ -127,16 +118,17 @@ export class AuthService extends BaseService<"users"> {
     const queryString = res.url.includes("?") ? res.url.split("?")[1] : "";
     const urlParams = new URLSearchParams(queryString);
 
-    const authData: TelegramAuthData = {
+    const authData: EdgeFns.TelegramAuthInput = {
       id: urlParams.get("id") || "",
       first_name: urlParams.get("first_name") || "",
-      username: urlParams.get("username"),
-      photo_url: urlParams.get("photo_url"),
-      auth_date: urlParams.get("auth_date") || "",
+      username: urlParams.get("username") || "",
+      photo_url: urlParams.get("photo_url") || "",
+      auth_date: parseInt(urlParams.get("auth_date") || "0"),
       hash: urlParams.get("hash") || "",
+      last_name: urlParams.get("last_name") || "",
     };
 
-    const data = await this.invokeEdgeFunction<SessionResponse>(
+    const data = await this.invokeEdgeFunction<"signInWithTelegram">(
       "signInWithTelegram",
       "POST",
       authData

@@ -1,4 +1,5 @@
 import { Database } from "@/lib/types";
+import { FnMap } from "@/lib/types/edge-functions";
 import { SupabaseClient } from "@supabase/supabase-js";
 import camelcaseKeys from "camelcase-keys";
 import snakecaseKeys from "snakecase-keys";
@@ -71,6 +72,7 @@ export abstract class BaseService<
   protected toCamel<T>(obj: T): T {
     return camelcaseKeys(obj as Record<string, unknown>, { deep: true }) as T;
   }
+
   /**
    * Invoke an edge function
    * @param name - The name of the edge function
@@ -78,17 +80,17 @@ export abstract class BaseService<
    * @param body - The body of the request
    * @returns The data returned from the edge function
    */
-  protected async invokeEdgeFunction<T>(
-    name: EdgeFunction,
+  protected async invokeEdgeFunction<K extends keyof FnMap>(
+    name: K,
     method: "POST" | "GET" | "PUT" | "DELETE",
-    body?: unknown
-  ): Promise<T> {
+    body?: FnMap[K]["input"]
+  ): Promise<FnMap[K]["output"]> {
     if (method === "POST" && !body) {
       throw new Error("Body is required for POST requests");
     }
 
     const res = await fetch(
-      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/${name}`,
+      `${process.env.EXPO_PUBLIC_SUPABASE_URL}/functions/v1/${name as string}`,
       {
         method,
         headers: { "Content-Type": "application/json" },
@@ -96,7 +98,9 @@ export abstract class BaseService<
       }
     );
 
-    const { error, data, success } = (await res.json()) as ApiResponse<T>;
+    const { error, data, success } = (await res.json()) as ApiResponse<
+      FnMap[K]["output"]
+    >;
 
     if (!success) {
       throw new Error(`Failed to invoke edge function: ${error?.message}`);
@@ -107,11 +111,6 @@ export abstract class BaseService<
     return data;
   }
 }
-
-type EdgeFunction =
-  | "sendPhoneOtp"
-  | "verifyPhoneAndLogin"
-  | "signInWithTelegram";
 
 export interface ApiResponse<T = unknown> {
   success: boolean;

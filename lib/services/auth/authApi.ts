@@ -1,9 +1,9 @@
 // services/auth/authApi.ts
+import { EdgeFns } from "@/lib/types/edge-functions";
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AuthError, Session, User } from "@supabase/supabase-js";
 import { authService } from "..";
 import { usersApi } from "../users/usersApi";
-import { SendPhoneOTPResponse } from "./authService";
 
 type QueryError = {
   status: number | string;
@@ -51,7 +51,7 @@ export const authApi = createApi({
      * @returns SendPhoneOTPResponse
      */
     sendPhoneOTP: builder.mutation<
-      SendPhoneOTPResponse,
+      EdgeFns.SendPhoneOtpOutput,
       { phoneNumber: string },
       { phoneNumber: string }
     >({
@@ -74,7 +74,7 @@ export const authApi = createApi({
      * @returns Session or null if failed to verify phone and login
      */
     verifyPhoneAndLogin: builder.mutation<
-      Session | null,
+      EdgeFns.VerifyPhoneOtpOutput,
       { phoneNumber: string; otpCode: string }
     >({
       queryFn: async ({ phoneNumber, otpCode }) => {
@@ -175,7 +175,10 @@ export const authApi = createApi({
      * signInWithTelegram to sign in with Telegram
      * @returns Session or null if failed to sign in with Telegram
      */
-    signInWithTelegram: builder.mutation<Session | null, void>({
+    signInWithTelegram: builder.mutation<
+      EdgeFns.SignInWithTelegramOutput,
+      void
+    >({
       queryFn: async () => {
         try {
           const session = await authService.signInWithTelegram();
