@@ -15,7 +15,8 @@
     "detox:build:android": "detox build --configuration android.emu.debug",
     "detox:test:ios": "detox test --configuration ios.sim.debug",
     "detox:test:android": "detox test --configuration android.emu.debug",
-    "supabase:gen:types": "supabase gen types typescript --project-id dbunxvmwjytgxdnslymd --schema public >lib/types/database.types.ts"
+    "supabase:gen:types": "supabase gen types typescript --project-id dbunxvmwjytgxdnslymd --schema public >lib/types/database.types.ts",
+    "supabase:gen:types:local": "supabase gen types typescript --db-url postgresql://postgres:postgres@localhost:5432/ridely >lib/types/database.types.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
