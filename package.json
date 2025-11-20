@@ -7,6 +7,8 @@
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "run-ios-release-mode": "npx expo run:ios --configuration Release --device",
+    "run-android-release-mode": "npx expo run:android --configuration Release --device",
     "web": "expo start --web",
     "lint": "expo lint",
     "prebuild": "npx expo prebuild --clean",

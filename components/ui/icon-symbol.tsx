@@ -32,6 +32,12 @@ const MAPPING = {
   "gearshape.fill": "settings",
   "square.and.arrow.up.fill": "upload",
   "square.and.arrow.down.fill": "download",
+  clock: "access-time",
+  checkmark: "check",
+  "checkmark.circle": "check-circle-outline",
+  "checkmark.circle.fill": "check-circle",
+  "arrow.up": "arrow-upward",
+  "trash.fill": "delete",
 } as IconMapping;
 
 /**

@@ -74,6 +74,14 @@ export default function RootLayout() {
               name="trip-results"
               options={{ headerShown: false }}
             />
+
+            {/* Chat */}
+            <Stack.Screen
+              name="(chat)/chat-room"
+              options={{
+                headerShown: false,
+              }}
+            />
           </Stack>
         </SafeAreaProvider>
       </GestureHandlerRootView>

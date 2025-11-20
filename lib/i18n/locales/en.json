@@ -171,5 +171,15 @@
   "image_picker_permission_denied_title": "Photo library permission denied",
   "image_picker_permission_denied_message": "Please grant photo library permission to use this feature.",
   "image_picker_camera_permission_denied_title": "Camera permission denied",
-  "image_picker_camera_permission_denied_message": "Please grant camera permission to use this feature."
+  "image_picker_camera_permission_denied_message": "Please grant camera permission to use this feature.",
+  "delete": "Delete",
+  "no_messages": "No messages",
+  "my_trips_tab_booked": "Booked",
+  "my_trips_tab_published": "Published",
+  "my_trips_empty_booked_title": "No booked trips",
+  "my_trips_empty_booked_description": "You haven't booked any rides yet.",
+  "my_trips_empty_booked_cta": "Find a ride",
+  "my_trips_empty_published_title": "No published trips",
+  "my_trips_empty_published_description": "You haven't published any rides yet.",
+  "my_trips_empty_published_cta": "Publish a ride"
 }

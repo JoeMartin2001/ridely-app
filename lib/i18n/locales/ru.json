@@ -171,5 +171,15 @@
   "image_picker_permission_denied_title": "Доступ к фотобиблиотеке запрещен",
   "image_picker_permission_denied_message": "Предоставьте доступ к фотобиблиотеке, чтобы использовать эту функцию.",
   "image_picker_camera_permission_denied_title": "Доступ к камере запрещен",
-  "image_picker_camera_permission_denied_message": "Предоставьте доступ к камере, чтобы использовать эту функцию."
+  "image_picker_camera_permission_denied_message": "Предоставьте доступ к камере, чтобы использовать эту функцию.",
+  "delete": "Удалить",
+  "no_messages": "Нет сообщений",
+  "my_trips_tab_booked": "Забронированные",
+  "my_trips_tab_published": "Опубликованные",
+  "my_trips_empty_booked_title": "Нет забронированных поездок",
+  "my_trips_empty_booked_description": "Вы еще не забронировали ни одной поездки.",
+  "my_trips_empty_booked_cta": "Найти поездку",
+  "my_trips_empty_published_title": "Нет опубликованных поездок",
+  "my_trips_empty_published_description": "Вы еще не опубликовали ни одной поездки.",
+  "my_trips_empty_published_cta": "Опубликовать поездку"
 }

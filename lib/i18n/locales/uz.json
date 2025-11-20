@@ -173,5 +173,15 @@
   "image_picker_permission_denied_title": "Foto galereyaga kirish rad etildi",
   "image_picker_permission_denied_message": "Ushbu funksiyadan foydalanish uchun foto galereyaga kirish ruxsatini bering.",
   "image_picker_camera_permission_denied_title": "Kameraga kirish rad etildi",
-  "image_picker_camera_permission_denied_message": "Ushbu funksiyadan foydalanish uchun kameraga kirish ruxsatini bering."
+  "image_picker_camera_permission_denied_message": "Ushbu funksiyadan foydalanish uchun kameraga kirish ruxsatini bering.",
+  "delete": "O'chirish",
+  "no_messages": "Xabarlar yo'q",
+  "my_trips_tab_booked": "Band qilingan",
+  "my_trips_tab_published": "E'lon qilingan",
+  "my_trips_empty_booked_title": "Band qilingan sayohatlar yo'q",
+  "my_trips_empty_booked_description": "Siz hali hech qanday sayohatni band qilmadingiz.",
+  "my_trips_empty_booked_cta": "Sayohat topish",
+  "my_trips_empty_published_title": "E'lon qilingan sayohatlar yo'q",
+  "my_trips_empty_published_description": "Siz hali hech qanday sayohat e'lon qilmadingiz.",
+  "my_trips_empty_published_cta": "Sayohat e'lon qilish"
 }
