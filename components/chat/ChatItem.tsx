@@ -2,10 +2,10 @@ import { IChatRoom } from "@/lib/types";
 import { Image } from "expo-image";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, View } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import { StyleSheet, View } from "react-native";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
+import { Pressable } from "react-native-gesture-handler";
 import { ThemedText } from "../themed-text";
 import { ThemedView } from "../themed-view";
 import { IconSymbol } from "../ui/icon-symbol";
@@ -73,10 +73,10 @@ export const ChatItem = ({ chat, onPress, onRemove }: Props) => {
       overshootRight={false}
     >
       <ThemedView style={styles.wrapper}>
-        <RectButton
+        <Pressable
           onPress={handlePress}
           style={styles.content}
-          rippleColor="#3a3a3c"
+          android_ripple={{ color: "#3a3a3c" }}
         >
           {sender.avatarUrl ? (
             <Image
@@ -106,7 +106,7 @@ export const ChatItem = ({ chat, onPress, onRemove }: Props) => {
               {lastMessage}
             </ThemedText>
           </View>
-        </RectButton>
+        </Pressable>
       </ThemedView>
     </ReanimatedSwipeable>
   );
