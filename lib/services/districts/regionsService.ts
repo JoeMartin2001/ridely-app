@@ -1,11 +1,12 @@
 import type { Database } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { CamelCaseKeys } from "../base/BaseService";
 import { BaseService } from "../base/BaseService";
 
 type DistrictsTable = Database["public"]["Tables"]["districts"];
-export type District = DistrictsTable["Row"];
-export type CreateDistrict = DistrictsTable["Insert"];
-export type UpdateDistrict = DistrictsTable["Update"];
+export type District = CamelCaseKeys<DistrictsTable["Row"]>;
+export type CreateDistrict = CamelCaseKeys<DistrictsTable["Insert"]>;
+export type UpdateDistrict = Partial<CamelCaseKeys<DistrictsTable["Update"]>>;
 
 export class DistrictsService extends BaseService<"districts"> {
   constructor(supabase: SupabaseClient<Database>) {

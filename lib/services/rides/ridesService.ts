@@ -1,11 +1,12 @@
 import type { Database } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { CamelCaseKeys } from "../base/BaseService";
 import { BaseService } from "../base/BaseService";
 
 type RidesTable = Database["public"]["Tables"]["rides"];
-export type Ride = RidesTable["Row"];
-export type CreateRide = RidesTable["Insert"];
-export type UpdateRide = RidesTable["Update"];
+export type Ride = CamelCaseKeys<RidesTable["Row"]>;
+export type CreateRide = CamelCaseKeys<RidesTable["Insert"]>;
+export type UpdateRide = Partial<CamelCaseKeys<RidesTable["Update"]>>;
 
 export class RidesService extends BaseService<"rides"> {
   constructor(supabase: SupabaseClient<Database>) {

@@ -4,6 +4,24 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import camelcaseKeys from "camelcase-keys";
 import snakecaseKeys from "snakecase-keys";
 
+/**
+ * Converts a string from snake_case to camelCase
+ */
+type CamelCase<T extends string> = T extends `${infer P}_${infer R}`
+  ? `${P}${Capitalize<CamelCase<R>>}`
+  : T;
+
+/**
+ * Recursively converts object keys from snake_case to camelCase
+ */
+export type CamelCaseKeys<T> = T extends Array<infer U>
+  ? Array<CamelCaseKeys<U>>
+  : T extends object
+  ? {
+      [K in keyof T as CamelCase<string & K>]: CamelCaseKeys<T[K]>;
+    }
+  : T;
+
 export abstract class BaseService<
   T extends keyof Database["public"]["Tables"]
 > {
@@ -21,7 +39,7 @@ export abstract class BaseService<
   protected handleError<T>(result: {
     data: T | null;
     error: { message: string } | null;
-  }): T {
+  }): CamelCaseKeys<T> {
     if (result.error) {
       throw new Error(`Database error: ${result.error.message}`);
     }
@@ -39,7 +57,7 @@ export abstract class BaseService<
   protected handleErrorNullable<T>(result: {
     data: T | null;
     error: { message: string } | null;
-  }): T | null {
+  }): CamelCaseKeys<T> | null {
     if (result.error) {
       throw new Error(`Database error: ${result.error.message}`);
     }
@@ -69,8 +87,10 @@ export abstract class BaseService<
   /**
    * Convert object keys to camelCase
    */
-  protected toCamel<T>(obj: T): T {
-    return camelcaseKeys(obj as Record<string, unknown>, { deep: true }) as T;
+  protected toCamel<T>(obj: T): CamelCaseKeys<T> {
+    return camelcaseKeys(obj as Record<string, unknown>, {
+      deep: true,
+    }) as CamelCaseKeys<T>;
   }
 
   /**

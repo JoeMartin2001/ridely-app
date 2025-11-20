@@ -1,11 +1,12 @@
 import type { Database } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { CamelCaseKeys } from "../base/BaseService";
 import { BaseService } from "../base/BaseService";
 
 type RegionsTable = Database["public"]["Tables"]["regions"];
-export type Region = RegionsTable["Row"];
-export type CreateRegion = RegionsTable["Insert"];
-export type UpdateRegion = RegionsTable["Update"];
+export type Region = CamelCaseKeys<RegionsTable["Row"]>;
+export type CreateRegion = CamelCaseKeys<RegionsTable["Insert"]>;
+export type UpdateRegion = Partial<CamelCaseKeys<RegionsTable["Update"]>>;
 
 export class RegionsService extends BaseService<"regions"> {
   constructor(supabase: SupabaseClient<Database>) {

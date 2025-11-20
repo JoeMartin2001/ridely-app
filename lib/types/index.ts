@@ -1,3 +1,4 @@
+export type { User } from "../services/users/usersService";
 export * from "./BaseEntity";
 export * from "./ChatMessage";
 export * from "./ChatRoom";
