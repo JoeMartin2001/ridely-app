@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 import { ThemedText } from "../themed-text";
@@ -72,10 +73,10 @@ export const ChatItem = ({ chat, onPress, onRemove }: Props) => {
       overshootRight={false}
     >
       <ThemedView style={styles.wrapper}>
-        <Pressable
+        <RectButton
           onPress={handlePress}
           style={styles.content}
-          android_ripple={{ color: "#3a3a3c" }}
+          //   rippleColor="#3a3a3c"
         >
           {sender.avatarUrl ? (
             <Image
@@ -105,7 +106,7 @@ export const ChatItem = ({ chat, onPress, onRemove }: Props) => {
               {lastMessage}
             </ThemedText>
           </View>
-        </Pressable>
+        </RectButton>
       </ThemedView>
     </ReanimatedSwipeable>
   );
