@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import { ChatInput } from "@/components/chat/ChatInput";
@@ -6,6 +6,7 @@ import { MessageBubble } from "@/components/chat/MessageBubble";
 import { ThemedView } from "@/components/themed-view";
 import { ChatMessageStatus, ChatMessageType, IChatMessage } from "@/lib/types";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Mock data
 const MOCK_MESSAGES: IChatMessage[] = [
@@ -51,6 +52,9 @@ const MOCK_MESSAGES: IChatMessage[] = [
 ];
 
 export default function ChatRoomScreen() {
+  const insets = useSafeAreaInsets();
+  const listRef = useRef<FlatList<IChatMessage>>(null);
+
   const [messages, setMessages] = useState<IChatMessage[]>(MOCK_MESSAGES);
 
   const handleSend = (text: string) => {
@@ -67,7 +71,16 @@ export default function ChatRoomScreen() {
       status: ChatMessageStatus.SENT,
       chatRoomId: "room1",
     };
+
     setMessages((prev) => [newMessage, ...prev]);
+
+    // scroll to bottom (offset 0 with inverted list)
+    requestAnimationFrame(() => {
+      listRef.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    });
   };
 
   return (
@@ -77,6 +90,7 @@ export default function ChatRoomScreen() {
         style={[styles.contentContainer]}
       >
         <FlatList
+          ref={listRef}
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -89,8 +103,8 @@ export default function ChatRoomScreen() {
           style={{ flex: 1 }}
           contentContainerStyle={{
             paddingHorizontal: 16,
-            paddingBottom: 16,
             paddingTop: 16,
+            paddingBottom: 16 + insets.bottom + 16,
           }}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
