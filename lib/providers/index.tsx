@@ -6,6 +6,7 @@ import {
 import type { ReactNode } from "react";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AuthProvider } from "./AuthProvider";
 import { StoreProvider } from "./StoreProvider";
 import { AppThemeProvider } from "./ThemeProvider";
@@ -24,12 +25,14 @@ const NavigationThemeWrapper = ({ children }: { children: ReactNode }) => {
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <StoreProvider>
-      <AppThemeProvider>
-        <NavigationThemeWrapper>
-          <AuthProvider>{children}</AuthProvider>
-        </NavigationThemeWrapper>
-      </AppThemeProvider>
-    </StoreProvider>
+    <KeyboardProvider>
+      <StoreProvider>
+        <AppThemeProvider>
+          <NavigationThemeWrapper>
+            <AuthProvider>{children}</AuthProvider>
+          </NavigationThemeWrapper>
+        </AppThemeProvider>
+      </StoreProvider>
+    </KeyboardProvider>
   );
 };

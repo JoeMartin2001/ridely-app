@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
-import Animated, {
-  useAnimatedKeyboard,
-  useAnimatedStyle,
-} from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble } from "@/components/chat/MessageBubble";
 import { ThemedView } from "@/components/themed-view";
 import { ChatMessageStatus, ChatMessageType, IChatMessage } from "@/lib/types";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 // Mock data
 const MOCK_MESSAGES: IChatMessage[] = [
@@ -56,14 +52,6 @@ const MOCK_MESSAGES: IChatMessage[] = [
 
 export default function ChatRoomScreen() {
   const [messages, setMessages] = useState<IChatMessage[]>(MOCK_MESSAGES);
-  const insets = useSafeAreaInsets();
-  const keyboard = useAnimatedKeyboard();
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      paddingBottom: Math.max(insets.bottom, keyboard.height.value),
-    };
-  });
 
   const handleSend = (text: string) => {
     const newMessage: IChatMessage = {
@@ -83,8 +71,11 @@ export default function ChatRoomScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <Animated.View style={[styles.contentContainer, animatedStyle]}>
+    <ThemedView style={[styles.container]}>
+      <KeyboardAvoidingView
+        behavior={"padding"}
+        style={[styles.contentContainer]}
+      >
         <FlatList
           data={messages}
           keyExtractor={(item) => item.id}
@@ -105,7 +96,7 @@ export default function ChatRoomScreen() {
           keyboardShouldPersistTaps="handled"
         />
         <ChatInput onSend={handleSend} />
-      </Animated.View>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -113,6 +104,7 @@ export default function ChatRoomScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 16,
   },
   contentContainer: {
     flex: 1,
