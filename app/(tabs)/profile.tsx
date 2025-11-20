@@ -39,9 +39,7 @@ const primaryMenuItems: MenuItem[] = [
     label: "profile_personal_data",
     onPress: () => router.push("/edit-profile"),
   },
-  { key: "orders", label: "profile_orders" },
   { key: "feedback", label: "profile_feedback" },
-  { key: "branches", label: "profile_branches" },
   {
     key: "language",
     label: "profile_language",
@@ -209,6 +207,7 @@ const styles = StyleSheet.create({
   profileName: {
     fontSize: 20,
     fontFamily: Fonts.rounded,
+    fontWeight: "500",
   },
   profilePhone: {
     opacity: 0.7,
@@ -227,6 +226,7 @@ const styles = StyleSheet.create({
   },
   menuItemLabel: {
     fontSize: 16,
+    fontWeight: "500",
   },
   themeRow: {
     gap: 16,
