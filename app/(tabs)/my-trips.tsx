@@ -2,7 +2,6 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { EmptyTripsView } from "@/components/trips/EmptyTripsView";
 import { TripCard } from "@/components/trips/TripCard";
-import { Header } from "@/components/ui/header";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { IRide } from "@/lib/types";
 import React, { useState } from "react";
@@ -63,8 +62,6 @@ const MyTripsScreen = () => {
       style={[styles.container, { backgroundColor: cardColor }]}
       applyTopInsets
     >
-      <Header title={t("my_trips")} />
-
       <View style={styles.content}>
         <View
           style={[styles.tabContainer, { backgroundColor: cardColor + "80" }]}
