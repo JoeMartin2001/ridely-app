@@ -76,7 +76,7 @@ export const ChatItem = ({ chat, onPress, onRemove }: Props) => {
         <RectButton
           onPress={handlePress}
           style={styles.content}
-          //   rippleColor="#3a3a3c"
+          rippleColor="#3a3a3c"
         >
           {sender.avatarUrl ? (
             <Image
