@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { AppSwitch } from "@/components/ui/app-switch";
+import AppSwitch from "@/components/ui/app-switch";
 import { Header } from "@/components/ui/header";
 import { LoadingView } from "@/components/ui/loading-view";
 import { Fonts } from "@/constants/theme";
@@ -70,12 +70,9 @@ export default function ProfileScreen() {
     }
   );
 
-  const handleChangeTheme = useCallback(
-    (value: boolean) => {
-      setColorScheme(value ? "dark" : "light");
-    },
-    [setColorScheme]
-  );
+  const handleChangeTheme = useCallback((value: boolean) => {
+    setColorScheme(value ? "dark" : "light");
+  }, []);
 
   // Show loading if no session or if profile is loading
   if (!session || !profile || isLoadingProfile) return <LoadingView />;

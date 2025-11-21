@@ -45,6 +45,7 @@ export default {
           "The app accesses your photos to let you share them with your friends.",
         NSCameraUsageDescription:
           "The app accesses your camera to let you take photos of your car.",
+        UIDesignRequiresCompatibility: true,
       },
     },
     android: {

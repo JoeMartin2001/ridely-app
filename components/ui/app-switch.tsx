@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/use-theme-color";
-import React, { forwardRef } from "react";
+import React, { forwardRef, memo } from "react";
 import { Switch } from "react-native";
 
 interface AppSwitchProps {
@@ -7,7 +7,7 @@ interface AppSwitchProps {
   onChange: (value: boolean) => void;
 }
 
-export const AppSwitch = forwardRef<Switch, AppSwitchProps>((props, ref) => {
+const AppSwitch = forwardRef<Switch, AppSwitchProps>((props, ref) => {
   const { value, onChange } = props;
 
   const switchThumbColor = useThemeColor({}, "switchThumb");
@@ -16,6 +16,7 @@ export const AppSwitch = forwardRef<Switch, AppSwitchProps>((props, ref) => {
 
   return (
     <Switch
+      ref={ref}
       value={value}
       onValueChange={onChange}
       thumbColor={switchThumbColor}
@@ -23,9 +24,11 @@ export const AppSwitch = forwardRef<Switch, AppSwitchProps>((props, ref) => {
         false: switchTrackInactiveColor,
         true: switchTrackColor,
       }}
-      // ios_backgroundColor={switchTrackInactiveColor}
     />
   );
 });
 
 AppSwitch.displayName = "AppSwitch";
+
+const MemoizedAppSwitch = memo(AppSwitch);
+export default MemoizedAppSwitch;
