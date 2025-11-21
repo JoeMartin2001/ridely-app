@@ -271,9 +271,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 4,
+    height: 4,
+    borderRadius: BorderRadius.xs,
+    marginHorizontal: 6,
   },
   line: {
     width: 2,
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
   avatarPlaceholder: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: BorderRadius.xxl,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -399,8 +400,9 @@ const styles = StyleSheet.create({
   },
   stepButton: {
     width: 32,
-    height: 32,
-    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: BorderRadius.lg,
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",

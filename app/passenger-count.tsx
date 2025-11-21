@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { Shadows } from "@/constants/style";
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
@@ -36,7 +36,9 @@ export default function PassengerCountScreen() {
     (state) => state.publishTrip.passengersCount
   );
   const passengersCount =
-    context === "publish" ? publishTripPassengersCount : findTripPassengersCount;
+    context === "publish"
+      ? publishTripPassengersCount
+      : findTripPassengersCount;
 
   const tintColor = useThemeColor({}, "tint");
   const textColor = useThemeColor({}, "text");
@@ -185,15 +187,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: 32,
+    borderRadius: BorderRadius.xxxl,
     paddingVertical: 32,
     paddingHorizontal: 24,
     gap: 24,
   },
   counterButton: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 64,
+    height: 64,
+    borderRadius: BorderRadius.full,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.rounded,
   },
   confirmButton: {
-    borderRadius: 28,
+    borderRadius: BorderRadius.xxxl,
     paddingVertical: 18,
     alignItems: "center",
     justifyContent: "center",

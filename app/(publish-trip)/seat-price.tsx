@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
-import { Shadows } from "@/constants/style";
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   counterButton: {
     width: 64,
     height: 64,
-    borderRadius: 32,
+    borderRadius: BorderRadius.full,
     borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
@@ -196,8 +196,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   confirmButton: {
-    borderRadius: 28,
-    paddingVertical: 18,
+    height: 56,
+    borderRadius: BorderRadius.xxxl,
     alignItems: "center",
     justifyContent: "center",
   },

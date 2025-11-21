@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Spacing } from "@/components/ui/spacing";
-import { Shadows } from "@/constants/style";
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
@@ -345,15 +345,13 @@ const styles = StyleSheet.create({
   },
   navBar: {
     marginHorizontal: 16,
-    borderRadius: 16,
-    paddingVertical: 16,
-    paddingRight: 10,
-    paddingLeft: 5,
+    borderRadius: BorderRadius.lg,
+    padding: 16,
     borderWidth: StyleSheet.hairlineWidth,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 10,
+    gap: 16,
   },
   iconButton: {
     padding: 8,
@@ -372,9 +370,10 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.rounded,
   },
   filterButton: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: BorderRadius.xl,
+    overflow: "hidden",
     alignSelf: "center",
   },
   filterButtonText: {
@@ -408,8 +407,9 @@ const styles = StyleSheet.create({
   },
   tabIndicator: {
     marginTop: 6,
-    height: 2,
-    borderRadius: 1,
+    padding: 12,
+    borderRadius: BorderRadius.md,
+    gap: 12,
     alignSelf: "stretch",
   },
   groupList: {
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   tripCard: {
-    borderRadius: 24,
+    borderRadius: BorderRadius.xxl,
     padding: 20,
     gap: 16,
     borderWidth: StyleSheet.hairlineWidth,
@@ -464,9 +464,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   tripLocationBullet: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 4,
+    height: 4,
+    borderRadius: BorderRadius.xs,
+    marginHorizontal: 6,
   },
   tripCity: {
     fontSize: 16,
@@ -514,9 +515,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   driverAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: BorderRadius.xxl,
     alignItems: "center",
     justifyContent: "center",
   },

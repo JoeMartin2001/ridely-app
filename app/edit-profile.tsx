@@ -13,6 +13,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
 import { ImagePickerModal } from "@/components/ui/image-picker-modal";
+import { BorderRadius } from "@/constants/style";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppSelector } from "@/lib/store";
 import { router } from "expo-router";
@@ -347,7 +348,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 120,
     height: 120,
-    borderRadius: 60,
+    borderRadius: BorderRadius.full,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
@@ -355,12 +356,12 @@ const styles = StyleSheet.create({
   avatarImage: {
     width: 120,
     height: 120,
-    borderRadius: 60,
+    borderRadius: BorderRadius.full,
   },
   changeAvatarButton: {
     paddingHorizontal: 24,
     paddingVertical: 10,
-    borderRadius: 999,
+    borderRadius: BorderRadius.full,
   },
   changeAvatarText: {
     fontSize: 14,
@@ -378,7 +379,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   inputWrapper: {
-    borderRadius: 10,
+    borderRadius: BorderRadius.md,
     borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 18,
     paddingVertical: 14,
@@ -397,7 +398,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     height: 56,
-    borderRadius: 28,
+    borderRadius: BorderRadius.xxxl,
     alignItems: "center",
     justifyContent: "center",
   },

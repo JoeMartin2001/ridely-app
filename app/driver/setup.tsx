@@ -1,6 +1,7 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
+import { AppTextInput } from "@/components/ui/input";
 import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -8,7 +9,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function DriverSetupScreen() {
@@ -77,66 +78,42 @@ export default function DriverSetupScreen() {
           </ThemedText>
 
           <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>
-              {t("car_brand", "Brand")}
-            </ThemedText>
-            <TextInput
-              style={[
-                styles.input,
-                { color: textColor, borderColor: dividerColor },
-              ]}
-              placeholder="Chevrolet"
-              placeholderTextColor={placeholderColor}
+            <AppTextInput
+              label={t("car_brand", "Brand")}
               value={carBrand}
               onChangeText={setCarBrand}
+              placeholder="Chevrolet"
+              placeholderTextColor={placeholderColor}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>
-              {t("car_model", "Model")}
-            </ThemedText>
-            <TextInput
-              style={[
-                styles.input,
-                { color: textColor, borderColor: dividerColor },
-              ]}
-              placeholder="Malibu 2"
-              placeholderTextColor={placeholderColor}
+            <AppTextInput
+              label={t("car_model", "Model")}
               value={carModel}
               onChangeText={setCarModel}
+              placeholder="Malibu 2"
+              placeholderTextColor={placeholderColor}
             />
           </View>
 
           <View style={styles.row}>
             <View style={[styles.inputGroup, { flex: 1 }]}>
-              <ThemedText style={styles.label}>
-                {t("car_color", "Color")}
-              </ThemedText>
-              <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, borderColor: dividerColor },
-                ]}
-                placeholder="Black"
-                placeholderTextColor={placeholderColor}
+              <AppTextInput
+                label={t("car_color", "Color")}
                 value={carColor}
                 onChangeText={setCarColor}
+                placeholder="Black"
+                placeholderTextColor={placeholderColor}
               />
             </View>
             <View style={[styles.inputGroup, { flex: 1 }]}>
-              <ThemedText style={styles.label}>
-                {t("car_year", "Year (Optional)")}
-              </ThemedText>
-              <TextInput
-                style={[
-                  styles.input,
-                  { color: textColor, borderColor: dividerColor },
-                ]}
-                placeholder="2023"
-                placeholderTextColor={placeholderColor}
+              <AppTextInput
+                label={t("car_year", "Year (Optional)")}
                 value={carYear}
                 onChangeText={setCarYear}
+                placeholder="2023"
+                placeholderTextColor={placeholderColor}
                 keyboardType="numeric"
               />
             </View>
@@ -264,7 +241,7 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: BorderRadius.md,
     paddingHorizontal: 16,
     fontSize: 16,
   },

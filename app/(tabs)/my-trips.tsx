@@ -2,6 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { EmptyTripsView } from "@/components/trips/EmptyTripsView";
 import { TripCard } from "@/components/trips/TripCard";
+import { BorderRadius, Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { IRide } from "@/lib/types";
@@ -94,8 +95,8 @@ const MyTripsScreen = () => {
             styles.tabBarContainer,
             {
               backgroundColor: surfaceColor,
-              shadowColor: "#000",
             },
+            Shadows.xxs,
           ]}
         >
           <View style={styles.tabBar}>
@@ -167,11 +168,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 8,
-    borderRadius: 12,
-    elevation: 2,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    borderRadius: BorderRadius.md,
     overflow: "hidden",
   },
   tabBar: {
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    borderRadius: 8,
+    borderRadius: BorderRadius.sm,
   },
   tabText: {
     fontSize: 14,
@@ -208,12 +205,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 28,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    borderRadius: BorderRadius.xl,
+    ...Shadows.md,
     gap: 8,
   },
   fabText: {

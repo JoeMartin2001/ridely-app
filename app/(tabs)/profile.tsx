@@ -7,6 +7,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import AppSwitch from "@/components/ui/app-switch";
 import { LoadingView } from "@/components/ui/loading-view";
+import { BorderRadius } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppTheme } from "@/lib/providers/ThemeProvider";
@@ -205,19 +206,20 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
-    padding: 24,
+    paddingVertical: 24,
     gap: 24,
   },
   profileCard: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 24,
+    borderRadius: BorderRadius.xl,
     gap: 16,
+    paddingHorizontal: 24,
   },
   avatar: {
     width: 72,
     height: 72,
-    borderRadius: 36,
+    borderRadius: BorderRadius.full,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -244,6 +246,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 20,
+    paddingHorizontal: 24,
+    borderRadius: BorderRadius.xl,
+    gap: 16,
     backgroundColor: "transparent",
   },
   menuItemBorder: {
@@ -271,7 +276,8 @@ const styles = StyleSheet.create({
   },
   driverItem: {
     borderRadius: 20,
-    padding: 16,
+    marginHorizontal: 10,
+    paddingHorizontal: 16,
     marginBottom: 8,
     borderWidth: StyleSheet.hairlineWidth,
   },
@@ -283,7 +289,7 @@ const styles = StyleSheet.create({
   driverIcon: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: BorderRadius.xxl,
     alignItems: "center",
     justifyContent: "center",
   },

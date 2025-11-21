@@ -9,9 +9,11 @@ type AppTextInputProps = {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
-  placeholderTextColor: string;
-  editable: boolean;
-  error: string | null;
+  placeholderTextColor?: string;
+  editable?: boolean;
+  error?: string | null;
+  keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
 };
 
 export const AppTextInput = (props: AppTextInputProps) => {
@@ -23,6 +25,8 @@ export const AppTextInput = (props: AppTextInputProps) => {
     placeholderTextColor,
     editable,
     error = null,
+    keyboardType,
+    autoCapitalize,
   } = props;
 
   const cardColor = useThemeColor({}, "card");
@@ -50,6 +54,8 @@ export const AppTextInput = (props: AppTextInputProps) => {
           placeholderTextColor={placeholderTextColor || dividerColor}
           style={[InputStyles.input, { color: textColor }]}
           editable={editable}
+          keyboardType={keyboardType}
+          autoCapitalize={autoCapitalize}
         />
       </View>
       {error && (

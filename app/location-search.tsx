@@ -14,6 +14,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Divider } from "@/components/ui/divider";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BorderRadius } from "@/constants/style";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { DEFAULT_LANGUAGE, Language } from "@/lib/i18n";
 import { useGetDistrictsByNameQuery } from "@/lib/services/districts/regionsApi";
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 16,
+    borderRadius: BorderRadius.lg,
     paddingHorizontal: 12,
     height: 44,
   },

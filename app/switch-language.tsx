@@ -12,6 +12,7 @@ import {
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Header } from "@/components/ui/header";
+import { BorderRadius } from "@/constants/style";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { DEFAULT_LANGUAGE, type Language } from "@/lib/i18n";
 import { router } from "expo-router";
@@ -172,12 +173,7 @@ const SwitchLanguageScreen = () => {
           <ThemedText style={styles.sectionHeading}>
             {t("language_interface_heading")}
           </ThemedText>
-          <View
-            style={[
-              styles.optionList,
-              { backgroundColor: cardColor, borderColor: dividerColor },
-            ]}
-          >
+          <View style={[styles.optionList]}>
             {options.map((option, index) => renderOption(option, index))}
           </View>
         </View>
@@ -205,9 +201,9 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   optionList: {
-    borderRadius: 16,
+    borderRadius: BorderRadius.lg,
     overflow: "hidden",
-    borderWidth: StyleSheet.hairlineWidth,
+    gap: 12,
   },
   row: {
     flexDirection: "row",
@@ -215,6 +211,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 18,
+    borderRadius: BorderRadius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
   },
   rowPressed: {
     opacity: 0.85,
