@@ -163,15 +163,16 @@ const TripResultsScreen = () => {
                   const isFull = trip.status === "full";
 
                   return (
-                    <View
+                    <Pressable
                       key={trip.id}
-                      style={[
+                      onPress={() => router.push(`/trip-details/${trip.id}`)}
+                      style={({ pressed }) => [
                         styles.tripCard,
                         isFull && styles.tripCardDisabled,
                         {
                           backgroundColor: isFull ? cardMuted : backgroundColor,
                           borderColor: isFull ? tripLineColor : "transparent",
-                          opacity: isFull ? 0.5 : 1,
+                          opacity: isFull ? 0.5 : pressed ? 0.9 : 1,
                         },
                         Shadows.xxs,
                       ]}
@@ -318,7 +319,7 @@ const TripResultsScreen = () => {
                           />
                         </View>
                       </View>
-                    </View>
+                    </Pressable>
                   );
                 })}
               </View>

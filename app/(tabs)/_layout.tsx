@@ -41,25 +41,6 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="publish-trip"
-        options={{
-          title: t("publish"),
-          tabBarIcon: ({ color, size }) => (
-            <IconSymbol size={size} name="plus.circle.fill" color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            if (!authUser) {
-              e.preventDefault();
-
-              router.push("/phone-otp");
-            }
-          },
-        }}
-      />
-
-      <Tabs.Screen
         name="my-trips"
         options={{
           title: t("my_trips"),
@@ -104,6 +85,13 @@ export default function TabLayout() {
               router.push("/phone-otp");
             }
           },
+        }}
+      />
+
+      <Tabs.Screen
+        name="publish-trip"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

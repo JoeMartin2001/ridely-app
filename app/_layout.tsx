@@ -82,6 +82,24 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
+
+            {/* Driver Setup */}
+            <Stack.Screen
+              name="driver/setup"
+              options={{ headerShown: false }}
+            />
+
+            {/* Driver Profile */}
+            <Stack.Screen
+              name="driver/trip-details/[id]"
+              options={{ headerShown: false }}
+            />
+
+            {/* Trip Details */}
+            <Stack.Screen
+              name="trip-details/[id]"
+              options={{ headerShown: false }}
+            />
           </Stack>
         </SafeAreaProvider>
       </GestureHandlerRootView>

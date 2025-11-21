@@ -17,9 +17,7 @@ import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { setDate } from "@/lib/store/features/find-trip/findTripSlice";
-import {
-  setDate as setPublishDate,
-} from "@/lib/store/features/publish-trip/publishTripSlice";
+import { setDate as setPublishDate } from "@/lib/store/features/publish-trip/publishTripSlice";
 import { useLocalSearchParams } from "expo-router";
 import moment from "moment";
 
@@ -31,8 +29,7 @@ const SelectTripDate = () => {
 
   const findTripDate = useAppSelector((state) => state.findTrip.date);
   const publishTripDate = useAppSelector((state) => state.publishTrip.date);
-  const selectedDate =
-    context === "publish" ? publishTripDate : findTripDate;
+  const selectedDate = context === "publish" ? publishTripDate : findTripDate;
 
   const dispatch = useAppDispatch();
 

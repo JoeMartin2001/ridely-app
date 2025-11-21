@@ -161,10 +161,7 @@ const SwitchLanguageScreen = () => {
   );
 
   return (
-    <ThemedView
-      style={[styles.container, { backgroundColor: cardColor }]}
-      applyTopInsets
-    >
+    <ThemedView style={[styles.container, { backgroundColor: cardColor }]}>
       <Header title={t("profile_language")} onGoBack={() => router.back()} />
 
       <ScrollView

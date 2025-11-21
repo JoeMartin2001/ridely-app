@@ -65,11 +65,8 @@ export default function ChatScreen() {
   }
 
   return (
-    <ThemedView
-      style={[styles.screen, { backgroundColor: cardColor }]}
-      applyTopInsets
-    >
-      <Header title={t("favourites")} />
+    <ThemedView style={[styles.screen, { backgroundColor: cardColor }]}>
+      <Header title={t("chat")} />
 
       <FlatList
         data={MOCK_CHAT_ROOMS}

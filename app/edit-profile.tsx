@@ -185,14 +185,11 @@ const EditProfileScreen = () => {
   if (isLoadingProfile) return <LoadingView />;
 
   return (
-    <ThemedView
-      style={[styles.container, { backgroundColor: cardColor }]}
-      applyTopInsets
-    >
+    <ThemedView style={[styles.container, { backgroundColor: cardColor }]}>
       <Header
         title={t("edit_profile_title")}
         onGoBack={() => router.back()}
-        rightButton={
+        rightView={
           <Pressable onPress={handleLogout} disabled={isSigningOut}>
             {isSigningOut ? (
               <ActivityIndicator size="small" color={textColor} />

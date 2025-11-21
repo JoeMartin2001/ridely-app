@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { Header } from "@/components/ui/header";
 import { Shadows } from "@/constants/style";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -57,18 +58,8 @@ export default function SeatPriceScreen() {
         styles.container,
         { backgroundColor, paddingBottom: insets.bottom + 32 },
       ]}
-      applyTopInsets
     >
-      <View style={styles.header}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t("common_close")}
-          hitSlop={12}
-          onPress={() => router.back()}
-        >
-          <MaterialIcons name="close" size={28} color={textColor} />
-        </Pressable>
-      </View>
+      <Header title={t("seat_price_title")} onGoBack={() => router.back()} />
 
       <View style={styles.content}>
         <ThemedText style={styles.title}>{t("seat_price_title")}</ThemedText>

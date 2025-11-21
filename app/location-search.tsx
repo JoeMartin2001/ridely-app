@@ -82,7 +82,7 @@ const LocationSearch = () => {
       ...districts.map((item) => ({
         id: item.id,
         title: item[nameKey],
-        subtitle: item.region?.[nameKey] || "",
+        subtitle: item.nameOz || "",
       })),
     ];
   }, [districts, i18n.language, regions]);

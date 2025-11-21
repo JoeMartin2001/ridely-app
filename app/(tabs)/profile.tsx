@@ -6,7 +6,6 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import AppSwitch from "@/components/ui/app-switch";
-import { Header } from "@/components/ui/header";
 import { LoadingView } from "@/components/ui/loading-view";
 import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -60,6 +59,8 @@ export default function ProfileScreen() {
   const textColor = useThemeColor({}, "text");
   const backgroundColor = useThemeColor({}, "background");
   const avatarBackground = useThemeColor({}, "avatarBackground");
+  const tintColor = useThemeColor({}, "tint");
+  const textOnTint = useThemeColor({}, "textOnTint");
 
   const { session } = useAppSelector((state) => state.auth);
 
@@ -84,8 +85,6 @@ export default function ProfileScreen() {
       style={[styles.container, { backgroundColor: cardColor }]}
       applyTopInsets
     >
-      <Header title={t("profile")} />
-
       <KeyboardAwareScrollView
         style={{ backgroundColor }}
         contentContainerStyle={[styles.contentContainer]}
@@ -113,6 +112,36 @@ export default function ProfileScreen() {
               {profile?.phoneNumber || profile?.username}
             </ThemedText>
           </View>
+        </View>
+
+        <View style={[styles.menuSection]}>
+          <Pressable
+            style={[
+              styles.menuItem,
+              styles.driverItem,
+              { backgroundColor: cardColor, borderColor: dividerColor },
+            ]}
+            onPress={() => router.push("/driver/setup")}
+          >
+            <View style={styles.driverContent}>
+              <View style={[styles.driverIcon, { backgroundColor: tintColor }]}>
+                <MaterialIcons
+                  name="directions-car"
+                  size={24}
+                  color={textOnTint}
+                />
+              </View>
+              <View>
+                <ThemedText style={styles.driverTitle}>
+                  {t("become_driver", "Become a Driver")}
+                </ThemedText>
+                <ThemedText style={styles.driverSubtitle}>
+                  {t("start_earning", "Start earning with Ridely")}
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={24} color={textColor} />
+          </Pressable>
         </View>
 
         <View style={[styles.menuSection]}>
@@ -239,5 +268,32 @@ const styles = StyleSheet.create({
   },
   destructive: {
     color: "#FF453A",
+  },
+  driverItem: {
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  driverContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  driverIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  driverTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    fontFamily: Fonts.rounded,
+  },
+  driverSubtitle: {
+    fontSize: 14,
+    opacity: 0.7,
   },
 });

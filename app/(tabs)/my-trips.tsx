@@ -2,8 +2,11 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { EmptyTripsView } from "@/components/trips/EmptyTripsView";
 import { TripCard } from "@/components/trips/TripCard";
+import { Fonts } from "@/constants/theme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { IRide } from "@/lib/types";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -117,12 +120,36 @@ const MyTripsScreen = () => {
           <FlatList
             data={currentTrips}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <TripCard ride={item} />}
+            renderItem={({ item }) => (
+              <Pressable
+                onPress={() => {
+                  if (activeTab === "published") {
+                    router.push(`/driver/trip-details/${item.id}`);
+                  } else {
+                    router.push(`/trip-details/${item.id}`);
+                  }
+                }}
+              >
+                <TripCard ride={item} />
+              </Pressable>
+            )}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
           />
         ) : (
           <EmptyTripsView type={activeTab} />
+        )}
+
+        {activeTab === "published" && (
+          <Pressable
+            style={[styles.fab, { backgroundColor: tintColor }]}
+            onPress={() => router.push("/publish-trip")}
+          >
+            <MaterialIcons name="add" size={24} color="#fff" />
+            <ThemedText style={styles.fabText}>
+              {t("create_ride", "Create Ride")}
+            </ThemedText>
+          </Pressable>
         )}
       </View>
     </ThemedView>
@@ -172,6 +199,28 @@ const styles = StyleSheet.create({
   listContent: {
     padding: 16,
     paddingTop: 4,
+  },
+  fab: {
+    position: "absolute",
+    bottom: 24,
+    right: 24,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 28,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    gap: 8,
+  },
+  fabText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    fontFamily: Fonts.rounded,
   },
 });
 
