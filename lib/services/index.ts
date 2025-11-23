@@ -1,7 +1,7 @@
 // services/index.ts
 import { supabase } from "@/lib/supabase";
+import type { Database } from "@/lib/types/database.types";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "../types/Database.types";
 import { AuthService } from "./auth/authService";
 import { BaseService } from "./base/BaseService";
 import { DistrictsService } from "./districts/regionsService";
